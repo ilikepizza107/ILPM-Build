@@ -7,7 +7,6 @@ on:
     paths-ignore:
         - "**.md"
         - "Build/**"
-        - "MakeSD/**"
 
 jobs:
   windows:

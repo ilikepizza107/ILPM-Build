@@ -13,7 +13,9 @@
 ## Dolphin 
 
 ### Creating/Updating your sd.raw
- Run CreateSD.bat to create an sd.raw file or update an existing sd.raw in the "Dolphin/User/Wii" Folder.
+To customize the size and where the sd.raw gets made navigate to "MakeSD/Config.ini", open it in a text editor and under SD_CARD_SIZE set the size and under "SD_CARD_PATH" set the path 
+
+Run CreateSD.bat to create an sd.raw file or update an existing sd.raw in the "Dolphin/User/Wii" Folder.
  
  You can customize where the sd.raw gets made in "MakeSD/Config.ini" under the "SD_CARD_PATH" option.
  

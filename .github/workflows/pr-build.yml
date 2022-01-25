@@ -17,6 +17,18 @@ jobs:
     name: "Windows Dolphin"
     runs-on: windows-2019
     steps:
+      - name: "Download Data"
+        working-directory: ${{ github.workspace }}
+        run: |
+          Invoke-WebRequest -Uri https://projectplusgame.com/update.json -UseBasicParsing -OutFile "pplus.json"
+
+      - name: "Get PPlus Version"
+        id: pplus_version
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'pplus.json'
+          prop_path: 'version'
+          
       - name: "Checkout"
         uses: actions/checkout@v2.3.1
 
@@ -29,6 +41,8 @@ jobs:
           echo "GIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           echo "GIT_TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
           echo "CURR_DATE=$(date +%Y-%m-%d)" >> $GITHUB_ENV
+
+
 
       - name: "Remove Redistributable"
         shell: cmd
@@ -52,8 +66,16 @@ jobs:
           git clone https://github.com/jlambert360/Ishiiruka
           del ${{ github.workspace }}\Ishiiruka\Installer\Dolphin.ico
           copy /b /v /y ${{ github.workspace }}\Resources\Dolphin.ico ${{ github.workspace }}\Ishiiruka\Installer\
+          
 
-      - name: "Build Dolphin"
+      - name: "Replace IDs"
+        working-directory: ${{ github.workspace }}
+        shell: powershell
+        run: |
+          (Get-Content ${{ github.workspace }}\Ishiiruka\Source\Core\DolphinWX\Main.cpp) -replace 'https://projectplusgame.com/update.json', 'https://ilikepizza107.github.io/Update.json' | Out-File -encoding ASCII ${{ github.workspace }}\Ishiiruka\Source\Core\DolphinWX\Main.cpp
+          (Get-Content ${{ github.workspace }}\Ishiiruka\Source\Core\Common\Version.cpp) -replace '${{steps.pplus_version.outputs.prop}}', 'ILPM v1.29 BETA' | Out-File -encoding ASCII ${{ github.workspace }}\Ishiiruka\Source\Core\Common\Version.cpp
+     
+     - name: "Build Dolphin"
         shell: cmd
         run: |
           msbuild /p:Configuration=Release /p:Platform=x64 "${{ github.workspace }}\Ishiiruka\Source\Dolphin.sln"

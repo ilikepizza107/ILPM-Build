@@ -1,5 +1,4 @@
-# PPlus Build Template
- Template for people looking to make custom wii/netplay builds
+# ILPM Wii/Netplay Build
 
 **YOU WILL NEED TO ENABLE POWERSHELL SCRIPTS TO USE THIS! RUN POWERSHELL AS ADMIN AND USE THIS COMMAND:** set-executionpolicy remotesigned
 

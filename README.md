@@ -2,4 +2,4 @@
 
 Netplay Download Link:
 
-Wii Download Link: https://github.com/Ajay3450/ILPM
+Wii Download Link: https://github.com/Ajay3450/ILPM/releases

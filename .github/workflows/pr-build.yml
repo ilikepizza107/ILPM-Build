@@ -72,6 +72,7 @@ jobs:
         run: |
           (Get-Content ${{ github.workspace }}\Ishiiruka\Source\Core\DolphinWX\Main.cpp) -replace 'https://projectplusgame.com/update.json', 'https://ilikepizza107.github.io/Update.json' | Out-File -encoding ASCII ${{ github.workspace }}\Ishiiruka\Source\Core\DolphinWX\Main.cpp
           (Get-Content ${{ github.workspace }}\Ishiiruka\Source\Core\Common\Version.cpp) -replace '${{steps.pplus_version.outputs.prop}}', 'ILPM v1.29 BETA' | Out-File -encoding ASCII ${{ github.workspace }}\Ishiiruka\Source\Core\Common\Version.cpp
+          (Get-Content ${{ github.workspace }}\Ishiiruka\Source\Core\DolphinWX\AboutDolphin.cpp) -replace 'By Bird', 'By ilikepizza107' | Out-File -encoding ASCII ${{ github.workspace }}\Ishiiruka\Source\Core\DolphinWX\AboutDolphin.cpp
      
       - name: "Build Dolphin"
         shell: cmd

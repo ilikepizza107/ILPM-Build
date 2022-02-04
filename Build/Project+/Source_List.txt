@@ -1,10 +1,18 @@
-Credits
+Assembled by UGS | RosiYY and UGS | Ajay
+Major thanks to ilikepizza107 and Mawwwk and the rest of the ILPM Community!
+
 
 ---
+Menus
+RosiYY, Ajay
 
+Character-select, Wriststrap splash - RosiYY
+Stage-select - Ajay
+
+
+---
 Music
-
-UGS | RosiYY, UGS | Ajay
+RosiYY, Ajay
 
 BirdBuild - Digital RootSNS, Let's Dance Raw, Parity
 
@@ -14,9 +22,11 @@ SNS - Lonely Rolling Star, Redial
 
 Undertow - Impossible, Live and Learn (Sonic Symphony)
 
----
 
-Stages:
+---
+Stages
+Ajay, ilikepizza107
+
 Swamp Battlefield - Kirbeast
 Gardenville - Red93, ilikepizza107 (platform modification)
 Bridge of Eldin - New York build, ilikepizza107
@@ -27,9 +37,10 @@ Frozen Dreamland - Bird Build
 UGS Pokemon Stadium - Bootycolo (Team Skull Stadium), Modified by Ajay
 Hammer Express - Eon
 
----
 
-Character Skins:
+---
+Character Skins
+RosiYY
 
 Dedede
 Robo Dedede - ShadowLuigi~NG~, DHS7 - http://forums.kc-mm.com/Gallery/BrawlView.php?Number=207980

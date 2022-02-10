@@ -63,6 +63,8 @@ James McCloud - Mawwwk, Bizzozeron, Tock - http://forums.kc-mm.com/Gallery/Brawl
 Ganon
 Joey's Coors Ganon Skin - DHS7
 Che's Ganon Skin - Smash 2, DHS7
+Pink Ganon - Blazingflare, Cinnabread - https://www.dropbox.com/s/0oacrg2w78rcorx/Pretty%20Pink%20Ganondorf%20Cosmetics.zip?dl=0
+Phantom Ganon -  HowDoISpaceJam, JoeTE, StupidMarioFan1, Mewtwo2000 - http://forums.kc-mm.com/Gallery/BrawlView.php?Number=207708
 
 Ike
 Rose Armour Ike - FluffyGomez - http://forums.kc-mm.com/Gallery/BrawlView.php?Number=210093 - https://www.mediafire.com/file/imm84239kfdjhj4/Hector+Armor+Ike+Recolor+Collection.zip/file
@@ -137,3 +139,8 @@ Hotpants Recolors - Mawwwk, Theytah, jiang, Pik, StarWaffle, Albafika, KingJiggl
 Panther - NootNoot64 - http://forums.kc-mm.com/Gallery/BrawlView.php?Number=219705
 Blank's PR Skin - Psycho_Ghost, LordShade67 - http://forums.kc-mm.com/Gallery/BrawlView.php?Number=212985
 ZSS Shorts Recolor - https://gamebanana.com/mods/download/286841
+
+---
+Debug
+
+Codes for stagelist toggle, ALC per port, red flash on L-cancel fail - ilikepizza107, Motobug, Bird

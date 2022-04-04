@@ -281,7 +281,7 @@ Default Settings Modifier [Igglyboo, Brkirch, and FMK]
 * 0417F364 04000A00
 * 0417F368 08010100
 * 0417F36C 00000000
-* 0417BE74 14600115 # Brawl stages
+* 0417BE74 14001511 # Brawl stages
 * 0417BE70 00021000 # Melee stages
 * E0000000 80008000
 

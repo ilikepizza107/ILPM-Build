@@ -35,17 +35,18 @@ CODE @ $800B91C8
 .GOTO->SkipStageTables
 
 TABLE_1:
-	byte[10] |
-0x15, | # Wario Land
-0x1C, | # Green Hill Zone
+	byte[11] |
+0x0C, | # Yoshi's Island
 0x08, | # Pirate Ship
 0x04, | # Metal Cavern
 0x23, | # Dream Land
-0x02, | # Bridge of Eldin
+0x1C, | # Green Hill Zone
 0x1A, | # Smashville
 0x00, | # Battlefield
 0x28, | # Pokemon Stadium 2
-0x16  | # Distant Planet
+0x0A, | # Metroid Lab/Crateria
+0x2B, | # Training Room
+0x2B  | # Training Room
 
 
 
@@ -55,11 +56,10 @@ TABLE_2:
 0x18, | # Fountain of Dreams
 0x14, | # Castle Siege
 0x01, | # Final Destination
-0x0A, | # Metroid Lab
 0x20, | # Yoshi's Story
 0x24, | # Peach's Castle
 0x0E, | # Lylat Cruise
-0x0C, | # Yoshi's Island
+0x15, | # Wario Land
 0x05, | # Bowser's Castle
 0x21, | # Golden Temple
 0x1E, | # Sky Sanctuary Zone
@@ -78,6 +78,7 @@ TABLE_2:
 0x27, | # Planet Zebes
 0x1F, | # Temple
 0x1D, | # PictoChat
+0x16, | # Distant Planet
 0x2B  | # Training Room
 
 
@@ -135,7 +136,7 @@ half[62] |	# Stage Count + 2
 SkipStageTables:
 .RESET
 * 20523400 00000000 # If 80523400 is equal to 0
-byte 10 @ $806B929C # Page 1
+byte 11 @ $806B929C # Page 1
 byte 28 @ $806B92A4 # Page 2
 byte 22 @ $80496002 # Page 3
 byte 00 @ $80496003 # Page 4 (Unused)

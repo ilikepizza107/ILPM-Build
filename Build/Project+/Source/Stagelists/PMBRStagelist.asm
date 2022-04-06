@@ -1,7 +1,7 @@
 ######################################################################################
 PMBR Stagelist [Bird]
 ######################################################################################
-* 20523400 00000002 # If 80523400 is equal to 2
+* 20523400 00000003 # If 80523400 is equal to 3
 op mr r0, r4				@ $806B8F5C # Access stage location in table
 op lbzx r3, r3, r0			@ $806B8F64	# Entry variable is a byte, rather than a half
 op rlwinm r0, r3, 1, 0, 30	@ $800AF618	# Access stage to load
@@ -129,7 +129,7 @@ half[61] |	# Stage Count + 2
 
 SkipStageTables:
 .RESET
-* 20523400 00000002 # If 80523400 is equal to 2
+* 20523400 00000003 # If 80523400 is equal to 3
 byte 10 @ $806B929C # Page 1
 byte 25 @ $806B92A4 # Page 2
 byte 24 @ $80496002 # Page 3
@@ -137,14 +137,3 @@ byte 00 @ $80496003 # Page 4 (Unused)
 byte 00 @ $80496004 # Page 5 (Unused)
 byte 60 @ $800AF673 # Stage Count
 * E0000000 80008000
-
-op lis r4, 0x8049 		@ $800AF58C
-op lwz r4, 0x5D00(r4)	@ $800AF594
-op lis r4, 0x8049		@ $800AF614
-op lwz r4, 0x5D00(r4)	@ $800AF61C
-op lis r4, 0x8049		@ $800AF66C
-op lwz r4, 0x5D00(r4)	@ $800AF674
-op lis r4, 0x8049		@ $800AF6A0
-op lwz r4, 0x5D00(r4)	@ $800AF6A8
-op lis r4, 0x8049		@ $800AF6D8
-op lwz r4, 0x5D00(r4)	@ $800AF6E0

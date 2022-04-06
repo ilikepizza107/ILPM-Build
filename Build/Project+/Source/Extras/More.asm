@@ -13,6 +13,7 @@ Set random stagelist based on Code Menu Stagelist setting (ILPM) [Bird]
 * 04523310 DEADBEEF # Set it to DEADBEEF
 * 04523320 00000000 # Set all other values to 00000000
 * 04523330 00000000
+* 04523340 00000000
 * 42000000 90000000 #Set base address to 90000000
 * 0417BE74 14001511 # Brawl stages
 * 0417BE70 00021000 # Melee stages
@@ -26,6 +27,7 @@ Set random stagelist based on Code Menu Stagelist setting (ILPM Dubs) [Bird]
 * 04523320 DEADBEEF # Set it to DEADBEEF
 * 04523310 00000000 # Set all other values to 00000000
 * 04523330 00000000
+* 04523340 00000000
 * 42000000 90000000 #Set base address to 90000000
 * 0417BE74 04000511 # Brawl stages
 * 0417BE70 00021000 # Melee stages
@@ -39,6 +41,7 @@ Set random stagelist based on Code Menu Stagelist setting (Middle 3) [Bird]
 * 04523330 DEADBEEF # Set it to DEADBEEF
 * 04523310 00000000 # Set all other values to 00000000
 * 04523320 00000000
+* 04523340 00000000
 * 42000000 90000000 #Set base address to 90000000
 * 0417BE74 04000001 # Brawl stages
 * 0417BE70 00020000 # Melee stages
@@ -52,6 +55,7 @@ Set random stagelist based on Code Menu Stagelist setting (PMBR) [Bird]
 * 04523340 DEADBEEF # Set it to DEADBEEF
 * 04523310 00000000 # Set all other values to 00000000
 * 04523320 00000000
+* 04523330 00000000
 * 42000000 90000000 #Set base address to 90000000
 * 0417BE74 15200017 # Brawl stages
 * 0417BE70 00021000 # Melee stages

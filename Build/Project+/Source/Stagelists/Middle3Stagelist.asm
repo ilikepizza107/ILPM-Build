@@ -1,7 +1,7 @@
 ######################################################################################
 Middle 3 Stagelist [Bird]
 ######################################################################################
-* 20523400 00000001 # If 80523400 is equal to 1
+* 20523400 00000002 # If 80523400 is equal to 2
 op mr r0, r4				@ $806B8F5C # Access stage location in table
 op lbzx r3, r3, r0			@ $806B8F64	# Entry variable is a byte, rather than a half
 op rlwinm r0, r3, 1, 0, 30	@ $800AF618	# Access stage to load
@@ -129,7 +129,7 @@ half[61] |	# Stage Count + 2
 
 SkipStageTables:
 .RESET
-* 20523400 00000001 # If 80523400 is equal to 1
+* 20523400 00000002 # If 80523400 is equal to 2
 byte 10 @ $806B929C # Page 1
 byte 25 @ $806B92A4 # Page 2
 byte 24 @ $80496002 # Page 3

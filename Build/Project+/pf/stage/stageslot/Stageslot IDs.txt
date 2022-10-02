@@ -1,6 +1,6 @@
 01 - Battlefield
 02 - Final Destination
-03 - Delfino Secret
+03 - Bridge of Eldin
 04 - Luigi's Mansion
 05 - Metal Cavern
 06 - Bowser's Castle
@@ -64,3 +64,4 @@
 4E - Subspace
 4F - Rainbow Cruise
 50 - Poke Floats
+51 - Delfino's Secret

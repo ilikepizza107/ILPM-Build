@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+	<app version="1.00">
+		<name>SmashScope</name>
+		<coder>KingKirb64/Adewotta</coder>
+		<version>v1.0</version>
+		<release_date>202006280000</release_date>
+		<short_description>GCC Modding Tool</short_description>
+		<long_description>SmashScope v1.00
+Programmed by @Kingkirb64
+
+This program allows you to more easily modify, and read information about a controller, without the need for 20XX or a deep understanding of the technical aspects of controllers
+
+Thank you to @Goomysmash for helping me create this tool.</long_description>
+	</app>

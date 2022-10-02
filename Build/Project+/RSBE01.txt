@@ -49,23 +49,7 @@ PULSE
 
 * E2000002 00000000
 
-##################################################
-[Legacy TE] Boot Directly to CSS v4  [PyotrLuzhin]
-##################################################
-CODE @ $806DD5F8
-{
-	addi r4, r21, 0x1B54; li r5, 0
-}
-HOOK @ $8002D3A0
-{
-  mr r4, r27
-  lis r5, 0x8042;	ori r5, r5, 0xA40
-  cmpw r4, r5;		bne- %END%
-  li r5, 0x3
-  stb r5, 0x2A5(r28);	stb r5, 0x2B1(r28)
-  li r30, 0x0
-}
-op b 0x10 @ $80078E14
+.include Source/Extras/BootToCSSv5.1.asm
 
 #############################################################################
 Reset multipac stage lock status between Classic & All-Star matches [wiiztec]
@@ -281,6 +265,8 @@ Default Settings Modifier [Igglyboo, Brkirch, and FMK]
 * 0417F364 04000A00
 * 0417F368 08010100
 * 0417F36C 00000000
+* 0417BE74 34001111 # Brawl stages
+* 0417BE70 00021000 # Melee stages
 * E0000000 80008000
 
 ###################################

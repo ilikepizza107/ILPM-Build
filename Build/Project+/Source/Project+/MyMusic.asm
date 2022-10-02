@@ -331,10 +331,10 @@ op NOP @ $8010F9C0
 
 ################################################
 #Salty Runback Always Shuffles Music [DukeItOut]
-# 
+################################################
 # Disabled on purpose, but left here for builds that want to make it shuffle.
-#
-#op b 0x68 @ $8010F9A8
+################################################
+op b 0x68 @ $8010F9A8
 
 ##################################################################################
 Hanenbow can display song titles, but stage builder stages can't [JOJI, DukeItOut]

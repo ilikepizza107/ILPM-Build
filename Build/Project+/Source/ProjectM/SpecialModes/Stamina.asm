@@ -101,38 +101,9 @@ HOOK @ $80816108
 loc_0x1C:
   	subic. r21, r3, 1
 }
-HOOK @ $80816588
-{
-  cmpwi r20, 0x0
-  beq %end%
 
-loc_0x18:
-  addi r5, r5, 0x1
+op b 0x80 @ $8083BBA0 #disable stamina death from double counting death (replaces three branches involving r20)
 
-}
-
-HOOK @ $80816088
-{
-  cmpwi r20, 0x0
-  beq- %end%
-
-loc_0x18:
-  addi r4, r4, 0x1
-}
-
-HOOK @ $80816794
-{
-loc_0x0:
-  mr r0, r3
-  cmpwi r20, 0x0
-  beq- loc_0x20
-
-loc_0x1C:
-  addi r0, r3, 0x1
-
-loc_0x20:
-
-}
 
 
 
@@ -549,3 +520,17 @@ end:
 * 045884E0 40A00000
 * 045884E4 3FE374BC
 * 045884D0 41200000
+
+######################################################################
+Throws Don't Cut Early for Victim Damage in Stamina [codes, DukeItOut]
+######################################################################
+HOOK @ $8083BCF0  # inside toKnockOut/[Fighter]/(fighter.o)
+{
+on_call_to_cause_death:
+  lwz r12, 0x7C(r5)   # \ 
+  lhz r12, 0x3A(r12)  # / path to current action
+  cmpwi r12, 0x42     # if in thrown, don't call changeStatusRequest/[soStatusModuleImpl]/(so_status_module_impl.o)
+  beq- thrown         # this check should eventually get hit and fail when the throw ends, properly causing the character
+  bctrl               # to finally be knocked out from the stamina loss
+thrown:
+}

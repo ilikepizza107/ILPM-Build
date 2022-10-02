@@ -102,7 +102,7 @@ HOOK @ $80AA95B8
   lis r3, 0x22
 loc_0xC:
   cmpwi r30, 0x26;  bne- %END%
-  lis r3, 0x8F
+  lis r3, 0x27
 }
 HOOK @ $80AA9D60
 {

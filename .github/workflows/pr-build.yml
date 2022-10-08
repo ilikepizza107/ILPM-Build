@@ -15,7 +15,7 @@ jobs:
     env:
       DXSDK_DIR: "C:\\Program Files (x86)\\Microsoft DirectX SDK (June 2010)\\"
     name: "Windows Dolphin"
-    runs-on: windows-2019
+    runs-on: windows-2022
     steps:
       - name: "Download Data"
         working-directory: ${{ github.workspace }}

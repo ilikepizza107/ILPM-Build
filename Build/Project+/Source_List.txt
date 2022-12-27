@@ -62,6 +62,9 @@ SilverBlue Fox and recolors - ilikepizza107
 James McCloud - Mawwwk, Bizzozeron, Tock - http://forums.kc-mm.com/Gallery/BrawlView.php?Number=218127
 Ghost Fox - SJ - https://twitter.com/Raventoly/status/1531746461410639872
 
+Game & Watch
+Rise GnW - ilikepizza107
+
 Ganon
 Joey's Coors Ganon Skin - DHS7
 Che's Ganon Skin - Smash 2, DHS7
@@ -79,9 +82,16 @@ Maofever's skin - Maofever
 Lucas
 Frost skins - Frost, SJS
 
+Kirby
+influenza Kirby - influenza, ilikepizza107
+
 Knuckles
 Metal Knuckles - SJS, tyleto, Mach7 - https://gamebanana.com/mods/323365
 Trans Knuckles - DHS7
+
+Lucario
+influenza Lucario - influenza
+Midnight Guard - NeoZoa, material edits by ilikepizza107 - http://forums.kc-mm.com/Gallery/BrawlView.php?Number=6702
 
 Puff
 Old Timey Cartoon Puff - Dylan, Chucklez, the CSProject - http://forums.kc-mm.com/Gallery/BrawlView.php?Number=215197 - http://forums.kc-mm.com/Gallery/BrawlView.php?Number=215928
@@ -127,6 +137,9 @@ Hilda Sheik - chiro, Lnkthe Wolf - https://www.dropbox.com/s/bm3djbng5awhcbd/Hil
 Sheik Recolors - Shy - http://www.mediafire.com/file/stioexbf4b9xjdd/Sheik+Recolor+Collection.zip/file
 Kwam's skin - ilikepizza107
 Updated OoT Sheik/Melee White Sheik - Aeon, Link Tahuterasu Spirit - https://gamebanana.com/mods/346741
+Evil Lesbian Sheik - Evil Lesbian
+Vaporeon Sheik - ?
+S0UTHV13W Sheik - S0UTHV13W, influenza
 
 Snake
 Anti-MetalGear skin - SoulOfficer
@@ -151,6 +164,9 @@ Dark Zelda - STUFF2o - http://forums.kc-mm.com/Gallery/BrawlView.php?Number=3242
 Skyloft Zelda - hulkalex - http://www.mediafire.com/file/1b0t0ned2djzmg2/Zelda+Skyloft.zip/file
 Kwam's skin - ilikepizza107
 Mirage Zelda - NoFun - http://forums.kc-mm.com/Gallery/BrawlView.php?Number=33673
+Evil Lesbian Zelda - Evil Lesbian
+Vaporeon Zelda - ?
+S0UTHV13W Zelda - S0UTHV13W, influenza
 
 Zero Suit Samus
 Dark ZSS - RedipsTheCooler, SJS - http://forums.kc-mm.com/Gallery/BrawlView.php?Number=219761
@@ -163,3 +179,12 @@ ZSS Shorts Recolor - https://gamebanana.com/mods/download/286841
 Debug
 
 Codes for stagelist toggle, ALC per port, red flash on L-cancel fail - ilikepizza107, Motobug, Bird
+
+---
+PSA
+
+Changes to FitPit.pac by ilikepizza107
+ - This fixes the on-hit effect for Dark Pit's arrows being incorrectly assigned. Sub Routine 146F0 was changed to fix this
+
+Custom GFX for Evil Lesbian Zelda - Evil Lesbian, ilikepizza107
+ - PSA Edited: Sub Action 48, GFX; Sub Action 4E, GFX; Sub Action 50, GFX; Sub Action 54, GFX; Sub Action 58, Main; Sub Action 5D, Main; Sub Action 5D, GFX; Sub Action 60, GFX; Sub Action 62, GFX; Sub Action 63, GFX; Sub Action 64, GFX; Sub Action 65, GFX; Sub Action 66, GFX; Sub Action 67, GFX

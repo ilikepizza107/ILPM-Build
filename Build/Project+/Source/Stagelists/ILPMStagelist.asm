@@ -17,7 +17,7 @@ CODE @ $800B91C8
 	mr r30, r5
 	mr r29, r3
 	cmpwi cr2, r5, -1
-	beq- cr2, 0x14		
+	ble- cr2, 0x14		
 }
 
 .BA<-TABLE_STAGES

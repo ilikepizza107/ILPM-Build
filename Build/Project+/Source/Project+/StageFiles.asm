@@ -689,7 +689,7 @@ HOOK @ $800B91F0
 {
 	li r3, 0		# Normally tells it that it is false
 	cmpwi r5, -2    # Check if this is a custom tracklist title request
-    bne+ %END%        # 
+    bne+ %END%      # 
 entertingMyMusic:
 enteringBattle:
 

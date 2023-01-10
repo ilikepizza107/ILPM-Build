@@ -2,23 +2,6 @@
 ILPM Stagelist [Bird]
 ######################################################################################
 * 20523400 00000000 # If 80523400 is equal to 0
-op mr r0, r4				@ $806B8F5C # Access stage location in table
-op lbzx r3, r3, r0			@ $806B8F64	# Entry variable is a byte, rather than a half
-op rlwinm r0, r3, 1, 0, 30	@ $800AF618	# Access stage to load
-op addi r4, r4, 2			@ $800AF68C	# Table entry size
-op rlwinm r3, r3, 1, 0, 30	@ $800AF6AC	# \ Relates to loading the stage frame icon
-op lbz r0, 1(r3)			@ $800AF6C0	# /
-op li r3, -1				@ $800AF6E8	# Disables message?
-op li r3, 0xC				@ $800AF59C	# Disables stage unlocking
-CODE @ $800B91C8
-{
-	stmw r29, 0x14(r1)
-	mr r31, r6
-	mr r30, r5
-	mr r29, r3
-	cmpwi cr2, r5, -1
-	ble- cr2, 0x14		
-}
 
 .BA<-TABLE_STAGES
 .BA->$80495D00

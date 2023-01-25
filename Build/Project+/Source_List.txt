@@ -38,8 +38,10 @@ Seaside Hill Zone - NNEBF
 Frozen Dreamland - ilikepizza107, Bird
 UGS Pokemon Stadium - Bootycolo (Team Skull Stadium), Modified by Ajay
 Hammer Express - Eon
-Hyrule Meadows Alts - Star/Ausbuild
+Hyrule Meadows Alts - Star/Ausbuild, influenza
 Pictochat - Motobug
+Dark Mode Pictochat - ilikepizza107
+Luigi's Mansion (Pictochat Alt) - ilikepizza107, with credit to Yorch for editing the mansion model, Kapedani/Sammi Husky for BrawlStageModule allowing for the custom .rel, Survivian for animation tips
 
 
 ---

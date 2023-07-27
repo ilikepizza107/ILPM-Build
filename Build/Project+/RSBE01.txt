@@ -49,7 +49,48 @@ PULSE
 
 * E2000002 00000000
 
-.include Source/Extras/BootToCSSv5.1.asm
+######################################################
+BA and BLA are usable instructions v1.3 [Eon, taukhan]
+######################################################
+  .po<-flag
+32000000 00000001 #if flag != 1
+14000000 00000001 #set flag to 1
+  .goto->code
+
+flag:
+  word 0;
+code:
+PULSE #80568100
+{
+  li r3, 0x2
+  #virtual address space = 0x00000000
+  word 0x7C7383A6   #mtibatl 1, r3  #sets instruction bat lower half
+  li r3, 0x1FF
+  #physical address space = 0x00000000
+  word 0x7C7283A6   #mtibatu 1, r3  #sets instruction bat upper half
+  isync 
+  blr
+}
+* E2000001 80008000
+
+
+.include Source/Project+/BootToCSS.asm
+
+##################################################
+Memory Extention for FighterXResource2 [Dantarion]
+##################################################
+int 0x91E80 @ $80421B54
+int 0x91E80 @ $80421B74
+int 0x91E80 @ $80421B94
+int 0x91E80 @ $80421BB4
+int 0x91E80 @ $80421E1C
+int 0x91E80 @ $80421E3C
+int 0x91E80 @ $80421EBC
+int 0x91E80 @ $80421EDC
+
+#.include Source/Project+/MemoryLayout.asm # Disabled due to incompatibility with the current Code Menu. Included for referential purposes.
+						# When re-enabled, remove the FighterXResource2 code right above this .include line!
+						# asm file will be fine-tuned when fully implemented to fix oversights within it.
 
 #############################################################################
 Reset multipac stage lock status between Classic & All-Star matches [wiiztec]
@@ -106,18 +147,6 @@ HOOK @ $80946954
 Poke Balls use Normal Item Limit [standardtoaster]
 #################################################
 op NOP @ $809B0AC0
-
-##################################################
-Memory Extention for FighterXResource2 [Dantarion]
-##################################################
-int 0x91E80 @ $80421B54
-int 0x91E80 @ $80421B74
-int 0x91E80 @ $80421B94
-int 0x91E80 @ $80421BB4
-int 0x91E80 @ $80421E1C
-int 0x91E80 @ $80421E3C
-int 0x91E80 @ $80421EBC
-int 0x91E80 @ $80421EDC
 
 ##############################
 Stage Choice Random Fix [ds22]
@@ -285,9 +314,9 @@ Default Settings Modifier [Igglyboo, Brkirch, and FMK]
 * 42000000 90000000
 * 0417F360 00000100
 * 0417F364 04000A00
-* 0417F368 08010100
+* 0417F368 08010000
 * 0417F36C 00000000
-* 0417BE74 34001111 # Brawl stages
+* 0417BE74 04001909 # Brawl stages
 * 0417BE70 00021000 # Melee stages
 * E0000000 80008000
 
@@ -1509,11 +1538,6 @@ op NOP @ $80885020
 int 0x20000 @ $80FC2AB0
 int 0x20000 @ $80FC2AB8
 
-##############################################################
-[Project+] Egged Damage Multiplier (0.5x -> 0.75x) [DukeItOut]
-##############################################################
-float 0.75 @ $80B88758
-
 ##########################################################
 [Project+] Angle 365 negative y speed capped at -0.5 [Eon]
 ##########################################################
@@ -2078,33 +2102,47 @@ Menu Scroll Speeds Modifier [Magus]
 ########################################
 Name Scroll Transition Modifier [Magus]
 ########################################
-float[2] 0.5, 3.5 @ $806A1ED8
-float[2] 5.5, 8.5 @ $806A1EEC
+float[2] 0.5, 3.5 @ $806A1ED8	# Related to upwards scrolling animation pauses
+float[2] 5.5, 8.5 @ $806A1EEC	# Related to downwards scrolling animation pauses (+5.0)
 
 ##################################################################
-Faster Name Scrolling with Shoulder Buttons v1.1 [wiiztec, Magus]
+Faster Name Scrolling with Shoulder Buttons v1.2 [wiiztec, Magus]
+#
+# 1.2: Modified to account for the custom control menu revamp
 ##################################################################
 HOOK @ $806A021C
 {
-  	rlwinm. r8, r23, 0, 25, 26;	bne- loc_0x10
- 	rlwinm. r8, r23, 0, 13, 13;  	beq+ loc_0x20
-loc_0x10:
+  	rlwinm. r8, r23, 0, 25, 26;	bne- Fast	# L/R on a GC/CC
+ 	rlwinm. r8, r23, 0, 13, 13;  	beq+ Normal	# C on a Nunchuk
+Fast:
+	
   	subi r5, r5, 0x4
-  	cmpwi r5, 0xFFFF;	bge+ loc_0x20
-  	li r5, 0xFFFF
-loc_0x20:
-  	stw r5, 68(r26)	
+  	cmpwi r5, -1;	bge+ Normal
+
+  	li r5, -1
+	lbz r8, 0x60(r26); cmpwi r8, 1; beq+ Normal
+	li r5, 0			# Don't scroll up to "Name Entry" if in a custom control
+
+Normal:
+  	stw r5, 0x44(r26)	# Original operation
 }
 HOOK @ $806A039C
 {
-  	rlwinm. r8, r23, 0, 25, 26;  bne- loc_0x10
-  	rlwinm. r8, r23, 0, 13, 13;  beq+ loc_0x20
-loc_0x10:
+  	rlwinm. r8, r23, 0, 25, 26;  bne- Fast		# L/R on a GC/CC
+  	rlwinm. r8, r23, 0, 13, 13;  beq+ Normal	# C on a Nunchuk
+Fast:
   	addi r5, r5, 0x4
-  	cmpw r5, r29; 		blt+ loc_0x20
+	lbz r8, 0x60(r26); cmpwi r8, 1; bne+ CustomControl
+  	cmpw r5, r29; 		blt+ Normal
   	subi r5, r29, 0x1
-loc_0x20:
-  	stw r5, 68(r26)
+	b Normal
+CustomControl:
+	lwz r8, 0x6C(r26)		# Get the highest scroll option
+	cmpw r5, r8;		ble+ Normal
+	mr r5, r8			# Use that if it tried to go higher
+	
+Normal:
+  	stw r5, 0x44(r26)	# Original operation
 }
 
 ##############################
@@ -2474,28 +2512,6 @@ hastyScroll:
   	add r26, r26, r6
 }
 
-
-##################################################################
-[Project+] 1-P Battles Don't Use Start Countdown [JOJI, DukeItOut]
-##################################################################
-HOOK @ $806D182C
-{
-  cmpwi r0, 0;  bne- normal	# not multiplayer if non-zero
-  lis r12, 0x9018;  ori r12, r12, 0xF5D	# 90180F5D+5C= 90180FB9, the first address we need, with each port separated by 0x5C bytes
-  lbzu r3, 0x5C(r12)	# note that is a load with update and not a load, reading port 1
-  lbzu r5, 0x5C(r12)	# reading port 2
-  add r3, r3, r5
-  lbzu r5, 0x5C(r12)	# reading port 3
-  add r3, r3, r5
-  lbzu r5, 0x5C(r12)	# reading port 4
-  add r3, r3, r5
-  cmplwi r3, 9;  blt+ normal
-  li r0, 0x2		# force to skip countdown if the sum suggests that more than 2 ports are inactive
-normal:
-  mulli r0, r0, 0x14
-
-}
-
 ################################################
 [Project+] Disable CSS Hand resizing v1.1 [Eon]
 ################################################
@@ -2523,8 +2539,7 @@ op fmr f0, f3 @ $8010c888
 .include Source/LegacyTE/AltCostume.asm
 .include Source/LegacyTE/Masquerade.asm
 .include Source/LegacyTE/TagsControls.asm
-
-.include Source/Project+/CSSCustomControls.asm
+.include Source/LegacyTE/CSSCustomControls.asm
 
 #############################################################################
 ###################          Visual/Audio Codes          ####################
@@ -2658,46 +2673,7 @@ op li r4, 20 @ $8085B814
 ###############################################################
 uint8_t 0x0 @ $80AD803C
 
-###########################################################
-Yoshi Eggs are Costume Based v1.1 [ds22] (char id fix fix)
-###########################################################
-HOOK @ $80A1580C
-{
-  	lwz r31, 0x1C(r26); lwz r31, 0x28(r31);  lwz r31, 0x10(r31); lbz r31, 0x55(r31)
-
-	lwz r26, 0x70(r26);
-	lwz r26, 0x20(r26);
-	lwz r26, 0x0C(r26);
-	lwz r26,0x2D0(r26);
-	lwz r26, 0x08(r26);
-	lwz r26,0x110(r26);
-
-  	cmpwi r26, 0x5;     beq- loc_0x50
-  	lis r26, 0x80B8;    lwz r26, 0x7C50(r26);lwz r26, 0(r26)
-  	mulli r31, r31, 0x4D4
-  	add r26, r26, r31
-  	addi r26, r26, 0x18
-loc_0x3C:
-  	lwzu r4, 4(r26)
-  	cmpwi r4, 0xFF;	bge+ loc_0x3C
-  	stw r4, 20(r1)
-  	b loc_0x54
-loc_0x50:
-  	stw r5, 20(r1)
-loc_0x54:
-  	mr r31, r3
-}
-op NOP @ $80A15820
-
-#########################################################
-[Project+] Yoshi's Egg break out intang 14 > 9 [Fracture]
-#########################################################
-int 9 @ $80B88FD4
-
-##############################################
-Yoshi Eggs don't despawn when Yoshi dies [Eon]
-##############################################
-op nop @ $80A15CC0
+.include Source/Project+/YoshiEggs.asm
 
 ###############################################################
 [Project+] Diddy Kong Flip Base Hold Time 70 > Infinite [Boiko]
@@ -2954,6 +2930,11 @@ op nop @ $80A065C4
 op nop @ $80A068C0
 op nop @ $80A068C4
 op bge-	0x9C @ $80A06160
+
+########################################
+Samus Bombs account for Shields [DukeItOut]
+########################################
+op rlwinm. r0, r30, 0, 29, 31 @ $809F4B7C
 
 ################################
 ZSS Jumbo Screen Name Fix [ds22]
@@ -3229,48 +3210,7 @@ op b 0x88	@ $808A082C
 op b 0x78	@ $808A083C
 op b 0x38	@ $808A087C
 
-###################################################
-PSA command 11210100 sets next GFX anim index [Eon]
-###################################################
-HOOK @ $807A55F0
-{
-    li r3, 0
-    bne %end%
-    lwz r12, 0(r21)
-    mr r4, r21
-    addi r3, r1, 0x818
-    lwz r12, 0x1C(r12)
-    mtctr r12 
-    bctrl 
-    addi r3, r1, 0x818
-    stw r31, 0x10(r3) #store moduleAccesser for getInt to use
-    li r4, 0
-    #soAnimCmdArgList.getInt(animArgList, index) #static function
-    lis r12, 0x8077 
-    ori r12, r12, 0xDFDC
-    mtctr r12 
-    bctrl
-    mr r27, r3
-
-    #ecMgr.getInstance() #static function
-    lis r12, 0x807A
-    ori r12, r12, 0x2874
-    mtctr r12 
-    bctrl
-    mr r4, r27
-    mr r5, r27
-    mr r6, r27
-    mr r7, r27
-    mr r8, r27
-    mr r9, r27
-    #ecMgr.presetAnimIdx(i, i, i, i, i, i, i) #static function
-    lis r12, 0x8006
-    ori r12, r12, 0x06A8
-    mtctr r12 
-    bctrl
-    li r3, 1
-}
-
+.include Source/Project+/EffectCommands.asm
 .include Source/Project+/Attributes.asm
 .include Source/Project+/PokeTrainer.asm
 .include Source/Project+/Debug/modifiedDebug.asm

@@ -1,14 +1,14 @@
 01 - Battlefield
 02 - Final Destination
-03 - Bridge of Eldin
+03 - Delfino Secret
 04 - Luigi's Mansion
 05 - Metal Cavern
 06 - Bowser's Castle
 07 - Kongo Jungle
 08 - Rumble Falls
-09 - Pirate Ship
+09 - Temple of Time
 0B - Norfair
-0C - Frigate Orpheon
+0C - Frigate Husk
 0D - Yoshi's Island
 0E - Halberd
 13 - Lylat Cruise
@@ -39,7 +39,7 @@
 2F - Peach Castle
 30 - Corneria
 31 - Big Blue
-32 - Brinstar
+32 - Planet Zebes
 33 - Hyrule Castle
 34 - Home Run (Home Run Contest Stage)
 35 - Edit Stage (Stage Builder Stages)
@@ -53,10 +53,10 @@
 43 - Sky Sanctuary
 44 - Dead Line
 45 - Dinosaur Land
-46 - Oil Drum Alley
+46 - Minecart Madness
 47 - Golden Temple
 48 - Bell Tower
-49 - Metroid Lab
+49 - Ceres Space Colony
 4A - Cookie Country
 4B - Venus Lighthouse
 4C - Mushroom Kingdom
@@ -64,4 +64,4 @@
 4E - Subspace
 4F - Rainbow Cruise
 50 - Poke Floats
-51 - Delfino's Secret
+51 - Pirate Ship

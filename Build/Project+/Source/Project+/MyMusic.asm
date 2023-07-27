@@ -331,9 +331,9 @@ op NOP @ $8010F9C0
 
 ################################################
 #Salty Runback Always Shuffles Music [DukeItOut]
-################################################
+# 
 # Disabled on purpose, but left here for builds that want to make it shuffle.
-################################################
+#
 #op b 0x68 @ $8010F9A8
 
 ##################################################################################
@@ -347,11 +347,7 @@ Miscellaneous Music Customizer [DukeItOut]
 .alias VSResults 		= 0xF400	# Song ID to play (0x2700 in Brawl)
 .alias AllStarRest		= 0xF400	# Song ID to play (0x2707 in Brawl)
 .alias BreakTheTargets	= 0x2712	# Song ID to play (0x2712 in Brawl)
-CODE @ $800EB14C			# VS. Results Theme
-{
-	li r5, 0
-	ori r4, r5, VSResults		
-}
+
 op NOP	@ $806E13B8	# Makes Classic Mode Stage 13 read the tracklist instead of always guarantee a song that may or may not be on said tracklist
 op ori r0, r3, AllStarRest		@ $8010FDF0 
 op ori r0, r3, BreakTheTargets	@ $8010FE18

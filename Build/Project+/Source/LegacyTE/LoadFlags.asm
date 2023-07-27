@@ -102,5 +102,8 @@ int8_t 0x37 @ $80AD8BAC
 [Project+] Pit Uses Separate Etc Files Per Costume Set [KingJigglypuff, DukeItOut]
 int8_t 0x37 @ $80AD8BAF
 
+[Project+] Dedede Uses Separate Etc Files Per Costume Set [Motobug, DukeItOut]
+int8_t 0x37 @ $80AD8BB8
+
 [Project+] Ivysaur has a FitFinal.pac [KingJigglypuff]
 int8_t 0x17 @ $80AD8BB7

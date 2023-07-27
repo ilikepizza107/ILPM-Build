@@ -61,16 +61,16 @@ CODE @ $805454E0
 	word 0x02040400; word PSA_Off+0xB0 	#Additional Action Requirement: Comparison Compare: IC-Basic[0] <= 1.0
 	word 0x000A0400; word PSA_Off 		#If: Comparison Compare: IC-Basic[20003] >= 67.0
 	word 0x000B0400; word PSA_Off+0x20 	#	And: Comparison Compare: IC-Basic[20003] <= 69.0
-	word 0x12000200; word PSA_Off+0x40 	# 	Basic Variable Set: LA-Basic[25] = LA-Basic[30] 
+	word 0x12000200; word PSA_Off+0x40 	# 	Basic Variable Set: LA-Basic[82] = LA-Basic[83] 
 	word 0x02010200; word 0x80FB3604 	#	Change Action: Requirement: Action=0x16, Requirement=On Ground
-	word 0x02040400; word PSA_Off+0x50 	#	Additional Action Requirement: Compare: LA-Float[25] > 0.0
+	word 0x02040400; word PSA_Off+0x50 	#	Additional Action Requirement: Compare: LA-Basic[82] > 0.0
 	word 0x02040400; word PSA_Off+0x90 	# 	Additional Action Requirement: Compare: LA-Float[7] <= -0.7
 	word 0x000E0000; word 0 			#Else:
-	word 0x12000200; word PSA_Off+0x80 	#	Basic Variable Set: LA-Basic[25] = 0
+	word 0x12000200; word PSA_Off+0x80 	#	Basic Variable Set: LA-Basic[82] = 0
 	word 0x02010200; word 0x80FB3604 	#	Change Action: Requirement: Action=0x16, Requirement=On Ground
 	word 0x02040400; word PSA_Off+0x90 	# 	Additional Action Requirement: Compare: LA-Float[7] <= -0.7
 	word 0x000F0000; word 0 			#End If:
-	word 0x12000200; word PSA_Off+0x70 	#Basic Variable Set: LA-Basic[30] = 0xA
+	word 0x12000200; word PSA_Off+0x70 	#Basic Variable Set: LA-Basic[83] = 0xA
 	word 0x02010200; word 0x80FB3604 	#Change Action: Requirement: Action=0x16, Requirement=On Ground
 	word 0x02040100; word 0x80FB3614 	#Additional Action Requirement: Not Requirement 0x2723
 	word 0x02040200; word 0x80FB361C 	#Additional Action Requirement: Bit is Set RA-Bit[17]

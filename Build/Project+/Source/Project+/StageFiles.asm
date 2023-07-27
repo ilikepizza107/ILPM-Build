@@ -253,33 +253,14 @@ CODE @ $80015568
 }
 
 #############################################################
-Stage Roster Expansion System v3.1 [Phantom Wings, DukeItOut]
+Stage Roster Expansion System v3.2 [Phantom Wings, DukeItOut]
+#
+# 3.2: Modified memory allocation based on Sammi's new File
+#         Patch Code. Parameter entry now defines secondary
+#         allocation, instead. (Only needed for stages based
+#         on Mario Bros., Castle Siege, Lylat Cruise and the
+#         Stage Builder.)
 #############################################################
-# Force Regular Stages To Use Maximum Plausible Allocation, including Expansion Slots 
-
-HOOK @ $8094A1D0
-{
-	mr r29, r3				# Original operation, places allocation size in r29
-	lis r3, 0x805B			# \
-	lwz r3, 0x50AC(r3)		# | Get pointer to mode name
-	lwz r3, 0x10(r3)		# |
-	lwz r3, 0x4(r3)			# /
-	lis r12, 0x8070			# \ is the mode "sqAdventure"?
-	ori r12, r12, 0x2E50	# |
-	cmpw r3, r12			# |	Then use the allocation it expects, don't take chances.
-	beq- %END%				# / 
-	lis r12, 0x8053			# \
-	ori r12, r12, 0xF000	# | Get reserved memory allocation from STEX system
-	lwz r3, 0x24(r12)		# /
-	cmpwi r3, 0				# \ If a value is hardcoded, use it!
-	bne- forceMemory		# /
-	cmpwi r29, -1			# \ To get more reliable memory results, the below only activates for new stage slots.
-	bne- %END%				# /
-	lis r3, 0x37			# The size of a stage should be expanded to if not already at (370000)
-forceMemory:
-	mr r29, r3				# Give it this new memory allocation size.
-}
-
 # Force stage modules to load their filenames from the STEX files. WARNING! Module names can be no longer than 32 characters!!!
 HOOK @ $80043B28
 {
@@ -397,10 +378,60 @@ SpecialCase:
 	b ModifyStageName	
 }
 
-# TODO: Force secondary stage pacs to load
+# Force secondary stage pacs to load based on the parameter
+# 806BC610
+# 805A00E0 0008 001A
+CODE @ $806BE230
+{
+	# Normally access the stage ID from 805A00E0 -> 08 -> 1A to check if Castle Siege or Lylat Cruise
+	lis r12, 0x8054			# Get Dual Load flag at 80530015
+	lbz r12, -0xFEB(r12)	#
+	andi. r12, r12, 8		# Bit flag relevant
+	beq+ 0x10				# Skip setting Dual Load flag!
+}
+CODE @ $8094AC1C
+{
+	# Normally access the stage ID from 0x40(r3) -> 1A
+	lis r12, 0x8054			# Get Dual Load flag at 80530015
+	lbz r12, -0xFEB(r12)	#
+	andi. r12, r12, 8		# Bit flag relevant
+	beq+ 0x258				# Skip setting Dual Load behavior!
+}
+HOOK @ $806BE22C
+{
+	lhz r0, 0x1A(r3)		# Original operation. Get stage slot ID
+	cmpwi r0, 0x28			# Is this the results screen? 
+	bne NormalStage
+	lis r12, 0x806B
+	ori r12, r12, 0xE24C
+	mtctr r12
+	bctr					# If it is, it is not a dual-load stage!
+NormalStage:
+}
 
-# TODO: Address stage-specific memory allocation:
-#
+# TODO: Address secondary pac shuffling for Lylat Cruise. Currently checks for substage count at 8094AEA4???
+# TODO: Address secondary pac being randomized.
+
+# Force Regular Stages To Use Secondary Allocation when needed. (See Mario Bros, Lylat Cruise, Castle Siege)
+HOOK @ $80949F40
+{
+	lis r3, 0x805B			# \
+	lwz r3, 0x50AC(r3)		# | Get pointer to mode name
+	lwz r3, 0x10(r3)		# |
+	lwz r3, 0x4(r3)			# /
+	lis r12, 0x8070			# \ is the mode "sqAdventure"?
+	ori r12, r12, 0x2E50	# |
+	cmpw r3, r12			# |	Then use the allocation it expects, don't take chances.
+	beq- SSE				# / 
+	lis r12, 0x8054			# \ Get reserved memory allocation from STEX system at 8053F024
+	lwz r3, -0xFDC(r12)		# /
+	cmpwi r3, 0				# \ If a value is hardcoded, use it!
+	bnelr-					# / 
+SSE:
+Normal:
+	cmplwi r0, 39		# Original operation
+}
+
 
 #80949F38 special cases for:
 #39/0x27	?????
@@ -412,7 +443,7 @@ SpecialCase:
 #default: r3 = 0x2000
 
 # Below is a temp fix until I make the above modular
-op cmplwi r0, 5 @ $80949FC0	# Normally 0x1F (Famicom), allows Mario Bros to load properly from Metal Cavern
+# op cmplwi r0, 5 @ $80949FC0	# Normally 0x1F (Famicom), allows Mario Bros to load properly from Metal Cavern
 
 # Miscellaneous stage ID 
 .alias WarioWare = 0x4D
@@ -507,9 +538,11 @@ CODE @ $8053E000
     cmplwi  r17, 0x83E4       # |
     bne+    Multiplayer       #/
 Replay:
-    lis     r16, 0x9130       #\  Ignore real inputs and only receive them from the replay info.
-    lhz     r16, 0x1F4A(r16)  # | Replays insert them into 91301F4A
-    sth     r16, 2(r28)       #/
+	li r3, 11					# \
+	bla 0x0249CC				# / Get replay heap offset
+	lhz 	r16, 0x44A(r3)		# \ Get Replay ASL value	
+	sth     r16, 2(r28)       	# /
+	li		r0, 0xFF			# r0 was overwritten, but we still need it!
 Multiplayer:    
 ClassicAllStar:	
 	lis r12, 0x8053
@@ -987,10 +1020,16 @@ op b -0x4	@ $8010FDFC		# Makes Slot
 # 8010FE18 sets ID 2712 Break the Targets
 
 #######################################################################################
-SSSRES:Stage Selection Screen Roster Expansion System (RSBE.Ver) v1.1 [JOJI, DukeItOut]
+SSSRES:Stage Selection Screen Roster Expansion System (RSBE.Ver) v1.2 [JOJI, DukeItOut]
 #
 # 1.1: fixed issue where page 3 wouldn't load all stages if page 1 had less, overall
+# 1.2: fixed issue where the wrong button was displayed when no custom stages 
+#			were present
 #######################################################################################
+.alias MaxPages = 3			# Amount of normal expansion stage pages
+.alias BackFrame = 4		# Frame that the last page will use to indicate the next is page 1
+.alias CustomFrame = 3		# Frame for the Stage Builder
+
 HOOK @ $806B1F04				# Forces it to fill the amount of stage slots to max possible to avoid an error with expansion pages
 {
 	li r3, 39					# \ Use this as a max possible for a page. Do not raise above this!
@@ -1040,16 +1079,27 @@ loc_0x64:
 }
 HOOK @ $806B2310		# Updates the page number texture icon
 {
-	lis r3, 0x8049		# \ Page Number as is observed by the new SSS system
-	lbz r0, 0x6000(r3)	# /
+	lis r12, 0x8049		# \ Page Number as is observed by the new SSS system
+	ori r12, r12, 0x6000#
 	lwz r3, 0x228(r29)	# Page Number as is observed by Brawl
 	cmpwi r3, 2			# Is it the Brawl custom stage page?
-	bne+ normalStage
-	li r3, 4
-	b %END%
-normalStage:
-	mr r3, r0			# \ Unorthodox increment due to limitations of register 0
-	addi r0, r3, 1		# /
+	beq- LastPage
+	lwz r5, 0x604C(r29)	# Amount of stage builder stages available
+	cmpwi cr1, r5, 0	# Check if there are zero
+	
+	li r4, 2			# Max amount of normal pages in Brawl
+	lbz r5, 0x0(r12)	# Active Page
+	lbz r3, 0x2(r12); cmpwi r3, 0; beq- notAny; addi r4, r4, 1 # Amount of stages on page 3 (if any)
+	lbz r3, 0x3(r12); cmpwi r3, 0; beq- notAny; addi r4, r4, 1 # Amount of stages on page 4 (if any)
+	lbz r3, 0x4(r12); cmpwi r3, 0; beq- notAny; addi r4, r4, 1 # Amount of stages on page 5 (if any)
+notAny:	
+	addi r0, r5, 1
+	cmpw r0, r4			# If this isn't relevant due to being less than the latest normal page
+	blt %END%			# Then don't bother.
+	li r0, CustomFrame
+	bne- cr1, %END%		# Don't have the button point to a stage builder page if nothing is on it!
+LastPage:
+	li r0, BackFrame
 }
 HOOK @ $806B3834		# Updates the page number texture icon, but every frame
 {
@@ -1067,8 +1117,7 @@ HOOK @ $806B0AB8
 {
   stw r30, 0x228(r29)		# Original operation
   lis r16, 0x8049			# \
-  ori r16, r16, 0x6000		# | Set page number
-  stb r30, 0(r16)			# /
+  stb r30, 0x6000(r16)		# / Set page number
 }
 
 HOOK @ $806B5910
@@ -1105,39 +1154,7 @@ HOOK @ $806B8F60
 }
 
 op li r0, 4 @ $806B50B0
-HOOK @ $806B41C8
-{
-  lis r16, 0x8049
-  ori r16, r16, 0x6000
-  li r15, 0x4												# \
-  lbz r17, 0x4(r16);  cmpwi r17, 0x0;  bne- loc_0x3C		# / Skip page 5 if it has no additions
-  li r15, 0x3												# \
-  lbz r17, 0x3(r16);  cmpwi r17, 0x0;  bne- loc_0x3C		# / Skip page 4 if it has no additions
-  li r15, 0x2												# \
-  lbz r17, 0x2(r16);  cmpwi r17, 0x0;  bne- loc_0x3C		# / Skip page 3 if it has no additions
-  li r15, 0x1												# Page 2 is the highest it will go to if the above 3 are deemed empty.
 
-loc_0x3C:
-  lbz r17, 0xC(r16);  cmpw r17, r15;  bne- loc_0x50			
-  li r17, 0x0												# Set page button back to 0 if at the highest one.
-  b loc_0x54
-
-loc_0x50:
-  addi r17, r17, 0x1										# Increment page button texture
-
-loc_0x54:
-  stb r17, 0xC(r16)											# 8049600C contains page animation value as a byte
-  subi r30, r30, 0x6FE8										# Different from the original operation for unknown reasons
-}
-
-HOOK @ $806B36C0
-{
-  stw r0, 0x224(r30)		# Original operation.
-  lis r16, 0x8049			# \
-  ori r16, r16, 0x6000		# |
-  li r17, 0xFF				# | Set to invalid value in certain contexts 
-  stb r17, 0xE(r16)			# /
-}
 
 ############################################
 Expansion Stages in All-Star Fix [DukeItOut]

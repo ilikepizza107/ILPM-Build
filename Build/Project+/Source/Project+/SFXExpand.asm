@@ -95,7 +95,7 @@ SFX_Table:		# Table size should be (sound effect count edited + 1) * 2 (i.e. 0 S
 	| #
 	0xA66, 105, | # Sonic "Knuckles, you're late!" used for 'Up' Victory Pose
 	| #
-	0x603D, 90, | # Knuckles "HYAH!" used for Forward Smash, Side B and Neutral B
+	0x414D, 90, | # Knuckles "HYAH!" used for Forward Smash, Side B and Neutral B
 	| #
 	0xFFFF, 0  # Make sure the table ends with this as a terminator!
 
@@ -120,10 +120,13 @@ Table_Skip:
 	.RESET
 
 ###########################################################################################################################################################
-[Project+] SoundBank Expansion System (RSBE.Ver) v2.0 [codes, DukeItOut, JOJI]
+[Project+] SoundBank Expansion System (RSBE.Ver) v2.2 [codes, DukeItOut, JOJI]
 # v1.1 - Kirbycide Fix + Voice clips volume fix + CSS Hiccup Fix
 # v1.2 - Fixes Mr. Resetti's brsar conflicts
 # v2.0 - Removed Sound Resource table occupation and made dynamic to better support resource size changes
+# v2.1 - Removed overaggressive check that could crash the game if a custom SFX ID played while another 
+#			custom soundbank was being loaded in
+# v2.2 - Made pointers even more flexible to account for potential Sound Resource changes
 #
 # 90432134 references -> Sound Resource + 0x298934-to-0x29897F
 # 901A3090 references -> Written to CodeFlag+0x4
@@ -300,10 +303,11 @@ HOOK @ $801C836C
   mtctr r12			# Original operation
   cmplwi r26, CustomSoundbankRange;  blt- %END%
   
-  lis r4, 0x8049		# \ Resource heap pile at 80494958
-  lwz r4, 0x49AC(r4)    # | Sound Resource is 5, therefore 5 * 0x10 + 4 = 0x54 and 0x80494958 + 0x54 = 0x804949AC
-  addis r4, r4, 0x2A	# | Desired Offset is Sound Resource + 0x298934
-  subi r4, r4, 0x76CC	# / 
+  lwz r4, 0x18(r31) 	#
+  lwz r4, 0x04(r4)		#
+  lwz r4, 0x28(r4)		# RSAR info
+  addis r4, r4, 0xE		#
+  addi  r4, r4, 0x3C6C	# Desired Offset: E3C6C 
   
   addi r5, r26, 0x7		# Soundbank ID + 7
   stw r5, 0(r4)
@@ -326,19 +330,26 @@ HOOK @ $801C8374
 {
   cmpwi r26, CustomSoundbankRange;  blt- loc_0x34
   
-  lis r14, 0x8049		# \ Resource heap pile at 80494958
-  lwz r14, 0x49AC(r14)  # | Sound Resource is 5, therefore 5 * 0x10 + 4 = 0x54 and 0x80494958 + 0x54 = 0x804949AC
-  addis r14, r14, 0x2A	# | Desired Offset is Sound Resource + 0x298934
-  subi r14, r14, 0x76CC	# /  
+  lwz r14, 0x18(r31) 		#
+  lwz r14, 0x04(r14)		#
+  lwz r14, 0x28(r14)		# RSAR info
+  addis r14, r14, 0xE		#
+  addi  r14, r14, 0x3C6C	# Desired Offset: E3C6C  
   
-  lis r15, 0x8053;  ori r15, r15, 0xED00	
+  # lwz r15, 0x40(r1)
+  # lwz r15, 0x1C(r15)
+  # lwz r15, 0x94(r15)
+  # lwz r15, 0x490(r15)		# Pointer to mostly unused FRMH sound heap. Commented out as it was actually used by Pokemon Trainer 
+  # addi r15, r15, 0x60		# Fills only up to 0x58 normally
+  lis r15, 0x8053;  ori r15, r15, 0xED00
+  
   subi r19, r26, CustomSoundbankRange
   mulli r19, r19, 0x8
   add r15, r19, r15
   lwz r19, 0x4C(r14)
-  stw r19, 0(r15)
+  stw r19, 0x60(r15)
   lwz r19, 0x60(r14)
-  stw r19, 4(r15)
+  stw r19, 0x64(r15)
 
 loc_0x34:
   cmpwi r3, 0x0			# Original operation
@@ -347,24 +358,29 @@ HOOK @ $801C7AB4
 {
   lwz r0, 0xC(r3)	# Original operation
   cmplwi r29, CustomSoundbankRange;  blt- %END%
-  cmplwi r30, 0;  beq- %END%
-  subi r29, r29, CustomSoundbankRange
-  mulli r29, r29, 0x8
+
+  # lwz r28, 0x10(r1)
+  # lwz r28, 0x1C(r28)
+  # lwz r28, 0x94(r28)
+  # lwz r28, 0x490(r28)		# Pointer to mostly unused FRMH sound heap. Commented out as it actually was used by Pokemon Trainer 
+  # addi r28, r28, 0x60		# Start at offset 0x60
   lis r28, 0x8053;  ori r28, r28, 0xED00
-  add r28, r28, r29
-  lwz r0, 4(r28)
+  subi r12, r29, CustomSoundbankRange 
+  mulli r12, r12, 0x8		# Index for this hook and the one below
+  add r12, r28, r12
+  
+  li r0, 0	# Pointer to voices within bank (Start of it). Without this, it could get invalid values before.
+  cmplwi r30, 0;  beq- %END% 	# Use below to get index for SFX
+
+  lwz r0, 0x64(r12)
 
 }
 HOOK @ $801C7ABC
 {
   lwz r0, 0x10(r3)	# Original operation
   cmplwi r29, CustomSoundbankRange;  blt- %END%
-  cmplwi r30, 1;  beq- %END%
-  subi r29, r29, CustomSoundbankRange
-  mulli r29, r29, 0x8
-  lis r28, 0x8053;  ori r28, r28, 0xED00
-  add r28, r28, r29
-  lwz r0, 0(r28)
+
+  lwz r0, 0x60(r12)
 }
 HOOK @ $801C7A14
 {
@@ -373,11 +389,9 @@ HOOK @ $801C7A14
   li r0, CustomSoundbankRange
   rlwinm r0, r0, 3, 0, 28
   
-  lis r5, 0x8049		# \ Resource heap pile at 80494958
-  lwz r5, 0x49AC(r5)    # | Sound Resource is 5, therefore 5 * 0x10 + 4 = 0x54 and 0x80494958 + 0x54 = 0x804949AC
-  addis r5, r5, 0x2A	# | Desired Offset is Sound Resource + 0x298934
-  subi r5, r5, 0x76CC	# / 
-  
+  lwz r5, 0x28(r28) 	# RSAR info
+  addis r5, r5, 0xE		#
+  addi  r5, r5, 0x3C6C	# Desired Offset: E3C6C   
   
   addi r4, r29, 0x7
   stw r4, 0(r5)
@@ -458,11 +472,9 @@ HOOK @ $801C73CC
    
   # r4 has pointer to Table 1 already
   
-  lis r8, 0x8049		# \ Resource heap pile at 80494958
-  lwz r8, 0x49AC(r8)    # | Sound Resource is 5, therefore 5 * 0x10 + 4 = 0x54 and 0x80494958 + 0x54 = 0x804949AC
-  addis r8, r8, 0x2A	# | Desired Offset is Sound Resource + 0x298944
-  subi r8, r8, 0x76BC	# /
-
+  lwz r8, 0x28(r29) 	# RSAR info
+  addis r8, r8, 0xE		#
+  addi  r8, r8, 0x3C7C	# Desired Offset: E3C7C (E3C6C+10)
   
 loc_0x24:
   lwz r0, 0(r4);  cmplwi r0, 0x4321;  beq- loc_0x40	
@@ -481,7 +493,7 @@ loc_0x40:
   lwz r0, 16(r4)
   stw r0, 32(r8)
   lwz r0, 20(r4)
-  stw r0, 40(r8)
+  # stw r0, 40(r8) # Unnecessary and can break soundbank loading.
 
 loc_0x68:
   cmplwi r30, normalMusic_Lo;  blt- loc_0x84		# Branch if a normal sound effect

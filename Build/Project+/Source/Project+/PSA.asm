@@ -228,7 +228,7 @@ CODE @ $8054C2D0
 	word 2; word PSA_Off+0x10
 	word 1; scalar 1.66666
 	
-	word 0x04070200; word PSA_Off+0x8 #multiply frame speed by 1.6666
+	word 0x04070100; word PSA_Off+0x8 #multiply frame speed by 1.6666
 	word 0x00000000; word 0
 }
 CODE @ $80FB06D4
@@ -244,7 +244,7 @@ CODE @ $8054C2F0
 	word 2; word PSA_Off+0x10
 	word 1; scalar 1.3
 	
-	word 0x04070200; word PSA_Off+0x8 #multiply frame speed by 1.6666
+	word 0x04070100; word PSA_Off+0x8 #multiply frame speed by 1.6666
 	word 0x00000000; word 0
 }
 CODE @ $80FB599C
@@ -260,7 +260,7 @@ CODE @ $8054C310
 	word 2; word PSA_Off+0x10
 	word 1; scalar 1.4137932
 	
-	word 0x04070200; word PSA_Off+0x8 #multiply frame speed by 1.6666
+	word 0x04070100; word PSA_Off+0x8 #multiply frame speed by 1.6666
 	word 0x00000000; word 0
 }
 CODE @ $80FC2E50
@@ -276,7 +276,7 @@ CODE @ $8054C330
 	word 2; word PSA_Off+0x10
 	word 1; scalar 1.5
 	
-	word 0x04070200; word PSA_Off+0x8 #multiply frame speed by 1.6666
+	word 0x04070100; word PSA_Off+0x8 #multiply frame speed by 1.6666
 	word 0x00000000; word 0
 }
 CODE @ $80FBCDD4

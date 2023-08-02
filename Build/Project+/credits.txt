@@ -9,7 +9,11 @@ Custom GFX for Sicle Charizard - ilikepizza107, with credit to Extreme
  - PSA Edited: Sub Action 1, GFX; Sub Action 19, Main; Sub Action 19, GFX; Sub Action 3C, Main; Sub Action 3C, GFX; Sub Action 55, Main; Sub Action 58, Main; Sub Action 58, GFX; Sub Action 62, Main; Sub Action 62, GFX; Sub Action 63, Main; Sub Action 63, GFX; Sub Action 64, Main; Sub Action 74, Main; Sub Action 74, GFX; Sub Action 75, Main; Sub Action 75, GFX; Sub Action DC, Main; Sub Action 1C2, GFX; Sub Action 1C4, GFX; Sub Action 1D5, Main; Sub Action 1D5, GFX; Sub Action 1D7, Main; Sub Action 1D8, Main; 1D8, GFX; Sub Action 1D9, GFX; Sub Action 1DA, GFX; Sub Routine 0x247F0, Sub Routine 0x251D0; Sub Routine 0x265A8
 
 Custom GFX for Star Lucas - Star, ilikepizza107
- - PSA Edited: Sub Action 48, GFX; Sub Action 49, GFX; Sub Routine 62, GFX; Sub Routine 63, GFX; Sub Routine 61, Other; Sub Routine 66, GFX, Sub Routine 66, Other;
+ - PSA Edited: Sub Action 48, GFX; Sub Action 49, GFX; Sub Action 58, Main; Sub Action 62, GFX; Sub Action 63, GFX; Sub Action 61, Other; Sub Action 66, GFX, Sub Action 66, Other
+
+Custom GFX for Crona Marth by SSK and KingJigglypuff, ilikepizza107
+ - PSA Added: Subroutine 2x78F8, 2x82A0, 2x88C0
+ - PSA Edited: Sub Actions 48, GFX; 49, GFX; 4E, GFX; 50, GFX; 54, GFX; 55, GFX; 58, GFX; 5D, GFX; 60, GFX; 62, GFX; 63, GFX; 64, GFX; 65, GFX; 66, GFX; B0, GFX; B9, GFX; D7, GFX; DC, GFX; E7, GFX; 1D0, GFX; 1D1, GFX; 1D6, GFX; 1D7, GFX; 1D8, GFX; 1D9, GFX; 1DA, GFX; 1DB, GFX; 1DC, GFX; 1DD, GFX; 1DE, GFX; 1E8, GFX; 1EB, GFX; 1EE, GFX; 1EF, GFX; 1F0, GFX; 1F1, GFX; 1F2, GFX; 1F3, GFX; 1F4, GFX
 
 ################
 SKINS
@@ -20,6 +24,7 @@ MARIO
 40 - Xbox Sunshine Mario by mawwwk, with credit to SJ, StarWaffle, and tyleto
 
 DONKEY KONG
+AltZ - Sonic the Werehog by ??? (Old BrawlVault mod)
 
 LINK
 
@@ -72,6 +77,7 @@ ICE CLIMBERS
 06 - Serb Icies by SJS
 
 MARTH
+34 - Crona Marth by influenza
 
 MR. GAME & WATCH
 17 - WnL GnW
@@ -87,6 +93,7 @@ META KNIGHT
 PIT
 
 ZERO SUIT SAMUS
+40 - Pink Dark ZSS by Hulkalex, with credit to RedipsTheCooler [https://www.mediafire.com/file/bvwgvbx1h9jgsgf/Dark+Zero+Suit+Samus+Recolor.zip/file]
 
 OLIMAR
 40 - joey Olimar by Motobug
@@ -108,6 +115,7 @@ SQUIRTLE
 30 - Whoratio Squirtle by Z-Stick, with credit to Mazux, Mewtwo2000, and hulkalex
 
 IVYSAUR
+10 - Maofever Ivy by Maofever, with credit to ilikepizza107
 25 - Blue Kool-Aid Substitute Ivy by mawwwk, with credit to LnktheWolf, StarWaffle, Nanobuds, Moblin, Ryztiq
 
 DEDEDE
@@ -116,6 +124,7 @@ LUCARIO
 25 - influenza Lucario by influenza
 
 IKE
+34 - Dox Ike by FingerStripes
 
 R.O.B.
 07 - Comb ROB by Wyld
@@ -138,13 +147,13 @@ WOLF
 
 SNAKE
 06 - LTWB Snake by SoulOfficer
+07 - MVZY Snake by Wyld
 
 SONIC
 
 WARIO MAN
 
 GIGA BOWSER
-
 
 
 ########################
@@ -155,7 +164,7 @@ POKEMON STADIUM 2
 Base - Warp Zone PS2 by ilikepizza107
 
 SMASHVILLE
-All -2023 Smashville plat animation by Motobug
+All - 2023 Smashville plat animation by Motobug
 
 FRIGATE HUSK
 L - Hyrule Meadows by Motobug, mawwwk, with credit to Dranakar, Scout, davidvkimball, DukeItOut, soopercool101, PMDT

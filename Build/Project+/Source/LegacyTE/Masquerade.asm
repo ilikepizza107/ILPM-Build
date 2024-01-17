@@ -83,7 +83,7 @@ byte 50 		    @ $80692507
 byte[4] 0x30, 0x34, 0x64, 0 @ $806A17D8
 
 ################################################################
-[Brawl-Themed P+] Stage Select Screen Supports 50CC [QuickLava]
+[Brawl-Themed P+] Stage Select Screen Supports 50CC v1.0.1 [QuickLava]
 ################################################################
 # Stage Select Stock Icons 50CC Fix
 HOOK @ $806b2ffc
@@ -94,26 +94,9 @@ notWarioman:
  	mulli r3, r3, 50
 }
 # Stage Select Random Player Stock Icons Fix
-HOOK @ $806b2fdc
-{
-	lis r12, 0x40C1				# \
-	ori r12, r12, 0xAD80		# | Write first word worth of 9051 into memory
-	stw r12, 0x08(r1)			# | Store it at 0x08(r1)
-	li r12, 0x00				# | Zero out r12
-	stw r12, 0x0C(r1)			# | Store it at 0x0C(r1)
-	lfd f0, 0x08(r1)			# / Load it into fr0, overwriting the normal 501.
-	fsubs f1,f1,f2				# Restore original instruction.
-}
-# Stage Select Random CPU Stock Icons Fix
-HOOK @ $806b2fe8
-{
-	lis r12, 0x40C1				# \
-	ori r12, r12, 0xAF80		# | Write first word worth of 9055 into memory
-	stw r12, 0x08(r1)			# | Store it at 0x08(r1)
-	li r12, 0x00				# | Zero out r12
-	stw r12, 0x0C(r1)			# | Store it at 0x0C(r1)
-	lfd f31, 0x08(r1)			# / Load it into fr31, overwriting the normal 505.
-}
+# Overwrites the old constants the game used as the frames for Random Icons with our own 50CC compliant ones.
+# First value should be left as is, second value should be the first plus how many colored random icons you need!
+float[2] 9051.0f, 9061.0f @ $806B91B0
 
 ###################################################################
 [Legacy TE] Upload Character Masquerade Data At Startup [DukeItOut]

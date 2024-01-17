@@ -10,7 +10,7 @@ Up+Down+Right+Left: Battlefield_DPAD.param
 
 
 ################
-02.asl - 7 entries
+02.asl - 8 entries
 
 Base: Final_Destination.param
 R: Final_Destination_R.param
@@ -19,6 +19,7 @@ Z: Final_Destination_Z.param
 Y: Final_Destination_Y.param
 L+R: Final_Destination_LR.param
 X: Final_Destination_X.param
+Up+Down+Right+Left: Final_Destination_DPAD.param
 
 
 ################

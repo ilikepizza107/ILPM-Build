@@ -5,6 +5,12 @@
 op cmplwi r0, 0x30 @ $8018CFC4
 op blt- 0x34	   @ $8018CFC8
 
+###############################################
+Single CSS StockIcon (InfStc.001) [ASF1nk]
+###############################################
+* 046A17D4 74632E30
+* 046A17D8 30310000
+
 .include Source/LegacyTE/Replays.asm
 
 .include Source/Project+/StageFiles.asm
@@ -48,6 +54,9 @@ op blt- 0x34	   @ $8018CFC8
 					# to allow an understanding of how it will mechanically work in the future.
 
 .include Source/Stagelists/RandomStagelist.asm
+.include Source/Extras/UnlockEverything.asm
+.include Source/Extras/BackplateColorsStandalone.asm
+.include Source/Extras/HoldStartResults.asm
 
 .include Source/Extras/Console.asm	# Only use this on a Wii or Wii U! The codes in this are necessary for the slower specifications of the actual console.
 #.include Source/Extras/Netplay.asm	# Only use this in Dolphin! The codes in this will result in bad behavior on the Wii!

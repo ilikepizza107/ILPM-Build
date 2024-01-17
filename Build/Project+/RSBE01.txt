@@ -3215,5 +3215,6 @@ op b 0x38	@ $808A087C
 .include Source/Project+/PokeTrainer.asm
 .include Source/Project+/Debug/modifiedDebug.asm
 
+.include Source/Project+/LoadFiles.asm
 
 .include Source/Project+/MultiGCT.asm		# MAKE SURE THIS IS AT THE VERY BOTTOM OF THIS CODESET!!!

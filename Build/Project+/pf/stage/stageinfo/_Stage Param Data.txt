@@ -582,6 +582,14 @@ Final_Destination.param
 	SFX / GFX: 0xFFFF / 0x0033
 
 ################
+Final_Destination_DPAD.param
+
+	STGFINALDESTINATION.pac
+	st_final.rel
+	Final_Destination.tlst
+	SFX / GFX: 0xFFFF / 0x0033
+
+################
 Final_Destination_L.param
 
 	STGFINALDESTINATION_L_FD_BRAWL.pac
@@ -1031,8 +1039,9 @@ Jungle_Japes_Z.param
 Kongo_Jungle.param
 
 	STGKONGOJUNGLE.pac
-	st_kongojungle64.rel
+	st_kongojungle_redux.rel
 	Kongo_Jungle.tlst
+	SFX / GFX: 0x00D9 / 0x0032
 
 ################
 Kongo_Jungle_L.param

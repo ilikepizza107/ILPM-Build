@@ -12,3 +12,12 @@ HOOK @ $8068EAE8
     bne %END%
     lfs f1, 0xE4(r13)       # Load 1.0 animation speed
 }
+
+####################################################
+Extra Rules Frozen animation Bug fix [Eon,DukeItOut]
+#
+# Fixes issue where holding a direction while
+# entering the More Rules page would make the
+# animation for the graphics pause
+####################################################
+op li r0, 0 @ $806A8DA8

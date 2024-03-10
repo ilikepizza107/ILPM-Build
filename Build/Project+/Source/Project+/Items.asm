@@ -1,3 +1,17 @@
+#############################################
+Effects spawn on hitting items [DukeItOut]
+#
+# Brawl disabled hit graphics on all items
+# but the Sandbag due to glitches involving
+# the Blast Box, but these are fixed.
+# As a result, it is safe to re-enable these 
+# for all items again, including crate 
+# enemies, assist trophies and stage hazards.
+#############################################
+op NOP @ $809BDAF4					# Don't only make it apply to just the Sandbag!
+op lfs f4, -0x3348(r3) @ $809BDB00	# Use 80ADCCB8 (0.7) instead of 80ADCC24 (1.0) 
+									# for default hit gfx size!
+
 #######################################
 Max Items Spawnable 8 -> 12 [DukeItOut]
 #######################################
@@ -13,8 +27,6 @@ Additional Item Switch Frequency Settings 'VERY HIGH', 'INTENSE', and 'BOMB RAIN
 #Requires adding PAT animation for MenMainSwitch0002_TopN__0
 #Requires new texture assets "MenMainSwitch04Per05", "MenMainSwitch04Per06", and 
 #	"MenMainSwitch04Per07"
-#
-# TODO: Add Bomb Rain as a 6th option, place Tagout where Bomb Rain is
 ###############################################################################################
 .BA<-FREQUENCY_TABLE
 .BA->$80ADAD5C        # Where the HIGH speed's max speed usually resides

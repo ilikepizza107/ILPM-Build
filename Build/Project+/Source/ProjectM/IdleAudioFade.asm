@@ -1,5 +1,5 @@
 ###################################
-Idle Audio Fade v2.02 [InternetExplorer, mawwwk, DukeItOut]
+Idle Audio Fade v2.05 [InternetExplorer, mawwwk, DukeItOut]
 ###################################
 .macro Word(<reg>, <arg1>)
 {
@@ -10,7 +10,6 @@ Idle Audio Fade v2.02 [InternetExplorer, mawwwk, DukeItOut]
 }
 
 .alias InactiveFrames = 7200
-
 float 1.0   @ $805A7404 # Max volume
 float 0.25  @ $805A7408 # Min volume
 float 0.975 @ $805A740C # Mult. per frame
@@ -21,64 +20,58 @@ HOOK @ $801BCE60
     
     lis r12, 0x805B; lwz r12, 0x50AC(r12)   # Check if in replay
     lwz r12, 0x10(r12); lwz r12, 0(r12)     # Skip volume change if so
-    lis r11, 0x8070; ori r11, r11, 0x39D8   # compare with "sqReplay"
-    cmpw r11, r12; beq %END%
+    %Word(r11, 0x807039D8); cmpw r11, r12   # Compare with "sqReplay"
+    beq %END%
     
     %Word(r5, 0x805BAD00)       # Addr for reading controller inputs
-    %Word(r4, 0x805A7400)       # Addr storing frames since last input
-    lfs f3, 0x0C(r4)            # Volume change per frame
-    li r12, 0
+    %Word(r12, 0x805A7400)      # Addr storing frames since last input
+    lfs f3, 0x0C(r12)           # Volume change per frame
+    li r4, 0                    # Initialize port count 
+	
+    lwz r11, 0x10(r12)          # Check if fade multiplier is 0.0,
+    cmpwi r11, 0                # i.e. slider muted from save file load
+    bne checkController_Buttons
+    
+    lis r11, 0x3F80             # \ If fade is 0.0, initialize to 1.0
+    stw r11, 0x10(r12)          # /
 
 checkController_Buttons:
-    addi r12, r12, 1            # Increment port check count
-    lwz r0, 0x210(r5)           # Button press check
-    cmpwi r0, 0
-    beq checkController_X       # If any button pressed, fail check
-    b inputSent
+    addi r4, r4, 1              # Increment port check count
+    lwz r11, 0x204(r5)          # If any button pressed, fail check
+    cmpwi r11, 0
+    bne inputSent
 
 checkController_X:
-    lbz r0, 0x30(r5)            # Check control stick X
-    cmpwi r0, 0x20              # If in (32, 224), fail check
+    lbz r11, 0x30(r5)           # Check control stick X
+    cmpwi r11, 0x20             # If in (32, 224), fail check
     blt checkController_Y
-    cmpwi r0, 0xE0
-    bgt checkController_Y
-    b inputSent
+    cmpwi r11, 0xE0
+    ble inputSent
 
 checkController_Y:
-    lbz r0, 0x31(r5)            # Check control stick Y
-    cmpwi r0, 0x20              # If in (32, 224), fail check
+    lbz r11, 0x31(r5)           # Check control stick Y
+    cmpwi r11, 0x20             # If in (32, 224), fail check
     blt loopPorts
-    cmpwi r0, 0xE0
-    bgt loopPorts
-    b inputSent
+    cmpwi r11, 0xE0
+    ble inputSent
 
 loopPorts:
-    addi r5, r5, 0x40           # Loop to next port
-    cmpwi r12, 8                # 8 = 4 GCC + 4 Wii remote
+    addi r5, r5, 0x40           # Loop to next port address
+    cmpwi r4, 8                 # 4 GCC + 4 Wii remote
     blt checkController_Buttons
-    lwz r5, 0(r4)               # If no inputs given from any port, store inactive frame count in r5
-    b initFadeMultiplier
+    lwz r5, 0(r12)              # If no inputs given from any port, 
+    addi r5, r5, 1              # increment inactive frame count
+    b frameCountCheck
 
 inputSent:
-    li r5, 0
-
-initFadeMultiplier:        
-    lwz r11, 0x10(r4)           # i.e. slider muted from save file load
-    cmpwi r11, 0				# Check if volume multiplier is 0.0
-    bne frameCountCheck
-    
-    lis r12, 0x3F80             # \ If 0.0, initialize to 1.0
-    stw r12, 0x10(r4)           # /
+    li r5, 0					# Reset inactive frame count if given input
 
 frameCountCheck:
-    lfs f4, 0x10(r4)            # Current fade multiplier, in range [min, max]
-    addi r5, r5, 1              # Increment frame count and store 
-    stw r5, 0(r4)
-    
-    cmpwi r5, InactiveFrames    # \ If no inputs sent in x frames, fade out volume
-    bge calcLowerVolume         # /
+    lfs f4, 0x10(r12)           # Load previous frame fade multiplier
+    cmpwi r5, InactiveFrames    # If no inputs sent in x frames, fade out volume
+    bge calcLowerVolume
 
-# r4: address of frame count and multipliers @ $805A7400
+# r12: address of frame count and multipliers @ $805A7400
 # f1: Fade multiplier max       $805A7404
 # f2: Fade multiplier min       $805A7408
 # f3: Vol change per frame      $805A740C
@@ -87,7 +80,7 @@ frameCountCheck:
 # f0 replaces value used by original op
 
 calcRestoredVolume:
-    lfs f1, 0x04(r4)        # Max volume multiplier (1.0)
+    lfs f1, 0x04(r12)       # Max fade multiplier (1.0)
     fdivs f4, f4, f3        # Divide twice to fade in faster
     fdivs f4, f4, f3
     fcmpu cr0, f4, f1       # Store min(vMax, vNew) in f4
@@ -96,13 +89,14 @@ calcRestoredVolume:
     b storeVolume
 
 calcLowerVolume:
-    lfs f2, 0x08(r4)        # Min volume multiplier
+    lfs f2, 0x08(r12)       # Min fade multiplier
     fmuls f4, f4, f3
     fcmpu cr0, f4, f2       # Store max(vMin, vNew) in f4
     bge storeVolume
     fmr f4, f2
 
 storeVolume:
-    fmuls f0, f0, f4
-    stfs f4, 0x10(r4)
+    stw r5, 0(r12)          # Store inactive frame count
+    fmuls f0, f0, f4        # Update volume used by original op
+    stfs f4, 0x10(r12)      # Store fade multiplier
 }

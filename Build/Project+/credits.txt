@@ -17,26 +17,20 @@ SKINS
 ################
 
 MARIO
-35 - Xbox Sunshine Mario by mawwwk, with credit to SJ, StarWaffle, and tyleto
-40 - Bee Mario by SJS [https://gamebanana.com/mods/247079]
 
 DONKEY KONG
-AltZ - Sonic the Werehog by ??? (Old BrawlVault mod)
 
 LINK
-27 - SgtPingwen Link by ilikepizza107
 
 SAMUS
-06 - cBliss yellow Samus by SJS [https://gamebanana.com/mods/247124]
 40 - GooSluj Samus by ilikepizza107
 45 - Samus Brawl Clone by SJS [https://gamebanana.com/mods/247126]
 
 YOSHI
-30 - Whoratio Yoshi by Z-Stick, ilikepizza107
 
 KIRBY
-25 - influenza Kirby by influenza
-40 - WnL Kirby by Mr. Watch&Learn, with credit to SJS and KingJigglypuff
+25 - Shenanigans Kirby by ilikepizza107
+26 - influenza Kirby by influenza
 45 - Star Red Kirby by influenza
 46 - Star Kirby by influenza
 47 - Star Green Kirby by influenza
@@ -45,7 +39,6 @@ FOX
 09 - Silver Fox by Baka
 10 - Star Blue Fox by ilikepizza107
 11 - Star Green Fox by ilikepizza107
-30 - Blitz Fox by Pnut
 40 - Drip Fox by Wyld
 
 PIKACHU
@@ -53,8 +46,11 @@ PIKACHU
 LUIGI
 
 CAPTAIN FALCON
-09 - shad Captain Falcon by influenza
-35 - ORLY Captain Falcon by Wyld
+07 - Black Captain Falcon by SJ
+08 - shad Captain Falcon by influenza
+35 - Stude Captain Falcon by Motobug
+36 - SoulOfficer Falcon by influenza
+37 - ORLY Captain Falcon by Wyld
 
 NESS
 30 - Not Chris Ness by ilikepizza107
@@ -67,48 +63,42 @@ ZELDA
 30 - Tuck Zelda by Tuck, ilikepizza107, using Hulkalex's Skyward Sword Zelda model [http://www.mediafire.com/file/1b0t0ned2djzmg2/Zelda+Skyloft.zip/file]
 31 - Evil Lesbian Zelda by Evil Lesbian, ilikepizza107, using Hulkalex's Skyward Sword Zelda model [http://www.mediafire.com/file/1b0t0ned2djzmg2/Zelda+Skyloft.zip/file]
 32 - KWAM Zelda by ilikepizza107, using Hulkalex's Skyward Sword Zelda model [http://www.mediafire.com/file/1b0t0ned2djzmg2/Zelda+Skyloft.zip/file]
-35 - RoZelda by jetfantastic [http://forums.kc-mm.com/Gallery/BrawlView.php?Number=213577]
 
 SHEIK
 30 - RoSheik by jetfantastic [http://forums.kc-mm.com/Gallery/BrawlView.php?Number=213577]
 31 - Evil Lesbian Sheik by Evil Lesbian, ilikepizza107
 32 - KWAM Sheik by ilikepizza107
-35 - Vaporeon Sheik by Vaporeon
 
 ICE CLIMBERS
 40 - phresh Ice Climbers by FingerStripes
 
 MARTH
-07 - Gunther Marth by ilikepizza107
+24 - Ronan Marth by ilikepizza107
 34 - Crona Marth by influenza
-35 - Rongunshu Marth by Cyxx, DHS7
-40 - polear Marth by Z-Stick
 45 - Artemis Marth by ilikepizza107
 
 MR. GAME & WATCH
 17 - Rise GnW
-18 - WnL GnW
 
 FALCO
-26 - Cardinal Falco by Kathrarg
 
 GANONDORF
 26 - Che Ganondorf by DHS7
 40 - joey Ganondorf by DHS7
 
 META KNIGHT
-10 - YGL Meta Knight by ilikepizza107
+25 - Violet Morpho Knight by Efisio
 40 - Yuko MK by DHS7
 
 PIT
 
 ZERO SUIT SAMUS
-06 - Bee ZSS by ilikepizza107
 40 - GooSluj ZSS by ilikepizza107
 45 - Pink Dark ZSS by Hulkalex, with credit to RedipsTheCooler [https://www.mediafire.com/file/bvwgvbx1h9jgsgf/Dark+Zero+Suit+Samus+Recolor.zip/file]
 
 OLIMAR
-40 - joey Olimar by Motobug
+40 - CP9 Olimar by FingerStripes
+45 - joey Olimar by Motobug
 
 LUCAS
 40 - Star Red Lucas by Star, SJS
@@ -117,85 +107,69 @@ LUCAS
 45 - Shadowhawke Lucas by SJS
 
 DIDDY KONG
-25 - SipMastah Diddy by GKO
 
 MEWTWO
 
 CHARIZARD
 
 SQUIRTLE
-30 - Whoratio Squirtle by Z-Stick, with credit to Mazux, Mewtwo2000, and hulkalex
 
 IVYSAUR
 10 - Maofever Ivy by Maofever, with credit to ilikepizza107
 
 DEDEDE
-11 - Beebeebee by Aerodrome [http://forums.kc-mm.com/Gallery/BrawlView.php?Number=24572]
-12 - Ripple Dedede by ???
+11 - Ripple Dedede by ???
 
 LUCARIO
 25 - influenza Lucario by influenza, with credit to Chucklez, LnktheWolf, and PMDT
 
 IKE
-24 - Gunther Ike by ilikepizza107
-25 - influezna Ike by influenza
-26 - Rongunshu Ike by the Cobalt team
-34 - Blitz Ike by erg
-40 - Lordy Ike by theytah
-AltZ - Berserk Armor Guts by ilikepizza107, with credit to ASideOfChidori and buu342 for the models and Rocky38 for importing (optimized by ilikepizza107)
+24 - influezna Ike by influenza
 
 R.O.B.
-07 - Comb ROB by Wyld
+07 - Xtreme ROB by ilikepizza107
+08 - Comb ROB by Wyld
 
 JIGGLYPUFF
-15 - SgtPingwen Jigglypuff by ilikepizza107
 
 WARIO
-12 - Zstick Wario by Zstick
-13 - Jr Chaffles Wario by Zstick
 
 ROY
 
 TOON LINK
-07 - Shrug Toon Link by Wyld
+08 - Shrug Toon Link by Wyld
 
 WOLF
-Tag 'EXE' - S̸̲̔̓o̴̦̲̭͙̩̽́̎͊̈́̓ň̷̲͖͗͊̔̅ï̵͈̪̽͘c̷̡̛̺͉̱̥̔̍̑͗̀.̷̡̛̺̙̼͓̀̏̋͠͠e̵̢͕̺̗̤̬̽̔̕͝͝͠x̴̣̜̙̦̃͗̿̚̚é̶͈͎̲̤̉͋̏ ̴̨̘̟͌͆͛͆̊͘a̷̛̻͍̐̇̿̚͜l̶̘̈͐t̴̛͓͉͈̰̊̏̀̐ ̶̥͙̥͍́̐̔͆́̀͜f̶̢͋̋̈́ố̶̫̅̐r̴̼̋̌̃ ̵̙̮̑̀̂̂̕͠W̴̤̖̮͖̞̦̄͠o̶̲͍̜̦̯̳͛̅̽͝ḷ̷̖̋͝f̸̢̱̭̑͗̎̕ by KTH, BBreon [https://gamebanana.com/mods/247325]
 
 SNAKE
 06 - LTWB Snake by SoulOfficer
-07 - MVZY Snake by Wyld
-08 - Zstick Snake by Zstick
-25 - FlashingFire Snake by Kurukato
-AltR - Autumn Snake by Autumn
+07 - Autumn Snake by Autumn
+08 - MVZY Snake by Wyld
 
 SONIC
-34 - Motobug Sonic by Motobug
-40 - DHS7 Sonic by DHS7
+40 - Wyld Sonic by Wyld
 
 WARIO MAN
 
 BOWSER
 
 KNUCKLES
-24 - Motobug Knux by Motobug
-30 - Rasta Knux by DHS7
 
 ########################
 STAGES
 ########################
 
+BATTLEFIELD
+Base - Daytime Battlefield by ilikepizza107
+
 POKEMON STADIUM 2
-Base - Honeypot PS2 by ilikepizza107
+Base - Full Bloom PS2 by ilikepizza107
 
 FRIGATE HUSK
 L -  Hyrule Meadows by Motobug, with edits by mawwwk
 
 SMASHVILLE
 All - 2023 Smashville plat animation by Motobug
-
-KONGO JUNGLE
-Base - Competitive Kongo Jungle by Pnut, with credit to Kapedani, ilikepizza107, Yorch, MarioDox, Pietschie and Bad Randolph, Mewtwo2000, GoldenNickXT, and Nezha
 
 
 ################
@@ -204,7 +178,7 @@ MENUS
 
 New "Ready To Fight!" Model by Xenthos
 
-Winter results screen by ilikepizza107, with credit to Red93, Milt, Johnlcb, FrozenHobo
+Results screen by ilikepizza107, with credit to Tatsuya
 
-CSS + SSS by ilikepizza107
+CSS + SSS by ilikepizza107, with credit to Tatsuya
 

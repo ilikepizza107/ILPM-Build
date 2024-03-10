@@ -96,7 +96,7 @@ notWarioman:
 # Stage Select Random Player Stock Icons Fix
 # Overwrites the old constants the game used as the frames for Random Icons with our own 50CC compliant ones.
 # First value should be left as is, second value should be the first plus how many colored random icons you need!
-float[2] 9051.0f, 9061.0f @ $806B91B0
+float[2] 9051.0f, 9055.0f @ $806B91B0
 
 ###################################################################
 [Legacy TE] Upload Character Masquerade Data At Startup [DukeItOut]

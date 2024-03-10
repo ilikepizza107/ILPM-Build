@@ -36,7 +36,7 @@
 # Volume does not need to be set for brstm files read off of the disc. Song start delays, however, must be manually
 #	set for all song IDs that utilize them!
 ####################################################################################################
-[Project+] Custom Sound Engine v4.2b [Dantarion, PyotrLuzhin, DukeItOut]
+[Project+] Custom Sound Engine v4.2c [Dantarion, PyotrLuzhin, DukeItOut]
 ####################################################################################################
 .alias exMusicRange_Lo = 0xF000 # lowest custom music ID possible 
 .alias exMusicRange_Hi = 0xFFFF # highest custom music ID possible
@@ -127,8 +127,8 @@ HOOK @ $806D2164			# process/scMelee
 	lbz r0, -0xC82(r12)    		# \
 	cmpwi r0, 1        			# | The above also applies to Wild Brawl
 	beq skipToggle        		# /
-    lbz r0, -0xC81(r12)			# \
-    cmpwi r0, 1					# | As well as Bomb Rain Mode
+    lbz r0, 0xF36(r12)			# \
+    cmpwi r0, 6					# | As well as Bomb Rain Mode
     beq skipToggle				# /
 	
 	lis r12, 0x805A				# \

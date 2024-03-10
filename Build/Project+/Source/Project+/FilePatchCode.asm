@@ -883,9 +883,9 @@ loc_0x20:
   nop 
 }
 
-########################
-SDHC Extension 1.1[Bero]
-########################
+####################################
+SDHC/SDXC Extension 2.0 [Bero, Jako]
+####################################
 .macro LoadAddress(<arg1>,<arg2>)	// Simple register address load math
 {
 	.alias temp_Hi = <arg2> / 0x10000 
@@ -916,11 +916,24 @@ HOOK @ $803EEE18
   lwz r3, 0x14(r1)
   rlwinm. r3, r3, 0, 9, 9
   beq- loc_0x30
+  lhz r3, 0xE(r1)
+  rlwinm r3, r3, 16, 10, 15
+  lhz r0, 0x10(r1)
+  or r3, r3, r0
+  cmplwi r3, 0xFFFF
   li r0, 0x9
   lwz r3, 0xC(r1)
   rlwinm r3, r3, 24, 16, 31
   addi r3, r3, 0x1
-  mulli r6, r3, 0x400
+  bgt- sdxc
+  b sdhc
+sdxc:
+  mulli r6, r3, 0x4000  # | Now supports FAT32-formatted SDXC cards! They use sector size(?) of 0x4000
+  b done
+sdhc:
+  mulli r6, r3, 0x400 # | SDHC cards use sector size(?) of 0x400
+  b done
+done:
   %MakeJump(r3,0x803EEE58) # | Jump to address 803EEE58 instead of going to 803EEE1C
 loc_0x30:
   lwz r5, 0xC(r1)

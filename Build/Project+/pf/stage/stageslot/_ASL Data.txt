@@ -270,13 +270,14 @@ Z: Shadow_Moses_Z.param
 
 
 ################
-23.asl - 5 entries
+23.asl - 6 entries
 
 Base: Green_Hill_Zone.param
 R: Green_Hill_Zone_R.param
 L: Green_Hill_Zone_L.param
-Z: Green_Hill_Zone_Z.param
 X: Green_Hill_Zone_X.param
+Z: Green_Hill_Zone_Z.param
+X+L: Green_Hill_Zone_LX.param
 
 
 ################
@@ -307,7 +308,7 @@ Base: Config.param
 ################
 28.asl - 1 alt stage
 
-Base: Results.param
+Base: Results_DF.param
 
 
 ################
@@ -380,14 +381,13 @@ Y: Peach_Castle_Y.param
 
 
 ################
-30.asl - 6 entries
+30.asl - 5 entries
 
 Base: Corneria.param
 R: Corneria_R.param
 L: Corneria_L.param
 Z: Corneria_Z.param
 Y: Corneria_Y.param
-L+R: Corneria_LR.param
 
 
 ################
@@ -629,5 +629,14 @@ Base: Pirate_Ship.param
 R: Pirate_Ship_R.param
 L: Pirate_Ship_L.param
 Z: Pirate_Ship_Z.param
+
+
+################
+52.asl - 4 entries
+
+Base: Venom.param
+R: Venom_R.param
+L: Venom_L.param
+Z: Venom_Z.param
 
 

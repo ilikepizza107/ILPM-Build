@@ -100,7 +100,7 @@ SFX_Table:		# Table size should be (sound effect count edited + 1) * 2 (i.e. 0 S
 	0xFFFF, 0  # Make sure the table ends with this as a terminator!
 
 MUSIC_Table:	# Table size should be (song count edited + 1 ) * 2 (i.e. 0 songs = 2, 1 song = 4, 2 songs = 6, 3 songs = 8, etc.)
-	uint16_t [30] |
+	uint16_t [32] |
 	0x27CE, 90, | # Tunnel Scene (X)
 	0x2719, 90, | # Castle / Fortress Boss (SMW/SMB3)
 	0x2722, 105,| # Main Theme (Super Mario 64)
@@ -115,6 +115,7 @@ MUSIC_Table:	# Table size should be (song count edited + 1 ) * 2 (i.e. 0 songs =
 	0x273F, 115,| # Gerudo Valley
 	0x2736, 115,| # The Dark World
 	0x273C, 100,| # Song of Storms
+  0x270c, 0,  | # Replays / Vault menu
 	0xFFFF,	0	# Make sure the table ends with this as a terminator!
 Table_Skip:
 	.RESET

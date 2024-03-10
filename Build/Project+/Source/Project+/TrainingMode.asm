@@ -461,3 +461,19 @@ found:
 end: 
     mr r0, r3
 }
+
+####################################################################
+[Project+] 1-P Battles Guarantee Infinite Time [DukeItOut, Kapedani]
+#
+# Allows players to practice solo in "VS." without altering time
+####################################################################
+HOOK @ $806dd018  # sqVsMelee::setupMelee
+{
+  lhz    r3, 0x1A(r31) # Original operation
+  lbz r12,0x9(r31)          # \
+  rlwinm r12,r12,0,27,29    # | check if globalModeMelee->meleeInitData.numPlayers == 1
+  cmpwi r12,4               # |
+  bne+ %end%                # /
+  li r12, 0x0         # \ globalModeMelee->meleeInitData.timeLimitFrames = 0
+  stw r12, 0x20(r31)  # /
+}

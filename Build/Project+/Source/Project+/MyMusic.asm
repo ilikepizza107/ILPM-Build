@@ -213,9 +213,9 @@ Enable Hanenbow in My Music [Desi]
 op NOP @ $806B1E80
 
 
-#########################################################################################################
-[Legacy TE] My Music track frequency button shortcuts V2.1 (TLST file support) [Fracture, DukeItOut, Eon]
-#########################################################################################################
+#################################################################################################################
+[Legacy TE] My Music track frequency button shortcuts V2.6 (TLST file support) [Fracture, DukeItOut, Eon, mawwwk]
+#################################################################################################################
 HOOK @ $8117E698
 {
   stw r0, -4(r1)
@@ -226,49 +226,64 @@ HOOK @ $8117E698
   stfd f0, -0x10(r1)
   stwu r1, -0x8C(r1)
   stmw r3, 8(r1)
-  li r28, 0x0
-  lis r29, 0x805B
+  
+  li r28, 0
+  lis r29, 0x805B		# For checking controller inputs
   ori r29, r29, 0xAD04
-  li r31, 0x0
-  cmpwi r31, 0x100
-  bge- loc_0x4C
+  li r31, 0
 
-loc_0x38:
+checkInput:
   lwzx r30, r29, r31
   or r28, r28, r30
   addi r31, r31, 0x40
   cmpwi r31, 0x100
-  blt+ loc_0x38
+  blt+ checkInput
 
-loc_0x4C:
-  lis r12, 0x8054		# 8053EF70 Holds last input when doing My Music
-  lwz r11, -0x1090(r12) #
+  lis r12, 0x8054		# 8053EF70 Holds last input when doing My Music,
+  lwz r11, -0x1090(r12) # as set in StageFiles.asm.
   and. r11, r28, r11	# Filter the shoulder buttons
   stw r11, -0x1090(r12)	#
-  bne skip				# Prevents them being sticky on selecting an L/R tracklist.
+  bne skip				# Prevents them being sticky on selecting an alt tracklist.
+	
+  lbz r11, -0x108C(r12)	# \
+  cmpwi r11, 0			# | Shortcut cooldown for L+R to make it easier to let go.
+  ble+ checkLR			# |
+  
+  subi r11, r11, 1		# | If this is not present, you could be a frame off in
+  stb r11, -0x108C(r12)	# | releasing and get the L or R shortcuts instead!
+  b skip				# /
 
+checkLR:
+  andi. r31, r28, 0x60;   cmpwi r31, 0x60;  bne- checkL
+  li r6, 6				# 6-frame leniency on L+R
+  stb r6, -0x108C(r12)	# 
+  li r6, 40				# If L and R are BOTH pressed, set frequency to 40
+  lis r29, 0x4270		# Store float(60) for bar animation
+  stw r29, -0x10(r1)
+  lfs f1, -0x10(r1)
+  b setValue
 
-  andi. r31, r28, 0x40;  beq- loc_0x68		# Check for L
-  li r6, 0x0
+checkL:
+  andi. r31, r28, 0x40;  beq- checkR
+  li r6, 0				# If L pressed, set frequency to 0
   lis r29, 0x42C8
   stw r29, -0x10(r1)
   lfs f1, -0x10(r1)
+  b setValue
 
-loc_0x68:
-  andi. r31, r28, 0x20;  beq- loc_0x84		# Check for R
-  li r6, 0x64
-  li r29, 0x0
+checkR:
+  andi. r31, r28, 0x20;  beq- finish
+  li r6, 100			# If R pressed, set frequency to 100
+  li r29, 0
   stw r29, -0x10(r1)
   lfs f1, -0x10(r1)
 
-loc_0x84:
-  andi. r30, r28, 0x60;  beq- loc_0xE0		# Check for L+R
+setValue:
   mr r29, r3
   lwz r4, 0x670(r3)
   lhz r3, 0x42(r3)
   rlwinm r3, r3, 2, 0, 29
-#Fixed to work with My Music System
-  mulli r3, r3, 4
+  mulli r3, r3, 4		# Fixed to work with My Music system
   lis r5, 0x8053
   ori r5, r5, 0xF20C
   add r5, r3, r5
@@ -289,7 +304,6 @@ loc_0x84:
   mtctr r0
   bctrl 
 
-loc_0xE0:
 skip:
 finish:
   lmw r3, 8(r1)
@@ -347,7 +361,11 @@ Miscellaneous Music Customizer [DukeItOut]
 .alias VSResults 		= 0xF400	# Song ID to play (0x2700 in Brawl)
 .alias AllStarRest		= 0xF400	# Song ID to play (0x2707 in Brawl)
 .alias BreakTheTargets	= 0x2712	# Song ID to play (0x2712 in Brawl)
-
+CODE @ $800EB14C			# VS. Results Theme
+{
+	li r5, 0
+	ori r4, r5, VSResults		
+}
 op NOP	@ $806E13B8	# Makes Classic Mode Stage 13 read the tracklist instead of always guarantee a song that may or may not be on said tracklist
 op ori r0, r3, AllStarRest		@ $8010FDF0 
 op ori r0, r3, BreakTheTargets	@ $8010FE18

@@ -326,15 +326,6 @@ Corneria_L.param
 	SFX / GFX: 0x006D / 0x0061
 
 ################
-Corneria_LR.param
-
-	STGCORNERIA_LR_VENOM.pac
-	st_venom.rel
-	Venom.tlst
-	SFX / GFX: 0x006D / 0x0061
-	MemoryAllocation: 0x2000 (8192 bytes)
-
-################
 Corneria_R.param
 
 	STGCORNERIA_R_FOD_SAURIA.pac
@@ -353,37 +344,37 @@ Corneria_Y.param
 ################
 Corneria_Z.param
 
-	STGCORNERIA_Z_PAPETOON.pac
-	st_otrain_items.rel
-	Papetoon.tlst
-	SFX / GFX: 0x006D / 0x0061
+	STGCORNERIA_Z_SUPER.pac
+	st_sfcorneria.rel
+	Corneria_SNES.tlst
+	SFX / GFX: 0xFFFF / 0xFFFF
 
 ################
 Dead_Line.param
 
 	STGDEADLINE.pac
-	st_greenhill.rel
+	st_greenhill_act2.rel
 	Dead_Line.tlst
 
 ################
 Dead_Line_L.param
 
 	STGDEADLINE_L_CHEMICALPLANT.pac
-	st_greenhill.rel
+	st_greenhill_act2.rel
 	Chemical_Plant_Zone.tlst
 
 ################
 Dead_Line_R.param
 
 	STGDEADLINE_R_GHZ_DEADLINE.pac
-	st_greenhill.rel
+	st_greenhill_act2.rel
 	Dead_Line.tlst
 
 ################
 Dead_Line_Z.param
 
 	STGDEADLINE_Z_SSZ_SPACECOLONY.pac
-	st_greenhill.rel
+	st_greenhill_act2.rel
 	Space_Colony_ARK.tlst
 
 ################
@@ -675,8 +666,9 @@ Flat_Zone_Z.param
 Fountain_of_Dreams.param
 
 	STGFOUNTAINOFDREAMS.pac
-	st_final.rel
+	st_dxfountain.rel
 	Fountain_of_Dreams.tlst
+	SFX / GFX: 0xFFFF / 0x0033
 
 ################
 Fountain_of_Dreams_L.param
@@ -817,32 +809,40 @@ Golden_Temple_Z.param
 Green_Hill_Zone.param
 
 	STGGREENHILLZONE.pac
-	st_greenhill.rel
+	st_greenhill_act2.rel
 	Green_Hill_Zone.tlst
 	SFX / GFX: 0x0066 / 0x0054
 
 ################
 Green_Hill_Zone_L.param
 
-	STGGREENHILLZONE_L_GHZ_MARBLEZONE.pac
+	STGGREENHILLZONE_L_BRAWL.pac
+	st_greenhill_act2.rel
+	Green_Hill_Zone_Brawl.tlst
+	SFX / GFX: 0x0066 / 0x0054
+
+################
+Green_Hill_Zone_LX.param
+
+	STGGREENHILLZONE_LX_ORIGINAL.pac
 	st_greenhill.rel
-	Marble_Zone.tlst
+	Green_Hill_Zone_Brawl.tlst
 	SFX / GFX: 0x0066 / 0x0054
 
 ################
 Green_Hill_Zone_R.param
 
-	STGGREENHILLZONE_R_GHZ_PROJECTM.pac
-	st_greenhill.rel
-	Green_Hill_Zone.tlst
+	STGGREENHILLZONE_R_GHZ_MARBLEZONE.pac
+	st_greenhill_act2.rel
+	Marble_Zone.tlst
 	SFX / GFX: 0x0066 / 0x0054
 
 ################
 Green_Hill_Zone_X.param
 
-	STGGREENHILLZONE_X_BRAWL.pac
-	st_greenhill.rel
-	Green_Hill_Zone_Brawl.tlst
+	STGGREENHILLZONE_X_GHZ_PROJECTM.pac
+	st_greenhill_act2.rel
+	Green_Hill_Zone.tlst
 	SFX / GFX: 0x0066 / 0x0054
 
 ################
@@ -955,7 +955,7 @@ Hyrule_Castle_L.param
 Hyrule_Castle_R.param
 
 	STGHYRULECASTLE_R_WL_HYRULE.pac
-	st_greenhill.rel
+	st_greenhill_act2.rel
 	Hyrule_Castle.tlst
 
 ################
@@ -1039,9 +1039,8 @@ Jungle_Japes_Z.param
 Kongo_Jungle.param
 
 	STGKONGOJUNGLE.pac
-	st_kongojungle_redux.rel
+	st_kongojungle64.rel
 	Kongo_Jungle.tlst
-	SFX / GFX: 0x00D9 / 0x0032
 
 ################
 Kongo_Jungle_L.param
@@ -1054,7 +1053,7 @@ Kongo_Jungle_L.param
 Kongo_Jungle_R.param
 
 	STGKONGOJUNGLE_R_GHZ_HORNETHOLE.pac
-	st_greenhill.rel
+	st_greenhill_act2.rel
 	Hornet_Hole.tlst
 
 ################
@@ -1701,9 +1700,79 @@ Rest_Area.param
 	Rest_Area.tlst
 
 ################
-Results.param
+Results_BF.param
+
+	STGRESULT_STGBATTLEFIELD.pac
+	
+	Results.tlst
+
+################
+Results_DF.param
 
 	STGRESULT.pac
+	
+	Results.tlst
+
+################
+Results_DL.param
+
+	STGRESULT_STGDREAMLAND.pac
+	
+	Results.tlst
+
+################
+Results_FB.param
+
+	STGRESULT_STGPOKEMONSTADIUM2.pac
+	
+	Results.tlst
+
+################
+Results_FD.param
+
+	STGRESULT_STGFINALDESTINATION.pac
+	
+	Results.tlst
+
+################
+Results_FH.param
+
+	STGRESULT_STGFRIGATEHUSK.pac
+	
+	Results.tlst
+
+################
+Results_LM.param
+
+	STGRESULT_STGLUIGISMANSION.pac
+	
+	Results.tlst
+
+################
+Results_PS.param
+
+	STGRESULT_STGPOKEMONSTADIUM2DF.pac
+	
+	Results.tlst
+
+################
+Results_SV.param
+
+	STGRESULT_STGSMASHVILLE.pac
+	
+	Results.tlst
+
+################
+Results_TT.param
+
+	STGRESULT_STGTEMPLEOFTIME.pac
+	
+	Results.tlst
+
+################
+Results_YI.param
+
+	STGRESULT_STGYOSHISISLAND.pac
 	
 	Results.tlst
 
@@ -1864,7 +1933,7 @@ Sky_Sanctuary.param
 Sky_Sanctuary_L.param
 
 	STGSKYSANCTUARY_L_GHZ_PUMPKINHILL.pac
-	st_greenhill.rel
+	st_greenhill_act2.rel
 	Pumpkin_Hill.tlst
 
 ################
@@ -2178,6 +2247,39 @@ Training_Z.param
 	Training_Room.tlst
 
 ################
+Venom.param
+
+	STGVENOM.pac
+	st_venom.rel
+	Venom.tlst
+	SFX / GFX: 0x006D / 0x0061
+	MemoryAllocation: 0x2000 (8192 bytes)
+
+################
+Venom_L.param
+
+	STGVENOM_L_KRAZOA.pac
+	st_krazoa.rel
+	Sauria.tlst
+	SFX / GFX: 0x005F / 0x005A
+
+################
+Venom_R.param
+
+	STGVENOM_R_SV_VENOM.pac
+	st_smashville_noambience.rel
+	Venom.tlst
+	SFX / GFX: 0x0064 / 0x0032
+
+################
+Venom_Z.param
+
+	STGVENOM_Z_PAPETOON.pac
+	st_otrain_items.rel
+	Papetoon.tlst
+	SFX / GFX: 0x006D / 0x0061
+
+################
 Venus_Lighthouse.param
 
 	STGVENUSLIGHTHOUSE.pac
@@ -2234,7 +2336,6 @@ WarioWare_X.param
 	st_madein.rel
 	WarioWare.tlst
 	SFX / GFX: 0x005F / 0x004D
-	MemoryAllocation: 0x147080 (1339520 bytes)
 
 ################
 WarioWare_Y.param
@@ -2295,15 +2396,14 @@ Wario_Land_Z.param
 Yoshis_Island.param
 
 	STGYOSHISISLAND.pac
-	st_crayon_noshyguy_noSFX.rel
+	st_crayon_noshyguy.rel
 	Yoshis_Island.tlst
-	SFX / GFX: 0x004C / 0x0032
 
 ################
 Yoshis_Island_DPAD.param
 
 	STGYOSHISISLAND.pac
-	st_crayon_noshyguy_noSFX.rel
+	st_crayon_noshyguy.rel
 	Yoshis_Island_DPAD.tlst
 	SFX / GFX: 0x004C / 0x0032
 

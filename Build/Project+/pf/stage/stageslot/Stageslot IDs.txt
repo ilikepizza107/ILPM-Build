@@ -65,3 +65,4 @@
 4F - Rainbow Cruise
 50 - Poke Floats
 51 - Pirate Ship
+52 - Venom

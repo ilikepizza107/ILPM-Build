@@ -145,6 +145,8 @@ Dash within Dash Uses Run Sensitivity [0.80->0.62]
 Threshold to begin tracking distance vs time on stick movements [0.25->0.35]
 	float  0.35 @ $80AD7528
 	float -0.35 @ $80AD752C
+D-Pad acceleration threshold for solo Wiimote movement [30->23.999]
+	float 23.999 @ $805A182C
 Item Ground Smash U-Throw Velocity [4.1->4.34]
 	float 4.34 @ $80F9FDBC
 

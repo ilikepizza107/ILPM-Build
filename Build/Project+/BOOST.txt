@@ -16,7 +16,6 @@ Single CSS StockIcon (InfStc.001) [ASF1nk]
 .include Source/Project+/StageFiles.asm
 .include Source/Project+/CustomRequirements.asm
 .include Source/Project+/Shake.asm
-.include Source/Project+/CStick.asm
 .include Source/Project+/LedgeGrab.asm
 .include Source/Project+/ScreenKO.asm
 .include Source/Project+/Timeout.asm
@@ -43,20 +42,54 @@ Single CSS StockIcon (InfStc.001) [ASF1nk]
 .include Source/ProjectM/PSA/SlowTurn.asm
 .include Source/ProjectM/PSA/Edge.asm
 
+.include Source/ProjectM/SpecialModes/AllStarVs.asm
+.include Source/ProjectM/SpecialModes/BombRain.asm
+.include Source/ProjectM/SpecialModes/RandomElement.asm
+.include Source/ProjectM/SpecialModes/Rules.asm
+.include Source/ProjectM/SpecialModes/Stamina.asm
+.include Source/ProjectM/SpecialModes/Turbo.asm
+.include Source/ProjectM/SpecialModes/War.asm
+.include Source/ProjectM/SpecialModes/Wild.asm
+.include Source/ProjectM/SpecialModes/Zero2Death.asm
+
+.include Source/Project+/EffectCommands.asm
+.include Source/Project+/Attributes.asm
+.include Source/Project+/PokeTrainer.asm
+
 .include Source/Project+/L-Cancel.asm
 .include Source/Project+/InputSystem.asm
 .include Source/Project+/Moonwalk.asm
 .include Source/Project+/AirDodge.asm
-.include Source/Project+/Items.asm
 .include Source/Project+/Pause.asm
 .include Source/Project+/Collision.asm
+.include Source/Project+/BootToCSS.asm
+.include Source/Project+/Boss.asm
+.include Source/Project+/Articles.asm
+.include Source/Project+/IndependentSub.asm
+.include Source/Project+/TrainingMode.asm
+.include Source/Project+/VictoryCamera.asm
+.include Source/Project+/ResultsSkip.asm
+
+.include Source/LegacyTE/ASLHelper.asm
+.include Source/LegacyTE/LoadFlags.asm
+.include Source/LegacyTE/UnboundedTeamEngine.asm
+
+.include Source/ProjectM/CustomAI.asm
+.include Source/ProjectM/Events.asm
+.include Source/ProjectM/Handicap.asm
+
+.include Source/Community/MusicSelect.asm
+.include Source/Community/Subspace.asm
+
+.include Source/Community/PSA/Angle.asm
+.include Source/Community/PSA/IC-Basics.asm
+.include Source/Community/PSA/Maths.asm
+.include Source/Community/PSA/PointerWizardry.asm
+.include Source/Community/PSA/PSA.asm
+.include Source/Community/PSA/VariableParameter.asm
+
 #.include Source/Project+/TexFlags.asm	# This code is currently having issues interacting with the Code Menu. Included 
 					# to allow an understanding of how it will mechanically work in the future.
-
-.include Source/Stagelists/RandomStagelist.asm
-.include Source/Extras/UnlockEverything.asm
-.include Source/Extras/BackplateColorsStandalone.asm
-.include Source/Extras/HoldStartResults.asm
 
 .include Source/Extras/Console.asm	# Only use this on a Wii or Wii U! The codes in this are necessary for the slower specifications of the actual console.
 #.include Source/Extras/Netplay.asm	# Only use this in Dolphin! The codes in this will result in bad behavior on the Wii!

@@ -4255,9 +4255,9 @@ HOOK @ $8002D4F4                # Address = $(ba + 0x0002D4F4)
 	ori r4, r4, 0x6e75
 	stw r4, 0xc(r30)
 	lis r4, 0x332f
-	ori r4, r4, 0x6461
+	ori r4, r4, 0x646e
 	stw r4, 0x10(r30)
-	lis r4, 0x7461
+	lis r4, 0x6574
 	ori r4, r4, 0x2e63
 	stw r4, 0x14(r30)
 	lis r4, 0x6d6e

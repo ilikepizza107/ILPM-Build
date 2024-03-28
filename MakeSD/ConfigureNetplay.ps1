@@ -12,12 +12,12 @@ del "../Build/Project+/st/" -Confirm:$false -Recurse -erroraction 'silentlyconti
 #NETPLAY.txt
 $netplayPath = "..\Build\Project+\NETPLAY.txt"
 (Get-Content $netplayPath).replace('Source/Project+/MultiGCT.asm', 'Source/Netplay/Net-MultiGCT.asm') | Set-Content $netplayPath
-(Get-Content $netplayPath).replace('Source/Project+/CodeMenu.asm', 'Source/Netplay/Net-CodeMenu.asm') | Set-Content $netplayPath
+(Get-Content $netplayPath).replace('Source/CodeMenu/CodeMenu.asm', 'Source/Netplay/Net-CodeMenu.asm') | Set-Content $netplayPath
 $netplayContent = Get-Content $netplayPath
 $netplayContent[15] += "`r`n`r`n# Netplay Codeset Differences:`r`n"
 $netplayContent[15] += "#`r`n"
 $netplayContent[15] += "# NETBOOST.GCT is loaded instead of BOOST.GCT (see bottom of codeset)`r`n"
-$netplayContent[15] += '# "Source/Netplay/Net-CodeMenu.asm" is loaded instead of "Source/Project+/CodeMenu.asm"'
+$netplayContent[15] += '# "Source/Netplay/Net-CodeMenu.asm" is loaded instead of "Source/CodeMenu/CodeMenu.asm"'
 $netplayContent[15] += "`r`n#`r`n"
 $netplayContent[15] += "#############################################################################"
 $netplayContent | Set-Content $netplayPath

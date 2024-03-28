@@ -1,5 +1,5 @@
 + Project+/Netplay.txt 
-	.include Source/Project+/CodeMenu.asm  ->  .include Source/Netplay/Net-CodeMenu.asm
+	.include Source/CodeMenu/CodeMenu.asm  ->  .include Source/Netplay/Net-CodeMenu.asm
 	.include Source/Project+/MultiGCT.asm  ->  .include Source/Netplay/Net-MultiGCT.asm
 
 + Project+/Netplay.gct

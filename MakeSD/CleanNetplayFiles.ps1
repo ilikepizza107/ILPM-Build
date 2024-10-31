@@ -4,7 +4,7 @@ del "..\Build\Project+\pf\menu3\dnet.cmnu" -Confirm:$false -Recurse -erroraction
 del "..\Build\Project+\pf\movie" -Confirm:$false -Recurse -erroraction 'silentlycontinue'
 del "..\Build\Project+\pf\sound\netplaylist" -Confirm:$false -Recurse -erroraction 'silentlycontinue'
 del "..\Build\Project+\Source\Netplay" -Confirm:$false -Recurse -erroraction 'silentlycontinue'
-del "..\Build\Project+\pf\toy\seal" -Confirm:$false -Recurse -erroraction 'silentlycontinue'
+Move-Item "../stBackup/" -Destination "../Build/Project+/st/" -Force
 
 #RSBE01.txt
 $rsbe01Path = "..\Build\Project+\RSBE01.txt"

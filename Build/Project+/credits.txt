@@ -2,55 +2,62 @@
 PSA
 ################
 
-Custom GFX for Evil Lesbian Zelda - Evil Lesbian, ilikepizza107
- - PSA Edited: Sub Action 48, GFX; Sub Action 4E, GFX; Sub Action 50, GFX; Sub Action 54, GFX; Sub Action 58, Main; Sub Action 5D, Main; Sub Action 5D, GFX; Sub Action 60, GFX; Sub Action 62, GFX; Sub Action 63, GFX; Sub Action 64, GFX; Sub Action 65, GFX; Sub Action 66, GFX; Sub Action 67, GFX
+PSA edits for SipMastah, Wyld, & DHS7 Sonic trails by ilikepizza107
+ -PSA Edited: Sub Routine 0x2E5AC
 
-Custom GFX for Star Lucas - Star, ilikepizza107
- - PSA Edited: Sub Action 48, GFX; Sub Action 49, GFX; Sub Action 58, Main; Sub Action 62, GFX; Sub Action 63, GFX; Sub Action 61, Other; Sub Action 66, GFX, Sub Action 66, Other
+PSA edits for Shrug Toon Link by ilikepizza107
+ -PSA Edited: Sub Action 1DB, GFX; Sub Action 1DD, GFX
 
-Custom GFX for Crona Marth & Artemis Marth by SSK and KingJigglypuff, ilikepizza107
- - PSA Added: Subroutine 2x7950, 2x7BF8, 2x88C0
+PSA edits for Crona Marth & Artemis Marth by SSK and KingJigglypuff, ilikepizza107
+ - PSA Added: Subroutine 2x79B0, 2x79F0, 2x7A30
  - PSA Edited: Sub Actions 48, GFX; 49, GFX; 4E, GFX; 50, GFX; 54, GFX; 55, GFX; 58, GFX; 5D, GFX; 60, GFX; 62, GFX; 63, GFX; 64, GFX; 65, GFX; 66, GFX; B0, GFX; B9, GFX; D7, GFX; DC, GFX; E7, GFX; 1D0, GFX; 1D1, GFX; 1D6, GFX; 1D7, GFX; 1D8, GFX; 1D9, GFX; 1DA, GFX; 1DB, GFX; 1DC, GFX; 1DD, GFX; 1DE, GFX; 1E8, GFX; 1EB, GFX; 1EE, GFX; 1EF, GFX; 1F0, GFX; 1F1, GFX; 1F2, GFX; 1F3, GFX; 1F4, GFX
+
+PSA edits for GooSluj ZSS SFX by ilikepizza107
+ - PSA Edited (All SFX Tab): Sub Actions A, B, C, E, F, 10, 11, 12, 2A, 30, 31, 32, 33, 36, 43, 44, 45, 48, 4E, 53, 54, 55, 63, 64, 65, 66, 67, 68, 69, 6A, 6B, AF, B0, B1, B2, B8, B9, BA, BB, BE, BF, C0, C1, C3, D7, D8, D9, DC, DD, DE, E6, E7, E8, E9, FC, FD, 151, 152, 153, 154, 155, 156, 157, 158, 159, 15A, 15C, 1C2, 1C3, 1C6, 1E2, 1E5, 1E6
 
 ################
 SKINS
 ################
 
 MARIO
+07 - LoyaL Mario by ilikepizza107
 
 DONKEY KONG
 
 LINK
+10 - Zushi Link by GKO
+27 - Maofever Link by SOULLY
 
 SAMUS
 40 - GooSluj Samus by ilikepizza107
-45 - Samus Brawl Clone by SJS [https://gamebanana.com/mods/247126]
+45 - Brawl Fake Samus by SJS [https://gamebanana.com/mods/247126]
 
 YOSHI
+40 - Shiny Zubat Yoshi by SJS
+45 - Whoratio Yoshi by Z-Stick, with credit to ilikepizza107
 
 KIRBY
-25 - Shenanigans Kirby by ilikepizza107
-26 - influenza Kirby by influenza
-45 - Star Red Kirby by influenza
-46 - Star Kirby by influenza
-47 - Star Green Kirby by influenza
+25 - influenza Kirby by influenza
+40 - Star Red Kirby by influenza, ilikepizza107
+41 - Star Blue Kirby by influenza, ilikepizza107
+42 - Star Green Kirby by influenza, ilikepizza107
 
 FOX
-09 - Silver Fox by Baka
-10 - Star Blue Fox by ilikepizza107
-11 - Star Green Fox by ilikepizza107
-40 - Drip Fox by Wyld
+10 - Silver Fox by Baka
+11 - Star's Blue Fox by ilikepizza107
+12 - Star's Green Fox by ilikepizza107
+40 - Drip Fox by DHS7, ilikepizza107
 
 PIKACHU
 
 LUIGI
 
 CAPTAIN FALCON
-07 - Black Captain Falcon by SJ
-08 - shad Captain Falcon by influenza
-35 - Stude Captain Falcon by Motobug
-36 - SoulOfficer Falcon by influenza
-37 - ORLY Captain Falcon by Wyld
+07 - influenza Falcon by influenza
+35 - ORLY Falcon by Wyld
+36 - Stude Falcon by Motobug
+37 - SoulOfficer Falcon by influenza
+45 - shad Falcon by influenza, ilikepizza107
 
 NESS
 30 - Not Chris Ness by ilikepizza107
@@ -70,10 +77,8 @@ SHEIK
 32 - KWAM Sheik by ilikepizza107
 
 ICE CLIMBERS
-40 - phresh Ice Climbers by FingerStripes
 
 MARTH
-24 - Ronan Marth by ilikepizza107
 34 - Crona Marth by influenza
 45 - Artemis Marth by ilikepizza107
 
@@ -84,51 +89,59 @@ FALCO
 
 GANONDORF
 26 - Che Ganondorf by DHS7
+36 - Ford$ Ganondorf by FingerStripes
 40 - joey Ganondorf by DHS7
 
 META KNIGHT
-25 - Violet Morpho Knight by Efisio
-40 - Yuko MK by DHS7
+06 - NorCal MK by FingerStripes
+25 - Kulprit MK by ilikepizza107
 
 PIT
+40 - Star Red Pit by SJS, Star, ilikepizza107
+41 - Star Blue Pit by SJS, Star, ilikepizza107
+42 - Star Green Pit by SJS, Star, ilikepizza107
 
 ZERO SUIT SAMUS
 40 - GooSluj ZSS by ilikepizza107
-45 - Pink Dark ZSS by Hulkalex, with credit to RedipsTheCooler [https://www.mediafire.com/file/bvwgvbx1h9jgsgf/Dark+Zero+Suit+Samus+Recolor.zip/file]
+45 - RosiYY ZSS by ilikepizza107
 
 OLIMAR
-40 - CP9 Olimar by FingerStripes
-45 - joey Olimar by Motobug
+40 - CP9 Olimar by FingerStripes, with credit to ilikepizza107
+45 - joey Olimar by SJS and DHS7
 
 LUCAS
 40 - Star Red Lucas by Star, SJS
 41 - Star Blue Lucas by Star, SJS
 42 - Star Green Lucas by Star, SJS
-45 - Shadowhawke Lucas by SJS
+45 - Blue Pajama Lucas by Toti
+46 - Claus Pajama Lucas by Toti
 
 DIDDY KONG
+25 - SipMastah Diddy Kong by GKO
 
 MEWTWO
 
 CHARIZARD
 
 SQUIRTLE
+30 - Dbylan Squirtle by ilikepizza107
 
 IVYSAUR
-10 - Maofever Ivy by Maofever, with credit to ilikepizza107
+08 - Maofever Ivy by Maofever
 
 DEDEDE
-11 - Ripple Dedede by ???
+11 - Apollo Ali D3 by FingerStripes
+12 - Ripple D3 by ???
 
 LUCARIO
-25 - influenza Lucario by influenza, with credit to Chucklez, LnktheWolf, and PMDT
+25 - influenza Lucario by influenza
 
 IKE
-24 - influezna Ike by influenza
+24 - influenza Ike by influenza
+34 - Blitz Ike by erg
 
 R.O.B.
-07 - Xtreme ROB by ilikepizza107
-08 - Comb ROB by Wyld
+07 - Comb ROB by Wyld
 
 JIGGLYPUFF
 
@@ -137,17 +150,20 @@ WARIO
 ROY
 
 TOON LINK
-08 - Shrug Toon Link by Wyld
+40 - Shrug Toon Link by Shrug, ilikepizza107
 
 WOLF
 
 SNAKE
-06 - LTWB Snake by SoulOfficer
-07 - Autumn Snake by Autumn
-08 - MVZY Snake by Wyld
+06 - Autumn Snake by Autumn
+07 - MVZY Snake by Wyld
+25 - influenza Snake by influenza
+40 - SoulOfficer Snake by ilikepizza107, with credit to Autumn
 
 SONIC
+25 - SipMastah Sonic v2 by ilikpizza107
 40 - Wyld Sonic by Wyld
+45 - DHS7 Sonic by DHS7
 
 WARIO MAN
 
@@ -155,22 +171,22 @@ BOWSER
 
 KNUCKLES
 
+
 ########################
 STAGES
 ########################
 
 BATTLEFIELD
-Base - Daytime Battlefield by ilikepizza107
+Base - Daytime BF by ilikepizza107
+
+DREAM LAND
+Base - Mo8 DL by ilikepizza107
 
 POKEMON STADIUM 2
-Base - Full Bloom PS2 by ilikepizza107
-
-FRIGATE HUSK
-L -  Hyrule Meadows by Motobug, with edits by mawwwk
+Base - Tussleopolis PS2 by ilikepizza107
 
 SMASHVILLE
-All - 2023 Smashville plat animation by Motobug
-
+Base - Gardenville by Red98, with updates by ilikepizza107
 
 ################
 MENUS
@@ -178,7 +194,4 @@ MENUS
 
 New "Ready To Fight!" Model by Xenthos
 
-Results screen by ilikepizza107, with credit to Tatsuya
-
-CSS + SSS by ilikepizza107, with credit to Tatsuya
-
+CSS + SSS by ilikepizza107

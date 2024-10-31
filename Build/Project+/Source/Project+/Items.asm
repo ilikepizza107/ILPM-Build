@@ -59,31 +59,18 @@ HOOK @ $806A3F60
 	bctrl					# /
 	lwz r3, 0xC4(r20)	# Original operation
 }
-HOOK @ $806AAB98
+
+HOOK @ $80952120    # stOperatorDropItem::processBegin
 {
-	stw r0, 0x674(r3)	# Original operation: Go down one Y column
-	lwz r0, 0x670(r3)
-	cmpwi r0, 6
-	ble+ %END%
-	li r0, 6			# Fix X column so that it doesn't try to go too far to the right
-	stw r0, 0x670(r3) 
+    lis r31, 0x80AE          # \ Access pointer at 80ADAD5C
+    lwz r31, -0x52A4(r31)    # /
+    addi r3, r31, 0x4   # Access to max of range
 }
-HOOK @ $806AAAF0
+HOOK @ $80952298    # stOperatorDropItem::startOperator
 {
-	stw r0, 0x674(r3)	# Original operation: Wrap around to bottom Y column from Item Frequency bar
-	lwz r0, 0x670(r3)
-	cmpwi r0, 6
-	ble+ %END%
-	li r0, 6			# Fix X column so it doesn't try to go to the next row by accident
-	stw r0, 0x670(r3) 
-}
-HOOK @ $80952128
-{
-    lis r12, 0x80AE          # \ Access pointer at 80ADAD5C
-    lwz r12, -0x52A4(r12)    # /
-    lfsx f2, r12, r29        #
-    addi r29, r29, 4         # Access to max of range
-    lfsx f0, r12, r29        #
+    lis r30, 0x80AE          # \ Access pointer at 80ADAD5C
+    lwz r30, -0x52A4(r30)    # /
+    addi r3, r30, 0x4   # Access to max of range
 }
 HOOK @ $806AB200 # Handles item frequency text
 {

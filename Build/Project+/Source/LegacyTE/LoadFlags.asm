@@ -96,6 +96,9 @@ int8_t 0x27 @ $80AD8BBB
 [Project+] Peach Uses Separate Etc Files Per Costume [KingJigglypuff, DukeItOut]
 int8_t 0x27 @ $80AD8BA4
 
+[Project+] Knuckles Uses Separate Etc Files Per Costume [Motobug, DukeItOut]
+int8_t 0x27 @ $80AD8BC5
+
 [Project+] Ganondorf Uses Separate Etc Files Per Costume Set [KingJigglypuff, DukeItOut]
 int8_t 0x37 @ $80AD8BAC
 

@@ -269,9 +269,9 @@ HOOK @ $8069fa0c
 
   cmpwi r16, 1
   bne %end%
-  li r20, 0x9B  #red
-  li r19, 0x43  #green
-  li r18, 0x43  #blue
+  li r20, 0x46  #red
+  li r19, 0x3F  #green
+  li r18, 0x80  #blue
 }
 #Off Centre Tag
 HOOK @ $8069fa1c
@@ -279,9 +279,9 @@ HOOK @ $8069fa1c
   li r18, 0x50
   cmpwi r16, 1
   bne %end%
-  li r20, 0x9B  #red
-  li r19, 0x43  #green
-  li r18, 0x43  #blue
+  li r20, 0x46  #red
+  li r19, 0x3F  #green
+  li r18, 0x80  #blue
 }
 #Changing from Centred to Off Centre
 HOOK @ $806a05c8 
@@ -289,9 +289,9 @@ HOOK @ $806a05c8
   li r8, 0xFF
   cmpwi r17, 1
   bne %end%
-  li r5, 0x9B
-  li r6, 0x43
-  li r7, 0x43
+  li r5, 0x46
+  li r6, 0x3F
+  li r7, 0x80
 }
 
 ###########################################################

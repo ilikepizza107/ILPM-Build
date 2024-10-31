@@ -12,9 +12,9 @@ HOOK @ $8068480C
 }
 int 0x80000 @ $806A080C	# Make Nunchucks use (-) instead of C
 
-###################################################################################################################
-[Legacy TE] Hold Z for AltZ Characters, R for AltR Characters V3 [PyotrLuzhin, codes, ASF1nk, Yohan1044, DukeItOut]
-###################################################################################################################
+#######################################################################################################################
+[Legacy TE] Hold Z for AltZ Characters, R/C for AltR Characters V3.1 [PyotrLuzhin, codes, ASF1nk, Yohan1044, DukeItOut]
+#######################################################################################################################
 .macro sqAdvCheck()
 {
 	lis r12, 0x805B			# \
@@ -48,16 +48,23 @@ HOOK @ $8068478C
   lwz r3, 0x40(r3)
   rlwinm r15, r0, 6, 0, 25
   add r3, r3, r15
-  lbz r0, 0x27C(r3)
-  lwz r3, 0x244(r3);  extsb. r0, r0;  bne- loc_0x74
+  #lbz r0, 0x27C(r3); extsb. r0, r0;  bne- loc_0x74
+  lwz r3, 0x244(r3)
+  lwz r0, 0x1E0(r24)	# Controller type
+  cmpwi r0, 3; beq- Nunchuk
+  cmpwi r0, 2; beq- loc_0x88		# Solo Wiimote does not have access to hidden alts!
   
-  andi. r0, r3, 0x10; beq- loc_0x74  		# Check for Z
+  andi. r0, r3, 0x10; beq- loc_0x74  		# Check for Z on a GC/CC
+setAltZ:
   li r3, 0x1;  b loc_0x8C	# Set AltZ
 loc_0x74:
-  andi. r0, r3, 0x20; bne- setAltR			# Check for R on a GC/CC
-  andis. r0, r3, 0x4; beq+ loc_0x88			# Check for C on a Nunchuk
+  andi. r0, r3, 0x20; beq- loc_0x88			# Check for R on a GC/CC
 setAltR:
   li r3, 0x2;  b loc_0x8C	# Set AltR
+Nunchuk:
+  andi. r0, r3, 0x2000; bne- setAltZ		# Check for Z
+  andi. r0, r3, 0x4000; bne- setAltR		# Check for C
+
 loc_0x88:
   li r3, 0x0
 

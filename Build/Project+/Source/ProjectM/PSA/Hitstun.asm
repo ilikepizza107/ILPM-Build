@@ -5,92 +5,70 @@
 # 901A2288 -> 80545698	Store Variables into Hitstun CILs v1.1 
 # 901A2500 -> 805457D0	Jab Reset Hitstun Linker
 # 9019B000 -> 80545810	Jab Resets v8.4
-#############################################
-NonTumble Hitstun Canceling v1.2b [Shanus]
+
+####################################################
+NonTumble Hitstun Canceling v1.4 [Shanus, DukeItOut, Eon]
+####################################################
 #
 # 1.2b: 
 # LA-Basic[25] -> LA-Basic[82]
 # LA-Basic[30] -> LA-Basic[83]
 #
 # fixes bugs related to turbo and star items
-#############################################
+#
+# 1.2c: adjusts stacked stun mechanics
+# 1.3: Made more accurate to Melee
+####################################################
 .alias PSA_Off  = 0x805454E0
 .alias PSA_Off2 = 0x80545648
 CODE @ $805454E0
 {
-	#+0x0 If: Comparison Compare: IC-Basic[20003] >= 67.0   (If Prev Action between 0x43 and 0x45)
-	word 6; word 7;
-	word 5; IC_Basic 20003
+	#+0x00 Additional Action Requirement: Compare: IC-Basic[1100] >= 0.5	# Custom IC-Basic		# Knockback velocity
+	word 6; word 7	
+	word 5; IC_Basic 1100
 	word 0; word 4
-	word 1; scalar 67.0
-	#+0x20 And: Comparison Compare: IC-Basic[20003] <= 69.0
-	word 6; word 7
-	word 5; IC_Basic 20003
-	word 0; word 1
-	word 1; scalar 69.0
-	#+0x40 Basic Variable Set: LA-Basic[82] = LA-Basic[83]
-	word 5; LA_Basic 83
-	word 5; LA_Basic 82
-	#+0x50 Additional Action Requirement: Compare: LA-Basic[82] > 0.0
-	word 6; word 7
-	word 5; LA_Basic 82
-	word 0; word 5
-	word 1; scalar 0.0
-	#+0x70 Basic Variable Set: LA-Basic[83] = 0xA
+	word 1; scalar 0.5	
+	#+0x20 Basic Variable Set: LA-Basic[83] = 0xA
 	word 0; word 0xA
 	word 5; LA_Basic 83
-	#+0x80 Basic Variable Set: LA-Basic[82] = 0
-	word 0; word 0
-	word 5; LA_Basic 82
-	#+0x90 Additional Action Requirement: Compare: LA-Float[7] <= -0.7
-	word 6; word 7
-	word 5; LA_Float 7
-	word 0; word 1
-	word 1; scalar -0.7
-	#+0xB0 Additional Action Requirement: Comparison Compare: IC-Basic[0] <= 1.0
+	#+0x30 Additional Action Requirement: Comparison Compare: IC-Basic[0] <= 1.0
 	word 6; word 7
 	word 5; IC_Basic 0
 	word 0; word 1
 	word 1; scalar 1.0
+	#+0x50 Additional Action Requirement: Comparison Compare: IC-Basic[20030] > 1.0  # Custom IC-Basic # Frames Airborne
+	word 6; word 7
+	word 5; IC_Basic 20030
+	word 0; word 5
+	word 1; scalar 1.0
 
-	#+0xD0
-	word 2; word PSA_Off+0xD8
-
-	#+0xD8 Main Injection
+	#+0x70
+	word 0; word 0
+	word 6; word 0x3
+	
+	#+0x80
+	word 2; word PSA_Off+0x88
+	#+0x88 Main Injection
 	word 0x02010200; word 0x80FB3604 	#Change Action: Requirement: Action=0x16, Requirement=On Ground
-	word 0x02040400; word PSA_Off+0xB0 	#Additional Action Requirement: Comparison Compare: IC-Basic[0] <= 1.0
-	word 0x000A0400; word PSA_Off 		#If: Comparison Compare: IC-Basic[20003] >= 67.0
-	word 0x000B0400; word PSA_Off+0x20 	#	And: Comparison Compare: IC-Basic[20003] <= 69.0
-	word 0x12000200; word PSA_Off+0x40 	# 	Basic Variable Set: LA-Basic[82] = LA-Basic[83] 
-	word 0x02010200; word 0x80FB3604 	#	Change Action: Requirement: Action=0x16, Requirement=On Ground
-	word 0x02040400; word PSA_Off+0x50 	#	Additional Action Requirement: Compare: LA-Basic[82] > 0.0
-	word 0x02040400; word PSA_Off+0x90 	# 	Additional Action Requirement: Compare: LA-Float[7] <= -0.7
-	word 0x000E0000; word 0 			#Else:
-	word 0x12000200; word PSA_Off+0x80 	#	Basic Variable Set: LA-Basic[82] = 0
-	word 0x02010200; word 0x80FB3604 	#	Change Action: Requirement: Action=0x16, Requirement=On Ground
-	word 0x02040400; word PSA_Off+0x90 	# 	Additional Action Requirement: Compare: LA-Float[7] <= -0.7
-	word 0x000F0000; word 0 			#End If:
-	word 0x12000200; word PSA_Off+0x70 	#Basic Variable Set: LA-Basic[83] = 0xA
+	word 0x02040400; word PSA_Off+0x30 	#Additional Action Requirement: Comparison Compare: IC-Basic[0] <= 1.0
 	word 0x02010200; word 0x80FB3604 	#Change Action: Requirement: Action=0x16, Requirement=On Ground
+	word 0x02040400; word PSA_Off 		#Additional Action Requirement: Compare: IC-Basic[1100] >= 0.5
+	word 0x02040400; word PSA_Off+0x50 	#Additional Action Requirement: Compare: IC-Basic[20030] > 1
+	word 0x12000200; word PSA_Off+0x20 	#Basic Variable Set: LA-Basic[83] = 0xA
+	word 0x02010200; word PSA_Off+0x70 	#Change Action: Requirement: Action=0x16, Requirement=On Ground
 	word 0x02040100; word 0x80FB3614 	#Additional Action Requirement: Not Requirement 0x2723
 	word 0x02040200; word 0x80FB361C 	#Additional Action Requirement: Bit is Set RA-Bit[17]
-	word 0x00080000; word 0
+	word 0x00080000; word 0			#Return
 
 	#If Grounded at start of hitstun: Land
-	#If Previous action is in (GroundHit, AirHitLand, Hitstun)
-	#	Store current Knockback addition Timer
-	#	Land if Yspeed ignoring knockback <= -0.7 AND knockback addition DID NOT occur (timer at time of hit > 0)
-	#Else
-	#	Land if Yspeed ignoring Knockback <= -0.7
-	#EndIf
+	#If Grounded and current Knockback > 0.5 and airtime > 1: Land 
 	#Set Knockback Addition Timer to 10 frames
-	#Land if Not Something (Looks to be something like "not in hitlag")
-	#And bit is set Hitstun ended 
+	#Land if at end of hitstun
 }
 
 CODE @ $80FB3674	# 80F9FC20 + 13A54
 {
-	word 0x00070100; word PSA_Off+0xD0 	#Sub Routine: Main Injection
+	word 0x00070100; word PSA_Off+0x80 	#Sub Routine: Main Injection
 	word 0x00020000; word 0
 	word 0x00020000; word 0
 }
@@ -102,13 +80,13 @@ CODE @ $80545648
 	word 2; word PSA_Off2+0x30
 
 	#Injection2
-	word 0x12000200; word PSA_Off+0x70 	#Basic Variable Set: LA-Basic[83] = 0xA
+	word 0x12000200; word PSA_Off+0x20 	#Basic Variable Set: LA-Basic[83] = 0xA
 	word 0x02010200; word 0x80FB32C4 	#Change Action: Requirement: Action=0x7E, Requirement=On Ground
 	word 0x02040100; word 0x80FB32D4 	#Additional Action Requirement: Has Passed Over Ledge (Backwards)
 	word 0x00080000; word 0
 
 	#Injection3
-	word 0x12000200; word PSA_Off+0x70 	#Basic Variable Set: LA-Basic[83] = 0xA
+	word 0x12000200; word PSA_Off+0x20 	#Basic Variable Set: LA-Basic[83] = 0xA
 	word 0x02000300; word 0x80FB3EE4 	#Change Action Status: Requirement: ID=2715, Action=0x49, Requirement=Animation End
 	word 0x02040200; word 0x80FB3EFC 	#Additional Action Requirement: Requirement Bit Is Set: RA-Bit[17]
 	word 0x00080000; word 0
@@ -116,13 +94,14 @@ CODE @ $80545648
 CODE @ $80FB33D4 # 80F9FC20 + 137B4
 {
 	word 0x00070100; word PSA_Off2 		#Sub Routine: Injection2
-	word 0x00020000; word 0				#nop
+	word 0x00020000; word 0			#nop
 }
 CODE @ $80FB3F3C # 80F9FC20 + 1431C
 {
 	word 0x00070100; word PSA_Off2+0x08 #Sub Routine: Injection3
-	word 0x00020000; word 0 			#nop
+	word 0x00020000; word 0 		#nop
 }
+
 
 ################################################
 Store Variables into Hitstun CILs v1.1b [Shanus]

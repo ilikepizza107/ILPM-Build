@@ -11,6 +11,16 @@ Single CSS StockIcon (InfStc.001) [ASF1nk]
 * 046A17D4 74632E30
 * 046A17D8 30310000
 
+##################################
+Force loading StrapEn.pac [mawwwk]
+##################################
+* half 0x456E @ $806FFB51 # Jp
+* half 0x456E @ $806FFB81 # Fr
+* half 0x456E @ $806FFB99 # Sp
+* half 0x456E @ $817F6199 # Fr
+* half 0x456E @ $817F61A5 # Jp
+* half 0x456E @ $817F61B1 # Sp
+
 .include Source/LegacyTE/Replays.asm
 
 .include Source/Project+/StageFiles.asm
@@ -53,6 +63,7 @@ Single CSS StockIcon (InfStc.001) [ASF1nk]
 .include Source/ProjectM/SpecialModes/Zero2Death.asm
 
 .include Source/Project+/EffectCommands.asm
+.include Source/Project+/EffectsEX.asm
 .include Source/Project+/Attributes.asm
 .include Source/Project+/PokeTrainer.asm
 
@@ -69,6 +80,7 @@ Single CSS StockIcon (InfStc.001) [ASF1nk]
 .include Source/Project+/TrainingMode.asm
 .include Source/Project+/VictoryCamera.asm
 .include Source/Project+/ResultsSkip.asm
+.include Source/Project+/Unlocks.asm
 
 .include Source/LegacyTE/ASLHelper.asm
 .include Source/LegacyTE/LoadFlags.asm

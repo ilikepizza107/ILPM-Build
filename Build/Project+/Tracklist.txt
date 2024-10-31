@@ -1,65 +1,119 @@
+################
 BATTLEFIELD
-	Battlefield - Storm (Etrian Odyssey IV)
-	Sprinter (Super Hang-On)
-	Still, Move Forward! (Xenoblade Chronicles 2)
-	You Will Know Our Names Finale (Xenoblade Chronicles 3)
 
+	The Battle of Concepts (Haikyuu)
+	Meaning of Birth (Tales of the Abyss)
+	Emperor's Time (Hunter x Hunter)
+	Try Your Luck (Hunter x Hunter)
+	Inner Light (Shocking Lemon)
+
+################
+BOWSERS CASTLE
+
+	Showdown (Magi)
+	Vs Mecha Bowser (Super Mario Sunshine)
+	Un vra orage (Magi)
+	Theme of Dormammu (Marvel vs Capcom 3)
+	Bowser Battle (Paper Mario The Thousand Year Door)
+	Macho Grubba Battle (Paper Mario The Thousand Year Door)
+
+################
+DEAD LINE
+
+	Theme of Dr. Doom (Marvel vs Capcom 3)
+	Penny Battle (Pokemon Scarlet & Violet)
+	Fighting In The Street (Streets of Rage)
+	Rooftop Run Modern (Sonic Generations)
+
+################
 DREAM LAND
-	Glass Ocean (Neon White)
+
 	The Offing (SEGA Marine Fishing)
-	Snowland (Street Fighter III 3rd Strike)
-	World 4 - Whale (Super Monkey Ball 2)
+	Be in High Spriits (Ace of Diamond)
+	Glass Ocean (Neon White)
+	Neptune's Theme (Sailor Moon S Game)
 
+################
 FINAL DESTINATION
-	An Underlying Problem (Shovel Knight)
-	Fire's Last Hope (Rivals of Aether)
+
+	Theme of Vergil (Ultimate Marvel vs Capcom 3)
 	Rigged Game (Neon White)
+	Fire's Last Hope (Rivals of Aether)
 
-FRIGATE HUSK
-	Beats From Above (Klonoa Door To Phantomile)
-	Monster Karasu (Soul of the Samurai)
-	Emiya (FateUnlimited Codes)
-	Moonlight Capital (Kirby Triple Deluxe)
+################
+FRIGATE HUSK/HYRULE MEADOWS
 
+	The Mad Bailaor (Hunter x Hunter)
+	Opal's Theme (Steven Universe)
+	Maria Fight (Castlevania Nocturne in the Moonlight)
+	Brodelvulken (N64Y2K Millenium Trax)
+	Beautiful Green Wild Beast (Naruto)
+	Monsters' Banquet (Haikyuu)
+
+################
+GREEN HILL ZONE
+
+	Theme of Iron Man (Marvel vs Capcom 3)
+	I-no's Theme (Guilty Gear)
+	Riches in Me (Guilty Gear Isuka)
+	Theme of Nova (Ultimate Marvel vs Capcom 3)
+	Original Bet (Guilty Gear Xrd)
+
+################
 LUIGI'S MANSION
-	Amala Network (SMT 3)
-	Battle - Ferocity (Shin Megami Tensei V)
-	Battle C2 (Shin Megami Tensei IV)
-	Good Manners and Customs (Guilty Gear XX)
 
+	Almost There (Cave Story Remix)
+	Battle! Giratina (Pokemon Legends Arceus)
+	Boogie Woogie (Jujutsu Kaisen)
+	Danger Room (Marvel vs Capcom 3)
+	Prince Mush (Paper Mario The Thousand Year Door)
+	Rave in the Grave (Shantae and the Pirate's Curse)
+	Scattered and Lost (Celeste)
+
+################
 MENU
-	Character Select Theme (Under Night In-Birth II)
-	Gator Gambol (OMORI)
-	Pick of the Litter (Skullgirls)
-	Sky Tower (Pokemon Mystery Dungeon RTDX)
 
+	Its Our Generation (King of Fighters XV)
+	Want To Be Close (Persona 3)
+	Main Menu (LEGO Racers)
+	Battle Tutorial Menu (Pokemon Battle Revolution)
+	Choose a Colosseum (Pokemon Battle Revolution)
+	Character Select (Mario Super Sluggers)
+	Make Your Move (Magi)
+	Spinel is So Much Better Now (Steven Universe)
+
+################
 POKEMON STADIUM 2
-	Fight or Flight (Neon White)
+
+	Mission (Magi)
+	Battle! AI Sada AI Turo (Pokemon Scarlet & Violet)
+	Battle! Palkia & Dialga Origin Form (Pokemon Legends Arceus)
+	Absol's Hurdle Bounce (PokePark Pikachu's Adventure)
+	Direct Confrontation (Haikyuu)
 	Heavenly Sky (Sonic Frontiers)
-	Trouble Busters (Love Live)
-	Tulip Festival (Tekken Tag 2)
+	Ash-Greninja Theme (Pokemon XYZ)
 
+################
 RESULTS
-	Battle Results (Final Fantasy XIII)
-	Electric Tooth Brush (Jet Set Radio)
-	RidgeCityFM (Ridge Racer V)
-	snowfield story (Zanac X Zanac)
 
+	Astral Observatory (The Legend of Zelda Majoras Mask)
+	S3 Outro (Amphibia)
+
+################
 SMASHVILLE
-	Highway Fusion (Ridge Racer 6)
-	Move Me (Ridge Racer Type 4)
+
+	Delirious (Jujutsu Kaisen)
+	Entrusted (Jujutsu Kaisen)
 	Spiral Ahead (Ridge Racer Type 4)
-	Redial (Bomberman Hero)
-	snow storm (dj TAKA)
+	Nobunaga's Theme (Hunter x Hunter)
+	Beats From Above (Klonoa Door To Phantomile)
 
+################
 TEMPLE OF TIME
-	Baladium's Drive (Klonoa Door To Phantomile)
-	Paradigm Shift (Final Fantasy XIII-2)
-	Sword of the Patriot (Soulcalibur II)
-	Time to Fight! (Xenoblade Chronicles DE)
 
-YOSHI'S ISLAND
-	Burnin' Rubber (Ridge Racer Type 4)
-	Hard Boiled Heavies (Sonic Mania)
-	Rude Buster (Deltarune)
-	You Blow My Mind (Street Fighter III 3rd Strike)
+	L'Arabesque Danse Toujours (Magi)
+	Smash 'Em, Rip 'Em (FFVII Remake)
+	Joe Higashi Theme (Fatal Fury 2)
+	Middle Boss Battle [Re-Arranged] (The Legend of Zelda Ocarina of Time)
+	Temple A (Spelunky)
+	Battle Theme (Metaphor ReFantazio)

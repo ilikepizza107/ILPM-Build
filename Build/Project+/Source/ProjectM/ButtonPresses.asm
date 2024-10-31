@@ -186,11 +186,19 @@ HOOK @ $80029E48
 }
 
 ######################################################################################
-Analog C-Stick, L R, & Light-Shield Button Stored as Variables v2.5 [Magus, DukeItOut]
+Analog C-Stick, L R, & Light-Shield Button Stored as Variables v2.8 [Magus, DukeItOut]
+######################################################################################
 #
 # 2.4: fixes issue where controllers could influence AI shielding or C-Stick behavior
 # 2.5: made Wii Classic and GameCube C-Sticks be modified at the same rate so replays
 #		were more stable
+# 2.6: fixed exploit where the C-Stick could override Nana's inputs when she prepared
+#		to throw someone
+# 2.7: made it so heart swaps don't cause the wrong controller to receive analog 
+#		inputs
+# 2.8: addressed issue where Nana could receive inputs at distances not intended
+#
+# goes in ButtonPresses.asm
 ######################################################################################
 #
 # LA-Basic[77] = New L or R press
@@ -208,15 +216,7 @@ Analog C-Stick, L R, & Light-Shield Button Stored as Variables v2.5 [Magus, Duke
 # LA-Float[40] = Previous Analog L
 # LA-Float[41] = Previous Analog R
 #
-# LA-Float[64] = Duo Partner C-Stick Relative X
-# LA-Float[65] = Duo Partner C-Stick Y
-# LA-Float[66] = Duo Partner Analog L 
-# LA-Float[67] = Duo Partner Analog R
-#
-# LA-Float[68] = Duo Partner Previous C-Stick Relative X
-# LA-Float[69] = Duo Partner Previous C-Stick Y
-# LA-Float[70] = Duo Partner Previous Analog L 
-# LA-Float[71] = Duo Partner Previous Analog R
+# LA-Float[52-71] = Duo Partner Frame Buffer for Nana (5 frames)
 #
 ##################################################
 HOOK @ $80913190
@@ -227,10 +227,11 @@ HOOK @ $80913190
   stfd f0, 0(r2)
   stfd f1, 8(r2)
   stfd f2, 0x20(r2)
-  lwz r29, 0x70(r21);  lwz r29, 0x20(r29)
-  lwz r4, 0x1C(r29)
-  lwz r28, 0xC(r29)
-  lwz r29, 0x14(r29)
+  lwz r29, 0x70(r21);  lwz r29, 0x20(r29) # LA
+  lwz r4, 0x1C(r29)		# Bit
+  lwz r3, 0x2D0(r29)	# AIS
+  lwz r28, 0xC(r29)		# Basic
+  lwz r29, 0x14(r29)	# Float
   lwz r12, 0x88(r29);  stw r12, 0x98(r29)	# C-Stick Relative X -> C-Stick Relative X (prev frame)
   lwz r12, 0x8C(r29);  stw r12, 0x9C(r29)	
   lwz r12, 0x90(r29);  stw r12, 0xA0(r29)
@@ -239,50 +240,70 @@ HOOK @ $80913190
   lwz r26, 0x110(r27);  cmpwi r26, 0xF;  bne+ notNana	# Check if Ice Climbers
   lhz r26, 0xFC(r27);   cmpwi r26, 0x1;  beq- Nana		# check if sub character (Nana)
 
+Popo:
+  addi r26, r29, 0x2D4		# Access the Nana equivalents
+  lwz r12, 0x98(r29); stw r12, 0xD0(r26)	# Store into previous duo partner frame variables. # 0x98 + 0x38 at LA Floats 52-55
+  lwz r12, 0x9C(r29); stw r12, 0xD4(r26)
+  lwz r12, 0xA0(r29); stw r12, 0xD8(r26)
+  lwz r12, 0xA4(r29); stw r12, 0xDC(r26)
+
 notNana:
   li r26, 0x0;  b loc_0xD8
 
 Nana:
+  lwz r12, 0x0C(r4) 	# Trying to access LA-Bit 113 - Secondary Ice Climber proximity
+  andis. r12, r12, 2	# Try to filter for Bit 113 (0x20000)
+  bne+ closeEnough
+  
+  li r12, 0				# Don't receive inputs
+  stw r12, 0x88(r29)	# LA-Float[34]
+  stw r12, 0x8C(r29)	# LA-Float[35]
+  stw r12, 0x90(r29)	# LA-Float[36]
+  stw r12, 0x94(r29)	# LA-Float[37]
+  b finishNanaCheck
+  
+closeEnough:
+
+
   lwz r12, 0x110(r29);  stw r12, 0x88(r29)	# Set C-Stick Relative X
   lwz r12, 0x114(r29);  stw r12, 0x8C(r29)	# Set C-Stick Y
   lwz r12, 0x118(r29);  stw r12, 0x90(r29)	# Set Analog L
   lwz r12, 0x11C(r29);  stw r12, 0x94(r29)	# Set Analog R
-  addi r3, r29, 0x100
-  addi r31, r29, 0xD0
+  
+  lwz r12, 0x7C(r21); lhz r12, 0x3A(r12)    # Get action
+  cmpwi r12, 0x34; blt+ finishNanaCheck        # \ Check if in a foe-holding action
+  cmpwi r12, 0x3A; bgt+ finishNanaCheck        # /
+  
+  li r12, 0;  stw r12, 0x88(r29)    # Set C-Stick Relative X to 0
+              stw r12, 0x8C(r29)    # Set C-Stick Y to 0
+              stw r12, 0x98(r29)    # \ Do the same with the "Previous C-Stick" variables
+              stw r12, 0x9C(r29)    # /
+finishNanaCheck:  
+  addi r3, r29, 0x100		# LA Float 64-67 ... 68-71
+  addi r31, r29, 0xD0		# LA Float 52-55 ... 56-59 ... 60-63 ...
 
-loc_0x98:
+duoBufferPass:
   lwz r12, 0(r3);    stw r12, 0x10(r3)
   lwz r12, 4(r3);    stw r12, 0x14(r3)
   lwz r12, 8(r3);    stw r12, 0x18(r3)
   lwz r12, 0xC(r3);  stw r12, 0x1C(r3)
   cmpw r3, r31
   subi r3, r3, 0x10
-  bne+ loc_0x98
-  addi r29, r29, 0x48
+  bne+ duoBufferPass			# buffer an additional 5 frames worth of analog data
+  
   lwz r12, 0x0C(r4)
   rlwinm r12, r12, 15, 31, 31
-  cmpwi r12, 0x1;  bne- dont_control
+  cmpwi r12, 0x1;  bne- dont_control_Nana
+  b loc_0x2A0
 
 loc_0xD8:
   lis r30, 0x805B;  ori r30, r30, 0x7480
   lis r31, 0x805B;  ori r31, r31, 0xAD00
   
-  lwz r3, 0x60(r22)	 # \ Modified access point relative to PM
-  lwz r3, 0x70(r3)	 # |
-  lwz r3, 0x20(r3)	 # |
-  lwz r3, 0x0C(r3)	 # |
-  lwz r3, 0x2D0(r3)	 # |
-  lwz r12, 0x8(r3)	 # |\ Get Character ID for check
-  lwz r12, 0x110(r12)# |/
-  cmpwi r12, 0xF	 # | Check if this is the Ice Climbers
-  lwz r12, 0x24(r3)	 # | Get sub ID
-  lwz r3, 0x04(r3)	 # /
-  beq- ICsDuo		 # They're a special case where both members are active at the same time.
-  mulli r12, r12, 8  #\ Align to the first slot to get the true port.
-  sub r3, r3, r12	 #/
-ICsDuo:
-  lwz r4, 0x64(r3);  cmpwi r4, 1; beq+ is_AI	# Fixes issue where players could set AI variables
-  lwz r3, 0x70(r3)	 # Get the proper port
+  lwz r4, 0x4C(r25)
+  lbz r3, 0x28(r4);  cmpwi r3, 0; beq+ is_AI	# Fixes issue where players could set AI variables 
+
+  lwz r3, 0x08(r4) # Get the proper port
 					 cmpwi r3, 0x0;  blt- dont_control	# -1 or CCCCCCCC if no controller
 					 cmpwi r3, 0x7;  bgt- dont_control	# 0x10 in replays
 					 cmpwi r3, 0x4;  bge- Wii_control	# 4 = Wiimote
@@ -307,10 +328,15 @@ loc_0x140:
 
 is_AI:
 dont_control:
-  li r12, 0x0								# Reset LA-Float[34] through LA-Float[37]
+  li r12, 0x0								# Reset LA-Float[34] through LA-Float[37] (or for Nana LA-Float[52] through LA-Float[55])
   stw r12, 0x88(r29);  stw r12, 0x8C(r29)
   stw r12, 0x90(r29);  stw r12, 0x94(r29)
   b loc_0x294
+dont_control_Nana:
+  li r12, 0x0
+  stw r12, 0xD0(r29);  stw r12, 0xD4(r29)
+  stw r12, 0xD8(r29);  stw r12, 0xDC(r29)
+  b loc_0x294  
 
 loc_0x164:
   stw r4, 0x18(r2);  lfs f0, 0x18(r2)
@@ -396,9 +422,6 @@ loc_0x278:
   subi r29, r29, 0x8
 
 loc_0x294:
-  cmpwi r26, 0x1;  bne+ loc_0x2A0	# will be 0 for everyone but Nana
-  subi r29, r29, 0x48				# Nana's variables are 18 words lower?
-
 loc_0x2A0:
   lis r12, 0x3E99;  ori r12, r12, 0x999A		# 0.3. Analog threshold minimum.
   lwz r3, 0x90(r29)				# LA-Float[36] (Analog L)
@@ -429,6 +452,7 @@ loc_0x2F8:
   lfd f2, 0x20(r2);  lmw r26, 8(r1)
   addi r1, r1, 0x20
 }
+
 
 ###########################################################
 Tap Jump Requirement Checks for C-Stick not Pressed [Magus]

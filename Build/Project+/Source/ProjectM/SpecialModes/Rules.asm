@@ -53,7 +53,7 @@ HOOK @ $806a827c # muProcRule1::setMessage
 }
 
 ##############################################################################################################
-Coin and Time Games Have a Target Amount and Stock Time Limit Handles Time Limit for All Rules v1.2 [Kapedani]
+Coin and Time Games Have a Target Amount and Stock Time Limit Handles Time Limit for All Rules v1.3 [Kapedani]
 ##############################################################################################################
 .alias g_GameGlobal                 = 0x805a00E0
 
@@ -138,6 +138,12 @@ HOOK @ $806a73a4 # muProcRule1::selectProc
   stb r11, 0x8(r12)         # /
   lwz	r3, 0x654(r23)  # Original operation
 }
+
+HOOK @ $806a5bbc # muProcRule1::__ct
+{
+  stb	r4, 0x6A6(r29) # Original operation         
+  stb r4, 0x6AA(r29) # initialize bool to keep track of whether to silence sfx (when sending fake inputs)
+}
 HOOK @ $806a73ec  # muProcRule1::selectProc
 {
   li r11, 2                 # \
@@ -148,6 +154,8 @@ HOOK @ $806a73ec  # muProcRule1::selectProc
   stb r12, 0x66D(r23)   # / 
   li r12, 1             # \
   sth r12, 0x42(r23)    # / Set current entry index to 1 (i.e. Time Limit)
+  li r12, 0             # \
+  stb r12, 0x6AA(r23)   # / set to silence sfx
   mr r3, r23            # \
   li r4, 4              # |
   lwz r12, 0x668(r23)   # |
@@ -160,13 +168,38 @@ HOOK @ $806a73ec  # muProcRule1::selectProc
   lwz r12, 0x20(r12)    # |
   mtctr r12             # |
   bctrl                 # /
+  li r12, 1             # \ set to unsilence sfx
+  stb r12, 0x6AA(r23)   # /
   lwz	r3, 0x654(r23)  # Original operation
+}
+HOOK @ $806a8130  # muProcRule1::selectProc
+{
+  li r4, 0  # Original operation
+  lbz r12, 0x6AA(r23) # \
+  cmpwi r12, 0x0      # | disable sfx if set to silent
+  bne+ %end%          # |
+  li r4, -1           # /
+}
+HOOK @ $806a8188  # muProcRule1::selectProc
+{
+  li r4, 37  # Original operation
+  lbz r12, 0x6AA(r23) # \
+  cmpwi r12, 0x0      # | disable sfx if set to silent
+  bne+ %end%          # |
+  li r4, -1           # /
+}
+
+HOOK @ $806a84d4  # muProcRule2::__ct
+{
+  stb	r0, 0x699(r29)  # Original operation
+  stb r0, 0x671(r29)  # initialize bool to keep track of whether to silence sfx (when sending fake inputs)
 }
 HOOK @ $806a8ca8  # muProcRule2::init
 {
   lbz r29, 0x66c(r28)   # get desired time limit
   li r12, 0x0           # \ set time limit as infinite
   stb r12, 0x66c(r28)   # /
+  stb r12, 0x671(r28)   # set to silence sfx
   mr r3, r28            # \
   li r4, 8              # |
   lwz r12, 0x668(r28)   # | Send fake right input to reset digit placement
@@ -181,10 +214,19 @@ HOOK @ $806a8ca8  # muProcRule2::init
   lwz r12, 0x20(r12)    # | 
   mtctr r12             # | 
   bctrl                 # /
+  li r12, 0x1           # \ set to unsilence sfx
+  stb r12, 0x671(r28)   # /
   stb r29, 0x66c(r28)   # set desired time limit 
   addi r11, r1, 64  # Original operation
 }
-
+HOOK @ $806aa2fc  # muProcRule2::selectProc
+{
+  li r4, 37  # Original operation
+  lbz r12, 0x671(r25) # \
+  cmpwi r12, 0x0      # | disable sfx if set to silent
+  bne+ %end%          # |
+  li r4, -1           # /
+}
 
 HOOK @ $80684680  # muSelCharTask::getDefaultRuleFromGlobal
 {

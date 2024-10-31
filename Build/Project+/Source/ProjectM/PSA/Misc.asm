@@ -152,7 +152,7 @@ CODE @ $80FB19AC
 }
 
 ###############################################################
-Body Collisions Only Apply When Thrown v1.2 [Shanus, DukeItOut]
+Body Collisions Only Apply When Thrown v1.3 [Shanus, DukeItOut]
 ###############################################################
 .alias PSA_Off = 0x80546E38
 CODE @ $80546E38
@@ -173,7 +173,6 @@ CODE @ $80FB3F64
 {
 	word 0x00020000; word 0 # This line is different and bugged in PM and points to bad data there, dummied out, properly, now.
 	word 0x00070100; word PSA_Off+0x20 
-	word 0x00020000; word 0
 }
 CODE @ $80FB3FF4
 {
@@ -325,25 +324,25 @@ Down on C-Stick does not Fastfall v2.1 [Magus]
 .alias PSA_Off = 0x80545268
 CODE @ $80545268
 {
-	word 6; word 0x80000030 # NOT 0x30 
-	word 0; word 0xF
+	word 6; word 0x80000030 # NOT Input Occured (Requirement 0x30) 
+	word 0; word 0xF		# C-Stick (any direction)
 
 	word 6; word 7
 	word 5; IC_Basic 0
-	word 0; word 4
+	word 0; word 4			# >=
 	word 1; scalar 1.0
 
 	word 6; word 7
 	word 5; IC_Basic 20001
-	word 0; word 3
+	word 0; word 3			# !=
 	word 1; scalar 51.0
 	
 	word 2; word PSA_Off+0x58
-	word 0x000A0100; word 0x80FAD9CC
-	word 0x000B0200; word PSA_Off
-	word 0x000A0400; word PSA_Off+0x10
-	word 0x000C0400; word PSA_Off+0x30
-	word 0x120A0100; word 0x80FAD9D4
+	word 0x000A0100; word 0x80FAD9CC		# If Is Falling + Hit Down
+	word 0x000B0200; word PSA_Off			# AND C-Stick was not pressed at all
+	word 0x000A0400; word PSA_Off+0x10			# If IC-Basic 0 > 1.0 (if beyond the first frame?)
+	word 0x000C0400; word PSA_Off+0x30			# OR IC-Basic 20001 != 51.0 (Not Action 0x33 for Aerial?)
+	word 0x120A0100; word 0x80FAD9D4				# Can set fastfall state (Bit Variable Set RA-Bit[2])
 	word 0x000F0000; word 0
 	word 0x000F0000; word 0
 	word 0x00080000; word 0
@@ -953,3 +952,29 @@ Footstool with Only Taunt + Fail Window v1.3 [Magus, ds22]
 * 04FB6240 00000050
 * 04FB61D4 000A0100
 * 04FB6188 80000051
+
+#########################################
+Sleep doesn't pierce armour in air [Eon] 
+#########################################
+HOOK @ $8085CDD0
+{
+    stw r4, 0xC(r1)
+    lwz r3, 0xD8(r4)
+}
+HOOK @ $8085CDF0 
+{
+    lwz r3, 0xC(r1)
+    lwz r3, 0xD8(r3)
+    lwz r3, 0x14(r3)
+    lwz r12, 0(r3)
+    lwz r12, 0x14(r12)
+    mtctr r12 
+    bctrl 
+    cmpwi r3, 2 #if situation = in air, noReaction = true
+    beq true
+false:
+    li r3, 0
+    b %end%
+true:
+    li r3, 1
+}

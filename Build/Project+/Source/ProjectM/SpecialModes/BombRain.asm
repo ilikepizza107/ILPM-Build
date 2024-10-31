@@ -1,8 +1,8 @@
 #############################################################
 [Project+] Bomb Rain is an Item Frequency Setting [DukeItOut]
 #############################################################
-op b 0x8 @ $806CF5EC
-op b 0x8 @ $806D3A68
+#op b 0x8 @ $806CF5EC
+#op b 0x8 @ $806D3A68
 HOOK @ $80951FBC
 {
   stw r29, 0xC0(r3)		# Original operation

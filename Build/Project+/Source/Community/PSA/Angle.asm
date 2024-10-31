@@ -53,7 +53,7 @@ inwards:
     lfs f1, 0x80(r3) #x hitbox position
     lfs f2, 0x24(r3) #y hit position
     lfs f3, 0x84(r3) #y hitbox position
-    b calcDisplacement: 
+    b calcDisplacement 
 outwards:
     lfs f1, 0x20(r3) #x hit position
     lfs f0, 0x80(r3) #x hitbox position

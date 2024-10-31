@@ -299,9 +299,9 @@ CODE @ $8054C360
 	word 1; scalar 1.0
 }
 
-####################################################################################
-PSA If Compare now accepts basics passed into them instead of requiring floats [Eon]
-####################################################################################
+########################################################################################
+PSA If Compare now accepts basics passed into them instead of requiring floats 1.1 [Eon]
+########################################################################################
 #first arg
 CODE @ $807827EC
 {
@@ -316,7 +316,7 @@ HOOK @ $807827f8
     stw r0, 0x4FC(r1)
     lfd f1, 0x4F8(r1)
     lfd f2, 0x150(r31)
-    fsubs f1, f1, f2
+    fsubs f30, f1, f2		# where the first argument is placed
 }
 #second arg
 CODE @ $807828C8 
@@ -334,5 +334,5 @@ HOOK @ $807828D4
     stw r0, 0x4FC(r1)
     lfd f1, 0x4F8(r1)
     lfd f2, 0x150(r31)
-    fsubs f1, f1, f2
+    fsubs f31, f1, f2	# f31 is where the second argument is placed for the comparison
 }

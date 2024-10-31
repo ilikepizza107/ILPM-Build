@@ -1,7 +1,5 @@
-# Note: Remove Ground Below on IC-Basic[20027] [Eon] if used
-
 ##################################################
-Custom IC-Basics 1.0 [DukeItOut, Eon]
+Custom Integer IC-Basics 1.1 [DukeItOut, Eon]
 ##################################################
 #
 # Custom int return values in the IC-20000 range
@@ -13,12 +11,18 @@ Custom IC-Basics 1.0 [DukeItOut, Eon]
 # IC-Basic[20027] Terrain [Eon]
 # IC-Basic[20028] Throwing/Thrown Character ID [DukeItOut]
 #
+# 1.1:
+#
+# IC-Basic[20029] Event Match ID [DukeItOut]
+# IC-Basic[20030] Frames In Air [DukeItOut]
 ##################################################
 HOOK @ $807966B0
 {
 	cmplwi r0, 26;  ble+ %END%		# Original operation, skip if a Brawl IC-Basic!	
 	cmplwi r0, 27;	beq Terrain		# IC-Basic[20027] = Terrain
 	cmplwi r0, 28;  beq ThrowID		# IC-Basic[20028] = Instance ID of other character in throw
+	cmplwi r0, 29;  beq EventID		# IC-Basic[20029] = ID of Event Match (-1 if not an event match, 100+ if Co-Op)
+	cmplwi r0, 30;  beq FramesAir	# IC-Basic[20030] = frames in air
 	li r3, 0			# Default return value for invalid variable entries
 	b finish
 #	
@@ -53,7 +57,37 @@ ThrowID:				# Return Throw-Involved Character ID for IC-Basic[20028]
 	lwz r3, 0x110(r4)	# Get character instance ID
 	b finish
 noThrownCharacter:
+notEventID:
 	li r3, -1			# Default (Mario is 0, so can't use that.)
+	b finish
+EventID:
+
+	lwz r3, -0x43C0(r13)	# get the scene manager instance
+	lwz r4, 0x10(r3)
+	lwz r4, 0x08(r4)
+	cmpwi r4, 8; bne notEventID	# Check if currently in an event match
+	lwz r3, 0x7C(r3)		# Event scene
+	lwz r4, 0x368(r3)		# 1 if Normal Event, 2 if Co-Op
+	lwz r3, 0x360(r3)		# Event Match ID
+	
+	li r12, 0			# Default
+	cmpwi r4, 1; blt+ notEventID		# Is it a normal Event Match?
+	cmpwi r4, 2; bgt- notEventID		# Is it a co-op Event Match?
+	bne notCoOpEvent
+CoOpEvent:
+	li r12, 2000		# Just to make it easier to identify from PSA	
+notCoOpEvent:
+	
+	addi r3, r3, 1			# Make it match with what is seen on-screen
+	add r3, r3, r12			# 20xx for Co-Op Event Match IDs
+	b finish
+FramesAir:
+	lwz r3, 0x70(r4)
+	lwz r3, 0x20(r3)
+	lwz r3, 0x0C(r3)
+	lwz r3, 0x2D0(r3)
+	lwz r3, 0x10(r3)		# Frames airborne (AIS variable)
+	
 #	
 finish:
     lis r12, 0x8079
@@ -61,6 +95,44 @@ finish:
     mtctr r12
     bctr
 }
+
+##########################################
+Custom Float IC-Basics[DukeItOut]
+##########################################
+#
+# Custom float value returns
+#
+# IC-Basic[1100] = Current Knockback Speed
+##########################################
+HOOK @ $808548EC
+{
+	ble+ %END%		# if 36 or less, it's an already-existing IC-Basic!
+		
+	cmpwi r0, 100; beq+ Knockback
+	
+	b invalid
+
+Knockback:
+	lwz r12, 0x88(r31)
+	lwz r12, 0x14(r12)
+	lwz r12, 0x4C(r12) # Knockback info
+	lfs f0, 0x8(r12)	# Current X Knockback
+	lfs f1, 0xC(r12)	# Current Y Knockback
+	fmuls f0, f0, f0	# X^2
+	fmuls f1, f1, f1	# Y^2
+	fadds f1, f0, f1	# (X^2)+(Y^2)
+	bla 0x400D94		# sqrt of f1. Vector length of knockback.
+	b finish
+#	
+invalid:
+	fsubs f1, f1, f1	# Return Zero if not valid
+finish:
+    lis r12, 0x8085
+    ori r12, r12, 0x52A4
+    mtctr r12
+    bctr
+}
+
 
 ###############################
 Custom IC-Variable Engine [Eon]

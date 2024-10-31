@@ -1,5 +1,5 @@
 ####################################################
-P+ Stamina REDUX v1.1 [wiiztec, DukeItOut, Kapedani]
+P+ Stamina REDUX v1.3 [wiiztec, DukeItOut, Kapedani]
 ####################################################
 
 .alias g_ftDataCommon							= 0x80B88268
@@ -7,11 +7,18 @@ P+ Stamina REDUX v1.1 [wiiztec, DukeItOut, Kapedani]
 .alias ftManager__getFighter                	= 0x80814f20
 .alias ftManager__getPlayerNo					= 0x80815ad0
 .alias ftManager__getOwner						= 0x808159e4
+.alias ftManager__lostCoin						= 0x808169ec
+.alias g_ftEntryManager                     	= 0x80B87c48
+.alias ftEntryManager__getEntity            	= 0x80823b24
+.alias ftEntryManager__getEntryIdFromTaskId 	= 0x80823f90
 .alias ftOwner__isDropOnlyBill					= 0x8081d788
 .alias g_itManager                          	= 0x80B8B7F4
 .alias itManager__createItem					= 0x809b1a18
 .alias itManager__createMoney					= 0x809b433c
 .alias BaseItem__setScale 						= 0x8099a228
+.alias BaseItem__warp 							= 0x80998814
+.alias BaseItem__getCreaterItem             	= 0x8099302c
+.alias BaseItem__getParam						= 0x80997270
 .alias g_Stage									= 0x80B8A428
 .alias g_ftStatusUniqProcessDead				= 0x80b8989c
 .alias ftStatusUniqProcessDead__decCoin			= 0x8087dc18
@@ -25,6 +32,7 @@ P+ Stamina REDUX v1.1 [wiiztec, DukeItOut, Kapedani]
 .alias g_ecMgr									= 0x805a0148
 .alias ecMgr__setEffect 						= 0x8005F7E0
 .alias gfTask__getTask							= 0x8002dc40
+.alias randf									= 0x8003fb64
 .alias _float_1_0								= 0x80AD7DCC
 
 .alias STAGEEX_COLOR_OVERLAY					= 0x8053F00C
@@ -37,6 +45,15 @@ P+ Stamina REDUX v1.1 [wiiztec, DukeItOut, Kapedani]
     .alias  temp_Hi = temp_Hi_ + temp_r
     lis     <reg>, temp_Hi
     lfs     <freg>, temp_Lo(<reg>)
+}
+.macro lfu(<freg>, <reg>, <addr>)
+{
+    .alias  temp_Lo = <addr> & 0xFFFF
+    .alias  temp_Hi_ = <addr> / 0x10000
+    .alias  temp_r = temp_Lo / 0x8000
+    .alias  temp_Hi = temp_Hi_ + temp_r
+    lis     <reg>, temp_Hi
+    lfsu    <freg>, temp_Lo(<reg>)
 }
 .macro lwd(<reg>, <addr>)
 {
@@ -93,13 +110,26 @@ HOOK @ $80839248	# Fighter::processFixPosition
     lwz r10, 0x8(r10)   # | Check if ftOwner->ftOwnerData->hitPointMax was set  
     cmpwi r10, 0x0      # |
     beq+ end          	# /
-	lwz r12, 0xc(r3)			# \
-	lwz r12, 0x20(r12)			# | 
-	mtctr r12					# |
-	bctrl 						# | Check if ftOwner->getHitPoint() < 1.0
-	%lf (f0, r12, _float_1_0)	# |
-	fcmpo cr0, f1, f0			# |
-	bge+ end 					# /
+
+	mr r3, r26			# \
+	lwz r12, 0x3c(r26)	# |
+	lwz r12, 0x9C(r12)	# | Check if Fighter->getInput()
+	mtctr r12			# |
+	bctrl 				# /
+	lwz r12, 0x4(r3)	# \
+	lwz r12, 0x18(r12)	# | input->getButton()
+	mtctr r12			# |
+	bctrl 				# /
+	stw r3, 0xc(r1)
+	
+	lwz r4, 0x28(r26)	# fighter->taskId
+    %lwd(r3, g_ftEntryManager) 			
+	addi r5, r1, 0x8	# outInstanceIndex
+	%call(ftEntryManager__getEntryIdFromTaskId) 
+    lwz r3, 0x8(r1) 		# \
+    cmpwi r3, 3     		# | check if outInstanceIndex == 3 (i.e it is a double fighter)
+    beq- notSelfDestruct   # /
+	
 	mr r3, r25			# \
 	lwz r12, 0xc(r3) 	# |
 	lwz r12, 0xc(r12)	# | ftOwner->isSubOwner()
@@ -107,15 +137,7 @@ HOOK @ $80839248	# Fighter::processFixPosition
 	bctrl 				# /
 	cmpwi r3, 0x1		# \ check if subOwner (i.e. Nana)
 	beq- keepBody		# /
-	mr r3, r26			# \
-	lwz r12, 0x3c(r26)	# |
-	lwz r12, 0x9C(r12)	# | Check if Fighter->getInput
-	mtctr r12			# |
-	bctrl 				# /
-	lwz r12, 0x4(r3)	# \
-	lwz r12, 0x18(r12)	# | input->getButton()
-	mtctr r12			# |
-	bctrl 				# /
+	lwz r3, 0xc(r1)
 	andi. r0, r3, 0x3		# \ 
 	cmpwi r0, 0x3			# | check if attack + special is pressed
 	bne+ notSelfDestruct	# /
@@ -152,7 +174,21 @@ HOOK @ $80839248	# Fighter::processFixPosition
 
 	b selfDestruct
 notSelfDestruct:
-	stw r3, 0xc(r1)
+
+	lwz r10, 0x0(r25)    # \
+    lbz r10, 0x18(r10)  # | Check if ftOwner->ftOwnerData->fighterSubColor >= 0
+	extsb. r10, r10		# |
+	bge+ skipPump		# /
+notSubColor:
+	%lwd (r11, g_GameGlobal)	# \
+	lwz r11, 0x8(r11)			# | GameGlobal->globalModeMelee->meleeInitData.stageKind
+	lhz r11, 0x1a(r11)			# /
+	cmpwi r11, 0x3d			# \ check if stage id == adventure
+	beq+ noStageOverlay		# /
+	%lwdu(r12, r9, STAGEEX_COLOR_OVERLAY)
+	andi. r12, r12, 0xFF	# Check alpha settings
+	bne- skipPump			# If the alpha was clear, then behave normally and do not provide an overlay
+noStageOverlay:
 	
 	lwz r3, 0xd8(r28)	# \
 	lwz r3, 0xAC(r3)	# |
@@ -349,6 +385,14 @@ skipPump:
 	fcmpo cr0, f1, f0			# |
 	bgt+ end					# /
 noSmashbreaker:
+	mr r3, r25			# \
+	lwz r12, 0xc(r3) 	# |
+	lwz r12, 0xc(r12)	# | ftOwner->isSubOwner()
+	mtctr r12			# |
+	bctrl 				# /
+	cmpwi r3, 0x1		# \ check if subOwner (i.e. clone)
+	beq- selfDestruct	# /
+
 	lwz r25, 0x0(r25) 
     lwz r10, 0x34(r25)  # \
     cmplwi r10, 0x1     # | Check if ftOwnerData->stockCount == 0
@@ -366,7 +410,6 @@ selfDestruct:
 	mr r24, r5
 	li r6, 0				# pointer to XYZ rotate data (0 = not read)
 	addi r7, r1, 0xc		# pointer to XYZ scale data
-	lfs f0, 0x8(r1)			# Get character size
 	lis r4, 0x3F00			# \ 0.5x multiplier
 	stw r4, 0x0(r7)			# |
 	lfs f1, 0x0(r7)			# |
@@ -399,7 +442,7 @@ keepBody:
 	li r5, -1			# |
 	lwz r3, 0xd8(r28)	# |
 	lwz r3, 0x60(r3)	# |	
-	lwz r12, 0x0(r3)	# | moduleAccesser->moduleEnumeration->cameraModule->setEnableCamera(-1, 0)
+	lwz r12, 0x0(r3)	# | moduleAccesser->moduleEnumeration->cameraModule->setEnableCamera(0, -1)
 	lwz r12, 0x38(r12)	# |
 	mtctr r12			# |
 	bctrl				# /
@@ -408,14 +451,6 @@ end:
 }
 HOOK @ $8083b310	# Fighter::toDead
 {
-	lwz r3, 0xd8(r29)		# \
-	lwz r3, 0x64(r3)		# |
-	%lwi (r4, 0x12000018)	# |
-	lwz r12, 0x0(r3)		# | moduleAccesser->moduleEnumeration->workManageModule->offFlag(0x12000018)
-	lwz r12, 0x54(r12)		# | 
-	mtctr r12				# |
-	bctrl					# /
-
 	li r4, 0x28				# \
 	lwz r3, 0xd8(r29)		# |
 	lwz r3, 0x88(r3)		# |
@@ -460,6 +495,58 @@ noStageOverlay:
 	mtctr r12			# |
 	bctrl				# /
 	lis	r4, 0x80AD	# Original operation
+}
+HOOK @ $807c976c	# soColorBlendModuleImpl::setSubColor
+{
+	stb	r30, 0x150(r26)	# Original operation
+	sth r30, 0x14a(r26)	# \ initialize subcolor to 0
+	sth r30, 0x14c(r26)	# /
+}
+
+HOOK @ $8087c464	# ftStatusUniqProcessDead::initStatus
+{
+	lwz r12, 0xd0(r12)	# \
+	mtctr r12			# | cameraModule->getSubject(0)
+	bctrl 				# /
+	cmpwi r3, 0x0		# \
+	beq+ noSubject		# |
+	lbz r3, 0x0(r3)		# | store whether camera is enabled on stack
+noSubject:				# |
+	stb r3, 0x78(r1)	# /
+	lwz r3, 0xD8(r27)	# \
+	li r4, 0			# |
+	lwz r3, 0x60(r3)	# | Original operation
+	lwz r12, 0x0(r3)	# |
+	lwz r12, 0x34(r12)	# /
+}
+HOOK @ $8087c7f4	# ftStatusUniqProcessDead::initStatus
+{
+	lbz r12, 0x78(r1)		# \
+	andi. r12, r12, 0x80	# | check if camera is enabled from storage on stack
+	bne+ end				# /
+	%lwi(r4, 0x12000018)	# \
+	lwz r3, 0xd8(r27)		# |
+	lwz r3, 0x64(r3)		# | moduleAccesser->moduleEnumeration->workModule->isFlag(0x12000018)
+	lwz r12, 0x0(r3)		# |
+	lwz r12, 0x4C(r12)		# |
+	mtctr r12				# |
+	bctrl					# /
+	cmpwi r3, 0x0	# \ check if knocked out
+	beq+ end 		# /
+	%branch(0x8087c810)	# skip setting temporary camera upon blastzone death
+end:
+	fmr	f1, f31		# Original operation
+}
+HOOK @ $8087dbe4	# ftStatusUniqProcessDead::exitStatus
+{
+	lwz r3, 0xd8(r30)		# \
+	lwz r3, 0x64(r3)		# |
+	%lwi (r4, 0x12000018)	# |
+	lwz r12, 0x0(r3)		# | moduleAccesser->moduleEnumeration->workManageModule->offFlag(0x12000018)
+	lwz r12, 0x54(r12)		# | 
+	mtctr r12				# |
+	bctrl					# /
+	lwz r3, 0xd8(r30)	# Original operation
 }
 
 HOOK @ $80948494	# stLoaderPlayer::entryEntityRebirth
@@ -526,15 +613,6 @@ HOOK @ $8083bb58	# Fighter::toKnockOut
 	li r8, 0x1			
 	%call (itManager__createMoney)
 notCoinMode:	
-	li r5, 0x0 			# \
-	stw r5, 0x8(r1)		# |
-	addi r4, r1, 0x8	# |
-	lwz r3, 0xd8(r30)	# |					
-	lwz r3, 0xAC(r3)	# | moduleAccesser->moduleEnumeration->colorBlendModule->setSubColor(&color, false)
-	lwz r12, 0x0(r3)	# | 
-	lwz r12, 0x48(r12)	# |
-	mtctr r12			# |
-	bctrl				# /
 	mr r3, r29          # \
     lwz	r12, 0x3C(r29)  # |
     lwz	r12, 0x2EC(r12) # | Fighter->getOwner()
@@ -590,75 +668,9 @@ end:
 }
 op bne+ 0x68 @ $809586a0	# Skip stock gift if they aren't inactive
 
-HOOK @ $8083bfd4	# Fighter::notifyEventChangeStatus
-{
-	lwz r10, 0x0(r29)   # \
-    lwz r10, 0x8(r10)   # | Check if ftOwner->ftOwnerData->hitPointMax was set  
-    cmpwi r10, 0x0      # |
-    beq+ end          	# /
-	mr r3, r29					# \
-	lwz r12, 0xc(r3)			# |
-	lwz r12, 0x20(r12)			# | 
-	mtctr r12					# | Check if ftOwner->getHitPoint() < 1.0
-	bctrl 						# | 
-	%lf (f0, r12, _float_1_0)	# |
-	fcmpo cr0, f1, f0 			# /
-	bge+ end 	
-	lis r31, 0x1200		# \ Original operations
-	li r23, 0x0			# /
-	%branch (0x8083c000)	# Skip knockout check that determines to setCheckCatch to false to allow grabbing
-end:
-	lwz	r3, 0xD8(r28)	# Original operation
-}
-
-HOOK @ $8083db7c 	# Fighter::notifyEventLink
-{
-	mr r3, r26         	# \
-    lwz	r12, 0x3C(r3)  	# |
-    lwz	r12, 0x2EC(r12) # | Fighter->getOwner()
-    mtctr r12           # |
-    bctrl               # /
-	lwz r10, 0x0(r3)   # \
-    lwz r10, 0x8(r10)   # | Check if ftOwner->ftOwnerData->hitPointMax was set  
-    cmpwi r10, 0x0      # |
-    beq+ end          	# /
-	lwz r12, 0xc(r3)			# |
-	lwz r12, 0x20(r12)			# | 
-	mtctr r12					# |
-	bctrl 						# | Check if ftOwner->getHitPoint() < 1.0
-	%lf (f0, r12, _float_1_0)	# |
-	fcmpo cr0, f1, f0			# |
-	bge+ end 	
-	%branch (0x8083dba4)	# Skip knockout check that determines to whether to check if touching item
-end:
-	lwz	r5, 0xD8(r28)	# Original operation
-}
-
-HOOK @ $80844350	# Fighter::touchItem
-{
-	mr r3, r25         	# \
-    lwz	r12, 0x3C(r3)  	# |
-    lwz	r12, 0x2EC(r12) # | Fighter->getOwner()
-    mtctr r12           # |
-    bctrl               # /
-	lwz r10, 0x0(r3)   	# \
-    lwz r10, 0x8(r10)   # | Check if ftOwner->ftOwnerData->hitPointMax was set  
-    cmpwi r10, 0x0      # |
-    beq+ end          	# /
-	lwz r12, 0xc(r3)			# \
-	lwz r12, 0x20(r12)			# | 
-	mtctr r12					# |
-	bctrl 						# | Check if ftOwner->getHitPoint() < 1.0
-	%lf (f0, r12, _float_1_0)	# |
-	fcmpo cr0, f1, f0 			# /
-	bge+ end 	
-	%branch (0x80844368)	# Skip knockout check that determines to whether to check if touching item
-end:
-	%lwi (r4, 0x12000018)	# \
-	lwz	r3, 0xD8(r30)		# | Original operations
-	lwz r3, 0x64(r3)		# |
-	lwz	r12, 0(r3)			# /
-}
+op nop @ $8083bffc	# Fighter::notifyEventChangeStatus	# allow knocked out fighter to be grabbed
+op nop @ $8083dba0	# Fighter::notifyEventLink 	\ allow knocked out fighter to touch items
+op nop @ $80844364	# Fighter::touchItem 		/
 
 op b -0x28 @ $806df0fc
 
@@ -881,6 +893,17 @@ notLyingDown:
 	add r4, r10, r9				# |
 	li r5, 0x1 					# /
 notSubColor:
+	%lwdu(r12, r9, STAGEEX_COLOR_OVERLAY)
+	andi. r12, r12, 0xFF	# Check alpha settings
+	beq- noStageOverlay		# If the alpha was clear, then behave normally and do not provide an overlay
+	%lwd (r11, g_GameGlobal)	# \
+	lwz r11, 0x8(r11)			# | GameGlobal->globalModeMelee->meleeInitData.stageKind
+	lhz r11, 0x1a(r11)			# /
+	cmpwi r11, 0x3d			# \ check if stage id == adventure
+	beq+ noStageOverlay		# /
+	mr r4, r9				# Use stage colour overlay
+	li r5, 1				# Enable overlay
+noStageOverlay:
 	lwz r3, 0xAC(r30)	# | moduleEnumeration->colorBlendModule->setSubColor(&color, false)
 	lwz r12, 0x0(r3)	# | 
 	lwz r12, 0x48(r12)	# |
@@ -907,7 +930,7 @@ notSubColor:
 	li r4, 1			# \
 	li r5, -1			# |
 	lwz r3, 0x60(r30)	# |	
-	lwz r12, 0x0(r3)	# | moduleEnumeration->cameraModule->setEnableCamera(-1, 1)
+	lwz r12, 0x0(r3)	# | moduleEnumeration->cameraModule->setEnableCamera(1, -1)
 	lwz r12, 0x38(r12)	# |
 	mtctr r12			# |
 	bctrl				# /
@@ -929,15 +952,7 @@ HOOK @ $80844700	# Fighter::touchItem
     lwz	r12, 0x2EC(r12) # | Fighter->getOwner()
     mtctr r12         	# |
     bctrl               # /
-	mr r23, r3
-	lwz r12, 0xc(r3)			# \
-	lwz r12, 0x20(r12)			# | 
-	mtctr r12					# |
-	bctrl 						# | Check if ftOwner->getHitPoint() < 1.0
-	%lf (f0, r12, _float_1_0)	# |
-	fcmpo cr0, f1, f0			# |
-	bge+ end					# /
-	lwz r10, 0x0(r23) 	# \
+	lwz r10, 0x0(r3) 	# \
     lwz r0, 0x8(r10)   	# | Check if ftOwner->ftOwnerData->hitPointMax was set  
     cmpwi r0, 0x0      	# |
     beq+ end          	# /
@@ -966,18 +981,13 @@ HOOK @ $808449c8	# Fighter::touchItem
     mtctr r12         	# |
     bctrl               # /
 	mr r23, r3
-	lwz r12, 0xc(r3)			# \
-	lwz r12, 0x20(r12)			# | 
-	mtctr r12					# |
-	bctrl 						# | Check if ftOwner->getHitPoint() < 1.0
-	%lf (f0, r12, _float_1_0)	# |
-	fcmpo cr0, f1, f0			# |
-	bge+ %end%					# /
-	mr r3, r23			# \
-	lwz r12, 0xc(r3)	# |
-	lwz r12, 0x14(r12)	# | ftOwner->getDamage()
+	li r4, 0			# \
+	lwz r3, 0xD8(r28)	# |
+	lwz r3, 0x38(r3)	# |
+	lwz r12, 0x8(r3)	# | moduleAccesser->moduleEnumeration->damageModule->getDamage(0)
+	lwz r12, 0x50(r12)	# |
 	mtctr r12			# |
-	bctrl 				# /		
+	bctrl 				# /	
 	%lf (f0, r12, _float_1_0)
 	lwz r10, 0x0(r23) 	# \
     lwz r0, 0x8(r10)   	# | Check if ftOwner->ftOwnerData->hitPointMax was set  
@@ -995,6 +1005,13 @@ HOOK @ $808449c8	# Fighter::touchItem
 
 HOOK @ $8083aa54	# Fighter::processFixCamera
 {
+	lwz r4, 0x10C(r30)  # fighter->entryId
+    %lwd(r3, g_ftEntryManager)
+    %call(ftEntryManager__getEntity)
+	lwz r12, 0x4c(r3)			# \
+	cmpwi r12, 0x0				# | check if ftEntry->instances[3].fighter == NULL i.e. no double
+	bne+ disableMagnifierGlass	# /
+
 	mr r3, r30          # \
     lwz	r12, 0x3C(r3)   # |
     lwz	r12, 0x2EC(r12)	# | Fighter->getOwner()
@@ -1003,18 +1020,11 @@ HOOK @ $8083aa54	# Fighter::processFixCamera
 	lwz r10, 0x0(r3)    # \
     lwz r10,0x8(r10)    # | Check if ftOwner->ftOwnerData->hitPointMax was set  
     cmpwi r10, 0x0      # |
-	beq+ end			# /	
+	beq+ end			# /
 	lwz r10, 0x0(r3)			# \
 	lwz r10, 0x34(r10)			# | check if ftOwner->ftOwnerData->stockCount == 0
 	cmplwi r10, 0x0      		# |
 	beq+ disableMagnifierGlass	# /
-	lwz r12, 0xc(r3)			# \
-	lwz r12, 0x20(r12)			# | 
-	mtctr r12					# |
-	bctrl 						# | Check if ftOwner->getHitPoint() < 1.0
-	%lf (f0, r12, _float_1_0)	# |
-	fcmpo cr0, f1, f0			# |
-	blt+ end 					# /
 	%lwd (r12, g_GameGlobal)	# \
   	lwz r12, 0x8(r12)			# |
   	lbz r11, 0x29(r12)			# | Check if world wrap is enabled
@@ -1051,10 +1061,10 @@ end:
 
 HOOK @ $8083ade4	# Fighter::processFixCamera
 {
-	mr r28, r3					# \
-	%lwd (r12, g_GameGlobal)	# |
-  	lwz r12, 0x8(r12)			# | Check if world wrap is enabled
-  	lbz r11, 0x29(r12)			# | 
+	mr r28, r3					
+	%lwd (r12, g_GameGlobal)	# \
+  	lwz r12, 0x8(r12)			# | 
+  	lbz r11, 0x29(r12)			# | Check if world wrap is enabled
   	andi. r11, r11, 0x40		# |
 	beq+ end					# /
 	mr r3, r30          # \
@@ -1066,16 +1076,9 @@ HOOK @ $8083ade4	# Fighter::processFixCamera
     lwz r10,0x8(r10)    # | Check if ftOwner->ftOwnerData->hitPointMax was set  
     cmpwi r10, 0x0      # |
 	beq+ end			# /
-	lwz r12, 0xc(r3)			# \
-	lwz r12, 0x20(r12)			# | 
-	mtctr r12					# |
-	bctrl 						# | Check if ftOwner->getHitPoint() < 1.0
-	%lf (f0, r12, _float_1_0)	# |
-	fcmpo cr0, f1, f0			# |
-	blt+ end 					# /
 
 	mr r3, r30										# \
-	%lwi (r4, 0x12000018)								# |
+	%lwi (r4, 0x12000018)							# |
 	%call (soExternalValueAccesser__getWorkFlag)	# | Check if knocked out
 	cmpwi r3, 0										# |
 	bne- end										# /
@@ -1096,6 +1099,10 @@ HOOK @ $8083ade4	# Fighter::processFixCamera
 	beq- end 		# /
 	cmpwi r3, 0x10E # \ check if entrance
 	beq- end		# /
+	cmpwi r3, 0xBD  # \ 
+    beq- end        # | check if dead
+	cmpwi r3, 0x10B	# |
+	beq- end		# /
 	
 	addi r3, r1, 0xc	# \
 	lwz r4, 0xd8(r31)	# |
@@ -1104,7 +1111,6 @@ HOOK @ $8083ade4	# Fighter::processFixCamera
 	lwz r12, 0x18(r12)	# |
 	mtctr r12			# |
 	bctrl 				# /
-	
 
 	%lwd (r4, g_Stage)	# \ g_Stage->cameraParam
 	lwz r3, 0x78(r4)	# /
@@ -1133,7 +1139,7 @@ HOOK @ $8083ade4	# Fighter::processFixCamera
 	stw r12, 0x8(r1)	# | make 40.0 on stack
 	lfs f2, 0x8(r1)		# /
 	fadds f5, f5, f2	# \
-	fsubs f6, f6, f2	# | add/subtract 20 from cameraRange (actual camera tends to view a bit more than the range)
+	fsubs f6, f6, f2	# | add/subtract from cameraRange (actual camera tends to view a bit more than the range)
 	lis r12, 0x41f0		# \
 	stw r12, 0x8(r1)	# | make 30.0 on stack
 	lfs f2, 0x8(r1)		# /
@@ -1181,23 +1187,39 @@ withinBottomBlastzone:			# /
 	cmpwi r28, 0x0		# |
 	bne+ end			# /
 isTop:
+	li r28, 0x0
 	fadds f1, f6, f2
 	b newPosY
 isBottom:
+	li r28, 0x1
 	fsubs f1, f5, f2
 newPosY:
-	li r28, 5
+	#li r28, 5
 	stfs f1, 0x10(r1)
 	b setPos
 isLeft:
+	li r28, 0x2
 	fsubs f1, f4, f2
 	b newPosX
 isRight:
+	li r28, 0x3
 	fadds f1, f3, f2
 newPosX:
-	li r28, 1
+	#li r28, 1
 	stfs f1, 0xc(r1)
 setPos:
+	## Prevents sticking to ground collision 
+	## Known Oddities:
+	# Falco side b due to how the move is designed stretches to where he is causing a screen wide hitbox
+	addi r4, r1, 0xc	# \
+	li r5, 0			# |
+	lwz r3, 0xd8(r31)	# |
+	lwz r3, 0x10(r3)	# | moduleAccesser->moduleEnumeration->groundModule->relocate(&pos, 0)
+	lwz r12, 0x8(r3)	# |
+	lwz r12, 0x2C(r12)	# |
+	mtctr r12			# |
+	bctrl 				# /
+
 	addi r4, r1, 0xc	# \
 	lwz r3, 0xd8(r31)	# |
 	lwz r3, 0xc(r3)		# |
@@ -1205,6 +1227,96 @@ setPos:
 	lwz r12, 0x14(r12)	# |
 	mtctr r12			# |
 	bctrl 				# /
+
+	mr r3, r30			# \
+	lwz r12, 0x3c(r30)	# |
+	lwz r12, 0xb4(r12)	# | fighter->updateNodeSRT()	
+	mtctr r12			# |
+	bctrl 				# /
+
+	li r4, 0			# \
+	lwz r3, 0xd8(r31)	# |
+	lwz r3, 0x10(r3)	# | moduleAccesser->moduleEnumeration->groundModule->attachGround(0)
+	lwz r12, 0x8(r3)	# |
+	lwz r12, 0x1C8(r12)	# |
+	mtctr r12			# |
+	bctrl 				# /
+
+	li r4, 1			# \
+	lwz r3, 0xd8(r31)	# |
+	lwz r3, 0x10(r3)	# | moduleAccesser->moduleEnumeration->groundModule->update(1)
+	lwz r12, 0x8(r3)	# |
+	lwz r12, 0x34(r12)	# |
+	mtctr r12			# |
+	bctrl 				# /
+
+	%lwd (r12, g_ftManager)	# \
+	lbz r12, 0x6a(r12)		# | check if g_ftManager->gameRule is coin mode
+	cmpwi r12, 0x2 			# |
+	bne+ notCoinMode		# /	
+
+	%call(randf)				# \
+	%lfu(f2, r12, _float_1_0)	# | 
+	lfs f3, 0x48(r12)			# |
+	fmuls f1, f1, f3			# | randf()*0.2 + 1.0
+	fadds f1, f1, f2			# |
+	stfs f1, 0x8(r1)			# /
+	
+	mr r3, r30          # \
+    lwz	r12, 0x3C(r3)   # |
+    lwz	r12, 0x2EC(r12)	# | Fighter->getOwner()
+    mtctr r12           # |
+    bctrl               # /
+	lwz r12, 0x0(r3)	# \ ftOwner->data->coinDropRate
+	lfs f1, 0x4c4(r12)	# /
+	lfs f3, 0x8(r1)
+	lis r12, 0x40a0		# \
+	stw r12, 0x8(r1)	# | make 5.0 on stack
+	lfs f2, 0x8(r1)		# /
+	fmuls f1, f1, f2	# \ multiply by coin drop rates
+	fmuls f1, f1, f3	# /
+	fctiwz f1, f1 		# \ convert to int
+	stfd f1, 0x18(r1)	# /
+	%call (ftOwner__isDropOnlyBill)
+	mr r9, r3
+	lwz r7, 0x1c(r1)	# get num coins
+	%lwd (r3, g_itManager)
+	li r12, 0x0				# \
+	stw r12, 0x18(r1)		# | Speed [0.0, 0.0]
+	stw r12, 0x1c(r1)		# /
+	lis r11, 0x3F80		# 1.0
+	lis r10, 0xbf80		# -1.0
+	cmpwi r28, 0x1		
+	beq- isBottomRotate 
+	cmpwi r28, 0x2		
+	beq- isLeftRotate	
+	cmpwi r28, 0x3		
+	beq- isRightRotate
+isTopRotate:
+	stw r11, 0x1c(r1)
+	b finishedRotating
+isBottomRotate:
+	stw r10, 0x1c(r1)
+	b finishedRotating
+isLeftRotate:
+	stw r10, 0x18(r1)
+	b finishedRotating 
+isRightRotate:
+	stw r11, 0x18(r1)
+finishedRotating:
+	lwz r4, 0x28(r30)		# fighter->taskId
+	addi r5, r1, 0xc	
+	addi r6, r1, 0x18	
+	li r8, 0x1			
+	%call (itManager__createMoney)
+	cmpwi r3, 0
+	ble+ notCoinMode
+	li r6, 0			
+	mr r5, r3			
+	lwz r4, 0x10C(r30)	# fighter->entryId
+	%lwd(r3, g_ftManager)
+	%call(ftManager__lostCoin)
+notCoinMode:
 
 	li r4, 0			# \
 	lwz r3, 0xd8(r31)	# |
@@ -1214,7 +1326,7 @@ setPos:
 	mtctr r12			# |
 	bctrl				# /
 	cmpwi r3, 0			# \ check if being held
-	beq- noLink			# /
+	beq- noHeld			# /
 	stw r3, 0x8(r1)
 	lwz r12, 0x3c(r3)       # \ 
     lwz r12, 0xA4(r12)      # | stageObject->soGetKind()
@@ -1230,17 +1342,76 @@ setPos:
 	lwz r10, 0x0(r3)    # \
     lwz r10,0x8(r10)    # | Check if ftOwner->ftOwnerData->hitPointMax was set  
     cmpwi r10, 0x0      # |
-	bne+ noAddDamage	# /
-interruptLink:
-	li r4, 0x40			# \
-	mr r5, r31			# |
+	beq- interruptLink	# /
+	b noLink
+noHeld:
+	li r4, 0			# \
 	lwz r3, 0xd8(r31)	# |
+	lwz r3, 0x54(r3)	# |
+	lwz r12, 0x0(r3)	# | moduleAccesser->moduleEnumeration->linkModule->getNode(0)
+	lwz r12, 0x50(r12)	# |
+	mtctr r12			# |
+	bctrl				# /
+	cmpwi r3, 0			# \ check if holding
+	beq- noLink			# /
+	stw r3, 0x8(r1)
+	lwz r12, 0x3c(r3)       # \ 
+    lwz r12, 0xA4(r12)      # | stageObject->soGetKind()
+    mtctr r12               # |
+    bctrl                   # /
+	cmpwi r3, 0x0	# \ check if held is a fighter
+	bne+ noLink		# /
+
+	li r4, 0			
+	stw r4, 0x18(r1)
+	lwz r3, 0x8(r1)		# \
+	lwz r3, 0x60(r3)	# |
+	lwz r3, 0xd8(r3)	# |
+	lwz r3, 0x5C(r3)	# |
+	lwz r12, 0x0(3)		# | moduleAccesser->moduleEnumeration->controllerModule->getClatterTime(0)
+	lwz r12, 0xd4(r12)	# |
+	mtctr r12			# |
+	bctrl 				# /
+	lfs f2, 0x18(r1)	# \
+	fcmpo cr0, f1, f2	# | check if clatterTime > 0 (i.e. can already break out of grab)
+	bgt+ noLink			# /
+	li r4, 1			# \
+	lwz r3, 0xd8(r31)	# |
+	lwz r3, 0x5C(r3)	# |
+	lwz r12, 0x0(3)		# | moduleAccesser->moduleEnumeration->controllerModule->getTriggerCount(1)
+	lwz r12, 0xa4(r12)	# |
+	mtctr r12			# |
+	bctrl 				# /
+	cmpwi r3, 6			# \
+	bge+ interruptHeldLink	# / if not pressed B within last 6 frames
+	stw r3, 0x18(r1)
+	li r4, 1			# \
+	lwz r3, 0x8(r1)		# |
+	lwz r3, 0x60(r3)	# |
+	lwz r3, 0xd8(r3)	# |
+	lwz r3, 0x5C(r3)	# |
+	lwz r12, 0x0(3)		# | heldFighter->moduleAccesser->moduleEnumeration->controllerModule->getTriggerCount(1)
+	lwz r12, 0xa4(r12)	# |
+	mtctr r12			# |
+	bctrl 				# /
+	lwz r4, 0x18(r1)
+	cmpw r3, r4		# \ if pressed B sooner than holder
+	bgt+ noLink		# /
+interruptHeldLink:
+	lwz r3, 0x8(r1)		# \
+	lwz r5, 0x60(r3)	# | heldFighter->moduleAccesser->moduleEnumeration
+	lwz r3, 0xd8(r5)	# /
+	b interrupt		
+interruptLink:
+	lwz r3, 0xd8(r31)	# \
+	mr r5, r31			# |
+interrupt:
+	li r4, 0x40			# |
 	lwz r3, 0x70(r3)	# | moduleAccesser->moduleEnumeration->statusModule->changeStatusRequest(0x40, moduleAccesser)
 	lwz r12, 0x0(r3)	# | 
 	lwz r12, 0x14(r12)	# |
 	mtctr r12 			# |
 	bctrl 				# /
-	b noAddDamage
 noLink:
 	li r4, 0			# \
 	lis r12, 0x40a0		# |
@@ -1254,41 +1425,28 @@ noLink:
 	bctrl				# /
 noAddDamage:
 
-	## Prevents sticking to ground collision 
-	mr r4, r28
-	li r5, 0			# |
-	lwz r3, 0xd8(r31)	# | 
-	lwz r3, 0x10(r3)	# | moduleAccesser->moduleEnumeration->groundModule->setCorrect(1, 0)
-	lwz r12, 0x8(r3)	# |
-	lwz r12, 0x54(r12)	# | 
-	mtctr r12 			# |
-	bctrl				# /
-
-	lis r12, 0x3f80		# \
-	stw r12, 0x8(r1)	# | make 1.0 on stack
-	lfs f1, 0x8(r1)		# /
-	lfs f2, 0x8(r1)
-	li r4, 0
-	li r5, 0
-	li r6, 0			# \
-	lwz r3, 0xd8(r31)	# | 
-	lwz r3, 0x10(r3)	# | moduleAccesser->moduleEnumeration->groundModule->renewTrace(0, 0, 0, 1.0, 1.0)
-	lwz r12, 0x8(r3)	# |
-	lwz r12, 0x23C(r12)	# | 
-	mtctr r12 			# |
-	bctrl				# /
-
-	# Known Oddities
-	# While running on a walkoff if the floor collision has a gap then you will be in the air very briefly and thus stop running. Would need to figure out how to stay on ground. 
-	# Luigi jab on walkoff sticks to plat and causes warp corrections
-	# Falco side b due to how the move is designed stretches to where he is causing a screen wide hitbox
-
-	# TODO: Try raychecking and reattaching ground / adjust ECB
-
 	## Prevents hitboxes interpolating during warp
 	mr r3, r30        	# \
     lwz	r12, 0x3C(r3)  	# | 
 	lwz r12, 0x14(r12)	# |	fighter->processUpdate()
+	mtctr r12 			# |
+	bctrl				# /
+
+	mr r3, r30        	# \
+    lwz	r12, 0x3C(r3)  	# | 
+	lwz r12, 0x18(r12)	# |	fighter->processPreMapCorrection()
+	mtctr r12 			# |
+	bctrl				# /
+
+	mr r3, r30        	# \
+    lwz	r12, 0x3C(r3)  	# | 
+	lwz r12, 0x1C(r12)	# |	fighter->processMapCorrection()
+	mtctr r12 			# |
+	bctrl				# /
+
+	mr r3, r30        	# \
+    lwz	r12, 0x3C(r3)  	# | 
+	lwz r12, 0x24(r12)	# |	fighter->processPreCollision()
 	mtctr r12 			# |
 	bctrl				# /
 
@@ -1305,8 +1463,198 @@ end:
 	mr r4, r28
 }
 
-# TODO: Drop coins on world wrap
-# TODO: Make items wrap too
+HOOK @ $80994d74	# BaseItem::processGameProc
+{
+	stw r3, 0x14(r1)	# Store check dead area
+	cmpwi r3, 0		# Original operation
+}
+HOOK @ $80994e4c	# BaseItem::processGameProc
+{
+	%lwd (r12, g_GameGlobal)	# \
+  	lwz r12, 0x8(r12)			# |  
+  	lbz r11, 0x29(r12)			# | Check if world wrap is enabled
+  	andi. r11, r11, 0x40		# |
+	beq+ end					# /
+	mr r3, r31 
+isItem:
+  	stw r3, 0x18(r1)  # baseItem
+  	%call (BaseItem__getCreaterItem)
+  	cmpwi r3, 0x0 
+  	bne+ isItem
+  	lwz r3, 0x18(r1)   # \
+  	lwz r4, 0x8C8(r3)  # / itemInfo.baseItem->emitterTaskId
+  	%lwd (r3, g_ftEntryManager)                     # \
+  	li r5, 0                                        # |
+  	%call (ftEntryManager__getEntryIdFromTaskId)    # | Check if emitterTaskId belongs to a fighter
+  	cmpwi r3, 0                                     # |
+  	bge- end                                   		# /
+
+	mr r3, r31 					# \
+	li r4, 0x5b6B				# |
+	%call(BaseItem__getParam)	# | check if Pokemon/Assist
+	andi. r3, r3, 0x0C00		# |
+	bne+ end					# /
+
+	%lwi(r4, 0x10000009)	# \
+	addi r3, r31, 0x2aac	# |
+	lwz r12, 0x0(r3)		# | this->workManageModule.getInt(0x10000009)
+	lwz r12, 0x18(r12)		# |
+	mtctr r12				# |
+	bctrl					# /
+	cmpwi r3, -1		
+	beq+ noLifeTime		
+	subi r4, r3, 0x40
+	stw r4, 0x18(r1)
+	%lwi(r5, 0x10000009)	# \
+	addi r3, r31, 0x2aac	# |
+	lwz r12, 0x0(r3)		# | this->workManageModule.setInt(life - 5, 0x10000009)
+	lwz r12, 0x1C(r12)		# |
+	mtctr r12				# |
+	bctrl					# /
+	lwz r3, 0x18(r1)	# \
+	cmpwi r3, 0			# | check if lifetime is less than 0
+	ble+ end			# /
+
+noLifeTime:
+	%lwd (r4, g_Stage)	# \ g_Stage->cameraParam
+	lwz r3, 0x78(r4)	# /
+	lfs f0, 0x20(r3)	# \ cameraParam->centerPos
+	lfs f1, 0x24(r3)	# /
+
+	lfs f3, 0x0(r3)		# \ 
+	lfs f4, 0x4(r3)		# | cameraParam->cameraRange
+	lfs f5, 0x8(r3)		# |
+	lfs f6, 0xc(r3)		# /
+	lfs f7, 0x58(r4)	# \ 
+	lfs f8, 0x5C(r4)	# | stage->deadRange
+	lfs f9, 0x60(r4)	# |
+	lfs f10, 0x64(r4)	# /
+
+	fadds f3, f3, f0	# \
+	fadds f4, f4, f0	# | add centerPos to camera range
+	fadds f5, f5, f1	# |
+	fadds f6, f6, f1	# /
+	fadds f7, f7, f0	# \
+	fadds f8, f8, f0	# | add centerPos to dead range
+	fadds f9, f9, f1	# |
+	fadds f10, f10, f1	# /
+
+	lis r12, 0x4220		# \
+	stw r12, 0x18(r1)	# | make 40.0 on stack
+	lfs f2, 0x18(r1)	# /
+	fadds f5, f5, f2	# \
+	fsubs f6, f6, f2	# | add/subtract from cameraRange (actual camera tends to view a bit more than the range)
+	lis r12, 0x41f0		# \
+	stw r12, 0x18(r1)	# | make 30.0 on stack
+	lfs f2, 0x18(r1)	# /
+	fsubs f3, f3, f2	# |
+	fadds f4, f4, f2	# /
+
+	fcmpo cr0, f3, f7			# \
+	bge+ withinLeftBlastzone	# |
+	fmr f3, f7					# |
+withinLeftBlastzone:			# |
+	fcmpo cr0, f4, f8			# |
+	ble+ withinRightBlastzone	# |
+	fmr f4, f8					# |
+withinRightBlastzone:			# | Ensure new cameraRange isn't past the dead range
+	fcmpo cr0, f5, f9			# |
+	ble+ withinTopBlastzone		# |
+	fmr f5, f9					# |
+withinTopBlastzone:				# |
+	fcmpo cr0, f6, f10			# |
+	bge+ withinBottomBlastzone	# |
+	fmr f6, f10					# |
+withinBottomBlastzone:			# /
+
+	lfs f0, 0x20(r1)		# posX
+	lfs f1, 0x24(r1)		# posY
+
+	lis r12, 0x40a0		# \
+	stw r12, 0x18(r1)	# | make 5.0 on stack
+	lfs f2, 0x18(r1)	# /
+
+	lwz r12, 0x14(r1)
+	fcmpo cr0, f1, f6	# \
+	ble- isBottom		# |
+	cmpwi r12, 0x1		# |
+	beq- isBottom		# |
+	fcmpo cr0, f0, f3	# |
+	ble- isLeft			# |
+	cmpwi r12, 0x2		# |
+	beq- isLeft			# | Check if fighter pos is past the boundary ranges
+	fcmpo cr0, f0, f4	# |
+	bge- isRight		# |
+	cmpwi r12, 0x3		# |
+	beq- isRight		# |
+	fcmpo cr0, f1, f5	# |
+	bge- isTop			# |
+	cmpwi r12, 0x0		# |
+	bne+ end			# /
+isTop:
+	fadds f1, f6, f2 
+	b setY 
+isBottom:
+	fsubs f1, f5, f2
+setY:
+	stfs f1, 0x24(r1)
+	b setPos
+isLeft:
+	fsubs f1, f4, f2
+	b setX
+isRight:
+	fadds f1, f3, f2
+setX:
+	stfs f1, 0x20(r1)
+setPos:
+	li r4, 0				# \
+	li r5, -1				# |
+	addi r3, r31, 0x28d4	# |
+	lwz r12, 0x0(r3)		# | baseItem->cameraModule.setEnableCamera(-1, 0)
+	lwz r12, 0x38(r12)		# |
+	mtctr r12				# |
+	bctrl					# /
+
+	mr r3, r31
+	addi r4, r1, 0x20
+	%call(BaseItem__warp)
+
+	## Prevents hitboxes interpolating during warp
+	mr r3, r31        	# \
+    lwz	r12, 0x3C(r3)  	# | 
+	lwz r12, 0x14(r12)	# |	item->processUpdate()
+	mtctr r12 			# |
+	bctrl				# /
+
+	mr r3, r31        	# \
+    lwz	r12, 0x3C(r3)  	# | 
+	lwz r12, 0x18(r12)	# |	item->processPreMapCorrection()
+	mtctr r12 			# |
+	bctrl				# /
+
+	mr r3, r31        	# \
+    lwz	r12, 0x3C(r3)  	# | 
+	lwz r12, 0x1C(r12)	# |	item->processMapCorrection()
+	mtctr r12 			# |
+	bctrl				# /
+
+	mr r3, r31        	# \
+    lwz	r12, 0x3C(r3)  	# | 
+	lwz r12, 0x24(r12)	# |	item->processPreCollision()
+	mtctr r12 			# |
+	bctrl				# /
+
+	mr r3, r31        	# \
+    lwz	r12, 0x3C(r3)  	# | 
+	lwz r12, 0x24(r12)	# |	item->processPreCollision()
+	mtctr r12 			# |
+	bctrl				# /
+	li r3, 0x0
+	%branch(0x80994e6c)
+
+end:
+	lwz	r12, 0x2C34(r31)	# Original operation
+}
 
 # [Legacy TE] New DBZ Lite with camera stabilization 2.0 [wiiztec] [wiiztec,Yohan1044] (write non-zero value to 9018F387 to toggle off)
 HOOK @ $8009CB3C

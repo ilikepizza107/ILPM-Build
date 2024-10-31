@@ -19,64 +19,7 @@
 ######################          Backend Codes          ######################
 #############################################################################
 
-#############################################################################
-VBI -> AXNextFrame During Boot v1.0 [Sammi-Husky]
-#############################################################################
-* 20497ED0 00000000 # if not past strap screen
-* 201E9A2C 4BE17E7C # if VBI
-
-op b -0x1FF0DC @ $80200984
-op blr @ $801E9A2C
-
-* E2000002 80008000
-* 20497ED0 00000001 # if past strap screen
-* 20200984 4BE00F24 # if AXNextFrame
-
-op b -0x1E8184    @ $801E9A2C
-op blr	 	  @ $80200984
-PULSE
-{
-	lis r3,0x8020
-	ori r3,r3,0x0984
-	icbi r0,r3
-	lis r3,0x801E
-	ori r3,r3,0x9A2C
-	icbi r0,r3
-	isync
-	blr
-}
-    
-*E0000000 80008000
-
-#############################################################################
-AXNextFrame -> VBI Hook Switch After Strap Screen v1.1 [Magus, Sammi-Husky]
-#############################################################################
-* 20200984 4BE00F24
-* 20497ED0 00000001
-CODE @ $80001198
-{
-	addi r6, r7, 0x4C
-	mr r3, r7
-	addi r4, r7, 0x34
-	addi r5, r7, 0x38
-}
-address $80023D5C @ $80002778
-op b -0x1E8184    @ $801E9A2C
-op blr	 	  @ $80200984
-
-PULSE
-{
-	lis r3,0x8020
-	ori r3,r3,0x0984
-	icbi r0,r3
-	lis r3,0x801E
-	ori r3,r3,0x9A2C
-	icbi r0,r3
-	isync
-	blr
-}
-
-* E2000002 00000000
+.include Source/Community/Hooktype.asm
 
 ######################################################
 BA and BLA are usable instructions v1.3 [Eon, taukhan]
@@ -194,10 +137,50 @@ Bunny Hoods Use Normal Item Limit [Kapedani]
 ############################################
 op li r3, 1 @ $809b0e2c
 
-##############################
-Stage Choice Random Fix [ds22]
-##############################
-op bge- 0x14C 	@ $80055444
+######################################################
+mtRand::randi behaves as mtRand->randi(max) [Kapedani] 
+######################################################
+op lwz r12, 0xc(r12) @ $8003fb08  # call mtRand->generate() instead of mtRand->randi() in mtRand::randf
+
+HOOK @ $8003fae8 # mtRand::randi
+{
+    stwu r1, -0x40(r1)
+    mflr r0
+    stw    r0, 0x44(r1)
+    stw    r31, 0x3c(r1)
+    mr r31, r4
+
+    lwz r12, 0x0(r3)
+    lwz r12, 0xc(r12)
+    mtctr r12
+    bctrl 
+
+    rlwinm    r0, r3, 24, 8, 31
+    lis    r3, 0x4330
+    stw    r0, 0x1C(r1)
+    xoris    r0, r31, 0x8000
+    stw    r3, 0x18(r1)
+    lfd    f2, -0x7BC8(r2)
+    lfd    f1, 0x18(r1)
+    lfs    f0, -0x7BC0(r2)
+    fsubs    f2,f1,f2
+    stw    r0, 0x24(r1)
+    stw    r3, 0x20(r1)
+    fdivs    f2,f2,f0
+    lfd    f1, -0x7BD0(r2)
+    lfd    f0, 0x20(r1)
+    fsubs    f0,f0,f1
+    fmuls    f0,f0,f2
+    fctiwz f0,f0
+    stfd f0, 0x28(r1)
+    lwz    r3, 0x2C(r1)
+
+    lwz r31, 0x3c(r1)
+    lwz    r0, 0x44(r1)
+    mtlr r0
+    addi r1, r1, 64
+    blr
+}
 
 #######################################
 Ragequit Accelerator [InternetExplorer]
@@ -362,8 +345,6 @@ Default Settings Modifier [Igglyboo, Brkirch, and FMK]
 * 0417F364 04000A00
 * 0417F368 08010000
 * 0417F36C 00000000
-* 0417BE74 04001909 # Brawl stages
-* 0417BE70 00021000 # Melee stages
 * E0000000 80008000
 
 ###################################
@@ -505,159 +486,28 @@ printInstructionCrash:
 op li r7, 0 @ $801dbf60
 op li r8, 0 @ $801dbf68
 
-##########################################################################################################
-Effect.pac Roster Expansion System (RSBE.Ver) V2 (Costume-Specific Etc File Support) [JOJI, DukeItOut]
-##########################################################################################################
-* E0000000 80008000
-* 0405EAD0 3800000B
-* 04451A88 8059DAB8
-* 04451A8C 80452C54
-* 04451A90 80452C64
-* 04416F7C 80416F70
-* 06416F60 00000006
-* 63757374 6F6D0000
-* C205EFCC 0000001F
-* 3BFF0004 281B0137
-* 418000E8 3FE08041
-* 3BFF6F7C 281B02B7
-* 41820048 281B0277
-* 41820034 281B0237
-* 41820020 281B0137
-* 40820058 389FFFE4
-* 80640000 907FFFF4
-* A0640004 48000034
-* 3C808059 6084D734
-* 48000018 3C808059
-* 6084D6F4 4800000C
-* 3C808059 6084D638
-* 80640000 907FFFF4
-* A0640004 60630058
-* B07FFFF8 38000000
-* 901FFFFC 48000010
-* 809FFFFC 38840001
-* 909FFFFC 889FFFFF
-* 2C1B0237 4180001C
-* 3860000A 7C041840
-* 41800010 38630010
-* 38840006 4BFFFFF0
-* 7C802378 7004000F
-* 2804000A 38840030
-* 41800008 38840007
-* 989FFFFB 700400F0
-* 5484E13E 2804000A
-* 38840030 41800008
-* 38840007 989FFFFA
-* 60000000 00000000
-* 0405EFD0 2C1B02F7
-* 0405F01C 2C0302F7
-* 0405F0A8 2C0302F7
-* 04061200 28040A8D
-* C2061218 00000007
-* 7C84482E 28150087
-* 4180002C 38800028
-* 2815008D 41800020
-* 38800137 38D5FF73
-* 2806000A 41800010
-* 38C6FFF6 38840001
-* 4BFFFFF0 00000000
-* 06416F80 00000011
-* 54657852 6F795377
-* 6F726454 72616365
-* 30000000 00000000
-* 06416FA0 00000009
-* 54657843 7573746F
-* 6D000000 00000000
-* 06416FAB 00000006
-* 54726163 65300000
-* C2061278 00000015
-* 7C84482E 28150087
-* 4180009C 3C808041
-* 38846F80 90640014
-* 38B5FF79 38650030
-* 98640011 80640014
-* 2815008D 41800078
-* 38B5FF73 90C40018
-* 90E40034 38840020
-* 38C00000 38600000
-* 2805000A 41800010
-* 38A5FFF6 38C60001
-* 4BFFFFF0 70C7000F
-* 2807000A 41800008
-* 38E70007 38E70030
-* 98E4000A 70C700F0
-* 54E7E13E 2807000A
-* 41800008 38E70007
-* 38E70030 98E40009
-* 38650030 98640011
-* 8064FFF4 80C4FFF8
-* 80E40014 00000000
-* E0000000 80008000
+.include Source/Community/TrailEffects.asm
 
-
-###############################################
-Sword Trail Hitlag fix V2 [MarioDox,DukeItOut]
-###############################################
-# Makes it so trail effects will stop
-# alongside the object that created them
-# like in other Smash Bros. games.
+######################################
+Bone Visibility Stabilizer [DukeItOut]
+######################################
 #
-# V2: Fixed issue where certain trails
-# actually don't want to have hitstop.
-#
-# R.O.B.'s laser is the only example where this 
-# is currently desired to have an exception.
-###############################################
-HOOK @ $800656A8
+# Prevents a potential hang related
+# to trying to set up visibility of
+# model parts that do not exist.
+#####################################						
+HOOK @ $80043DD8
 {
-	mr r4, r3 			# Original operation
-	stw r21, 0x98(r3)	# Trace ID for future reference	(normally a trace is a size of 0x84.)
-						# (We're abusing allocation logic that makes it instead reserve 0xA0!)
+	lwz r0, 0xE8(r27)	# \
+	addi r3, r1, 8		# | Retrieve bone info
+	stw r0, 8(r1)		# /
+	bla 0x18EE4C		# Will return bone count
+	lwz r5, 0(r31)	# Original operation: The bone switch's bone ID to check for. 
+					# It can be a problem if it is higher than the bone count!
+	cmplw r3, r5	# Compare the bone to modify with the amount of bones this model has
+	bgt+ %END%		# Behave normally if the bone to be modified is present 
+	ba 0x043DF4		# Skip process for this check. This model doesn't have the bone to modify!
 }
-HOOK @ $80065750
-{
-	mr r4, r3			# Original operation 
-	stw r21, 0x98(r3)	# Trace ID for future reference (though this is for when no texture is found!)
-}
-HOOK @ $800659F0
-{
-	cmplw r29, r0		# Original operation
-	beq- %END%			# If it was already going to not branch then don't read below!
-	lwz r3, 0x98(r31)	# Custom Trace ID variable
-	cmplwi cr1, r3, 0xC;	blt+ cr1, ForcePause	# \ normal R.O.B. laser traces
-	cmplwi cr1, r3, 0xD;	ble- cr1, %END%			# /
-	cmplwi cr1, r3, 0x1EB;	blt- cr1, ForcePause	# \ ef_custom23 (R.O.B.)
-	cmplwi cr1, r3, 0x1F4;  ble- cr1, %END%			# / 
-ForcePause:
-	crnot 2, 2			# inverts the "bne" determination from the first operation comparison
-						# so that it won't branch away from pausing
-}
-
-#########################################################
-Solid Trail ID Specifier [MarioDox, DukeItOut]
-#########################################################
-.macro trailIsSolid(<traceID>)
-{
-    cmpwi    r26, <traceID>
-    beq-    ForceSolid
-}
-.macro trailIsSolidRange(<traceMinID>,<traceMaxID>)
-{
-    cmpwi    r26, <traceMinID>
-    blt+	 0xC
-	cmpwi	 r26, <traceMaxID>
-	ble-	 ForceSolid
-}
-HOOK @ $8006131c
-{
-    stw        r31, 0x8(r1)     		# original op
-    %trailIsSolid(0x174)        		# Dark Pit
-    %trailIsSolid(0x175)        		# Classic Pit
-	%trailIsSolidRange(0x1ED, 0x1EE)	# Virtual Boy ROB normal, max laser
-    b %END%
-ForceSolid:
-    li        r6, 0x1           # Tells the game this trail won't be see through
-}
-
 
 #######################################################################
 [Project+] Turbo item does not fire curry shots in any mode [DukeItOut]
@@ -738,33 +588,13 @@ HOOK @ $801f3058
   bctr
 }
 
-###################################################################
-[Project+] Pitfall effect can have no-bury with trip rate 2.0 [Eon]
-###################################################################
-HOOK @ $8076CE84
-{
-	lwz r24, 0x60(r19) #load hitbox trip rate
-	lis r25, 0x4000    #2.0 float
-	cmpw r24, r25 	   #if trip rate = 2.0, dont burry.
-	bne buryNormal
-dontBury:
-#pretends to be angle 0, keeps them grounded no matter the attack strength.
-	li r24, 0
-	li r25, 0
-	lis r12, 0x8076
-	ori r12, r12, 0xd0b0 
-	mtctr r12
-	bctr
-buryNormal:
-	li 24, 6
-}
-
 .include Source/ProjectM/CloneEngine.asm
 
 .include Source/CodeMenu/CodeMenu.asm
 .include Source/CodeMenu/BigHeadMode.asm
 .include Source/CodeMenu/RandomAngleMode.asm
 
+.include Source/Project+/TripRate.asm
 .include Source/Project+/CompressPAC.asm
 .include Source/Project+/FilePatchCode.asm
 .include Source/Project+/Memory.asm
@@ -1022,24 +852,43 @@ fsOkay:
   stb r0, 4(r27)
 }
 
-##########################################################
-No Autosweetspot Ledges v1.1 [spunit262, Dantarion, Magus]
-##########################################################
+##########################################################################
+No Autosweetspot Ledges v1.3&K [spunit262, Dantarion, Magus, DukeItOut]
+#
+# v1.2: Cleaned up code
+# v1.3: Made an exception for Knuckles' wall climb so it could grab ledges
+##########################################################################
 HOOK @ $807812B0
 {
-  	cmpwi r4, 0xA; bne+ loc_0x38
-  	lwz r12, 60(r1)
-  	lwz r11, 24(r12)
-  	lfs f0, 16(r11)
-  	lfs f1, 28(r11);    fcmpo cr0, f0, f1; bge+ loc_0x34
-  	fsubs f0, f1, f0
-  	lfs f1, -27140(r2); fcmpo cr0, f0, f1; bge+ loc_0x38
-  	nop 
-loc_0x34:
-  	li r0, 0x0
-loc_0x38:
-  	rlwinm. r0, r0, 25, 31, 31
+    cmpwi r4, 0xA; bne+ normal
+
+    lwz r12, 0x28(r1)		#
+	cmplwi r12, 0x100		# \ Sometimes input buffer goes through here.
+	blt+ normal				# / It's not doing what we expect so this makes it skip that!
+	
+    lwz r11, 0x110(r12)    # Get the instance ID
+    lwz r12, 0x3C(r1)
+    cmpwi r11, 0x2D        # Is it Knuckles?
+    bne+ notEchidna
+
+    lwz r11, 0x7C(r12)
+    lhz r7, 0x3A(r11)
+    cmpwi r7, 0x117        # Is Knuckles climbing a wall?
+    beq normal             # Let them grab the ledge!
+
+notEchidna:
+notWallClimb:    
+      lwz r11, 0x18(r12)
+      lfs f0, 0x10(r11)
+      lfs f1, 0x1C(r11);   fcmpo cr0, f0, f1; bge+ noSweetspot
+      fsubs f0, f1, f0
+      lfs f1, -0x6A04(r2); fcmpo cr0, f0, f1; bge+ normal
+noSweetspot:
+      li r0, 0x0
+normal:
+      rlwinm. r0, r0, 25, 31, 31
 }
+
 
 ####################################################
 No Air Dodge in tumble [spunit262, Phantom Wings]
@@ -1295,7 +1144,7 @@ setLedgeGrab:
   mtctr r12 
   bctrl #set LA-Basic[79] = 0, ledgegrab count
 end:
-  stw r28, 0x38(r30)
+  stw r28, 0x38(r30) # Set Action
   li r29, 1
   lwz r3, 0x44(r30)
 }
@@ -1323,13 +1172,6 @@ Melee 361 Angle [Magus]
 float 44.0 @ $80B87ABC
 float 32.0 @ $80B87AC0
 float 32.1 @ $80B87AC4
-
-############################################
-Only Trip Rate 1.0 Can Trip Foes [DukeItOut]
-############################################
-op nop @ $8076D120
-op lfs f1, 0x18(r13) @ $8076D124
-op bne+ 0x40 @ $8076D130
 
 ##################################################################
 Weight Independent Knockback and Forced Tumble on Throws [Magus]
@@ -1776,7 +1618,7 @@ MultiplyHitlag:
 	ori r5, r5, 60000		# | Scalars are really just ints * 60000			
 	divw r4, r4, r5			# / Convert back into an int!
 ModifiedHitlag:
-	cmpw r4, 0			# \
+	cmpwi r4, 0			# \
 	bge- %END%			# / Safety to prevent people trying to force negative hitlag
 NoHitlag:
 	li r4, 0			# No frames of hitlag!
@@ -2068,6 +1910,11 @@ adjustCeil uses correct offset calculation [Eon]
 ##################################################
 op lfs f0, 0x18(r1) @ $8089E6E4 #previously used bottom of ecb in calculation, now uses y position from getPosition
 
+##################################################
+Melee Invince Mechanics [Eon]
+##################################################
+op b 0x60 @ $80741744 # makes it so you can't "rehit" an opponent if they change from invincible to vulnerable
+
 .include Source/ProjectM/Damage.asm
 .include Source/ProjectM/DirectionalInfluence.asm
 .include Source/ProjectM/DirectionalInput.asm
@@ -2290,28 +2137,6 @@ op mr r19, r3 @ $8069B868
 CSS Cursor Speed [Dantarion]
 #############################
 float 1.0 @ $806A1014
-
-#########################################################################
-More Rules & Random Stage Switch are Selectable without Unlocking [Magus]
-#########################################################################
-op li r3, 1 @ $8004E818
-op li r3, 1 @ $8004E83C
-
-######################################################################
-All Stages Selectable on Random Stage Switch without Unlocking [Magus]
-######################################################################
-op li r0, 0xFFF @ $806AB860
-op li r0, 0xFFF @ $806AB8DC
-
-######################################################
-All-Star Mode is Selectable without Unlocking [Spigel]
-######################################################
-op li, r3, 1 @ $8004E7D0
-
-##########################################################
-Boss Battles Mode is Selectable without Unlocking [Spigel]
-##########################################################
-op li, r3, 1 @ $8004E7F4
 
 #########################################
 Use Custom CLR ID on Anchored GFX [Magus]
@@ -2705,11 +2530,12 @@ SFX Survival -> Choose Your Character [Standardtoaster]
 op li r4, 0x2046 @ $80683998
 op li r4, 0x2046 @ $8068E590
 
-############################################################################
-No Audience SFX on Stage Selection v2 [Standardtoaster, DukeItOut, Kapedani]
-############################################################################
+#############################################################################################
+No Audience SFX on Stage Selection v2.5 [Standardtoaster, DukeItOut, Kapedani, ilikepizza107]
+#############################################################################################
 op NOP @ $806b46d0
 op NOP @ $806b53b8
+op NOP @ $806b5520
 
 ###################################################################
 No Swoosh SFX on Character Selection v2 [standardtoaster, Kapedani]
@@ -3268,5 +3094,6 @@ op b 0x38	@ $808A087C
 .include Source/Project+/CStick.asm		# Don't move this to BOOST, it will cause aerial drift for some reason
 .include Source/Project+/Items.asm
 .include Source/Community/ItemEx.asm
+.include Source/Community/Syringe.asm		
 
 .include Source/Project+/MultiGCT.asm		# MAKE SURE THIS IS AT THE VERY BOTTOM OF THIS CODESET!!!

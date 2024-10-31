@@ -407,8 +407,8 @@ actualFile:
   lbz r0, -0xC82(r12)    		# \
   cmpwi r0, 1        			# | The above also applies to Wild Brawl
   beq startWithPinch        	# /
-  lbz r0, -0xC81(r12)			# \
-  cmpwi r0, 1					# | As well as Bomb Rain Mode
+  lbz r0, 0xF36(r12)			# \
+  cmpwi r0, 6					# | As well as Bomb Rain Mode
   bne doNotForce				# /
 startWithPinch:  
   li r0, 1						# \

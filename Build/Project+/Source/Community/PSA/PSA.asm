@@ -228,8 +228,9 @@ exit:
 }
 
 #######################################################################
-Char Specific Paralyze Effect [MarioDox]
+!Char Specific Paralyze Effect [MarioDox]
 #######################################################################
+#Currently disabled, as it breaks specific projectile interactions when reflected.
 .macro customParalyze(<ID>, <GFXHi>, <GFXLo>)
 {
 	cmpwi r3, <ID>

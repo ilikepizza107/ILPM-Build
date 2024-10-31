@@ -540,15 +540,19 @@ loc_0x220:
   lwz r12, 0(r20)	# Original operation
 }
 
+HOOK @ $8004B1D4
+{
+  	li r11, 0x52			    # \ Added writing R to P+'s stage system to signify load stage
+	lis r12, 0x8054 	    # |
+	stb r11, -0xFFD(r12)  # / 8053F003 
+  	lhz r0, 0xEE3(r3)
+}
+
 HOOK @ $8004ACC8
 {
 	li r3, 0
 	lis r12, 0x805C
 	stw r3, -0x75F8(r12) # 805B8A08
-	li r3, 0x21			# \ Added writing ! to P+'s stage system to signify load stage
-	lis r12, 0x8054 	# |
-	stb r3, -0xFFD(r12) # / 8053F003 
-
 	mr r3, r0		# Original operation
 }
 HOOK @ $80764E88

@@ -24,7 +24,7 @@ uint32_t[46] |
 Results Random Music Selector [mawwwk, DukeItOut]
 ################################################
 .alias VSResultsID = 0xF400        # Base ID to play
-.alias ResultsTrackCount = 2
+.alias ResultsTrackCount = 3
 
 HOOK @ $800EB14C
 {
@@ -39,47 +39,61 @@ HOOK @ $800EB14C
     mr r3, r29                    # Restore register
 }
 
-####################################################
-Classic and All-Star Results Music Table [DukeItOut]
-####################################################
-HOOK @ $806E0980		# Classic Mode
+## TODO: Make victory themes just use 0xFF00 + Fighter id instead of table for new version of BrawlEx
+# Handled in ifVsResultTask::processAnim
+
+##################################################################################
+Classic and All-Star Results Music Id Is Based On Fighter Id [DukeItOut, Kapedani]
+##################################################################################
+.alias ftKindConversion__convertKind = 0x808545ec
+
+.macro lwi(<reg>, <val>)
 {
-	lbz r0, 0x33(r15)	# Get the character ID, original operation
-	rlwinm r0, r0, 1, 0, 30	# Multiply by 2
-	lis r3, 0x806E		# \ Get pointer to table
-	lwz r3, 0x0988(r3)	# /
-	lhzx r3, r3, r0		# Get 16-bit value for the song ID
-	oris r0, r3, 0xFF00	# For unknown reasons, having FF in the two highest digits is used for verification
+    .alias  temp_Hi = <val> / 0x10000
+    .alias  temp_Lo = <val> & 0xFFFF
+    lis     <reg>, temp_Hi
+    ori     <reg>, <reg>, temp_Lo
+}
+.macro call(<addr>)
+{
+  %lwi(r12, <addr>)
+  mtctr r12
+  bctrl    
+}
+
+HOOK @ $806e0988		# Classic Mode
+{
+	stwu r1,-0x20(r1)
+    mflr r0
+    stw r0,0x24(r1)
+	stw r6, 0x1C(r1)
+	lbz	r3, 0x33(r15)	# get characterKind
+    addi r4, r1, 0x8
+	%call(ftKindConversion__convertKind)
+    lwz r3, 0x8(r1)		# \ 
+    ori r3, r3, 0xff00	# | bgmId = 0xFF00FF00 | ftKind
+	lwz r6, 0x1C(r1)
+    lwz r0,0x24(r1)
+    mtlr r0
+    addi r1,r1,0x20
+	oris r0, r3, 0xFF00	# /
+	addi r4, r20, 752
 }
 HOOK @ $806E3650		# All-Star Mode
 {
-	lbz r0, 0x98(r6)	# Get the character ID
-	rlwinm r0, r0, 1, 0, 30	# Multiply by 2
-	lis r3, 0x806E		# \ Get pointer to table
-	lwz r3, 0x0988(r3)	# /
-	lhzx r3, r3, r0		# Get 16-bit value for the song ID
-	oris r0, r3, 0xFF00	# For unknown reasons, having FF in the two highest digits is used for verification
+	stwu r1,-0x20(r1)
+    mflr r0
+    stw r0,0x24(r1)
+	stw r6, 0x1C(r1)
+	lbz	r3, 0x98(r6)	# get characterKind
+    addi r4, r1, 0x8
+	%call(ftKindConversion__convertKind)
+    lwz r3, 0x8(r1)		# \ 
+    ori r3, r3, 0xff00	# | bgmId = 0xFF00FF00 | ftKind
+	lwz r6, 0x1C(r1)
+    lwz r0,0x24(r1)
+    mtlr r0
+    addi r1,r1,0x20
+    oris r0, r3, 0xFF00	# /
+	addi r4, r23, 136
 }
-op b 0x8 @ $806E0984	# Skip operation afterwards since we are using a different load method
-	.BA<-ClassicResultsTable
-	.BA->$806E0988
-	.GOTO->SkipResultsTable
-ClassicResultsTable:
-	half[56] | # Slots
-		0x271A, 0x272D, 0x2739, 0x2748, | # Mario, Donkey Kong, Link, Samus
-		0x2748, 0x2750, 0x275A, 0x276E, | # Zero Suit Samus, Yoshi, Kirby, Fox
-		0x276F, 0x271C, 0x277A, 0x278F, | # Pikachu, Luigi, Captain Falcon, Ness
-		0x281D, 0x271A, 0x273B, 0x273B, | # Bowser, Peach, Zelda, Sheik
-		0x27C9, 0x27C9, 0x27C9, 0x280F, | # Ice Climbers, Popo, Nana, Marth
-		0x27D4, 0x2765, 0x273F, 0x27A2, | # Mr. Game & Watch, Falco, Ganondorf, Wario
-		0x275C, 0x27C0, 0x279F, 0x2796, | # Meta Knight, Pit, Olimar, Lucas
-		0x272D, 0x2770, 0x2770, 0x2770, | # Diddy Kong, PT Charizard, Solo Charizard, PT Squirtle
-		0x2770, 0x2770, 0x2770, 0x2758, | # Solo Squirtle, PT Ivysaur, Solo Ivysaur, Dedede
-		0x2776, 0x278D, 0x27C4, 0x2770, | # Lucario, Ike, ROB, Jigglypuff
-		0x273E, 0x2767, 0x27EC, 0x27FE, | # Toon Link, Wolf, Snake, Sonic
-		0x281D, 0x27A2, 0x0000, 0x0000, | # Giga Bowser, Wario-Man, Red Alloy, Blue Alloy
-		0x0000, 0x0000, 0x2788, 0xF000, | # Yellow Alloy, Green Alloy, Roy ("MarioD"), Mewtwo ("BossPackun")
-		0x0000, 0xF001, 0x0000, 0x0000	  # "Rayquaza", Knuckles ("PorkyStatue"), "Porky", "HeadRobo"
-# Original table at $80702418
-SkipResultsTable:
-	.RESET

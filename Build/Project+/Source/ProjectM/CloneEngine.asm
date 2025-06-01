@@ -224,6 +224,19 @@ Knuckles Fixes
 * 00001FF0 00000000
 string "Knuckles" @ $80456534
 
+###########################
+Clone Engine Internal Names
+###########################
+.BA<-KNUCKLES
+.BA->$80AD8724
+.GOTO->SkipInternalNames
+
+KNUCKLES:
+  string "Knuckles"  
+
+SkipInternalNames:
+.RESET
+
 ##########################
 Clone Victory Music [ds22]
 ##########################

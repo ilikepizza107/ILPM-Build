@@ -953,28 +953,10 @@ Footstool with Only Taunt + Fail Window v1.3 [Magus, ds22]
 * 04FB61D4 000A0100
 * 04FB6188 80000051
 
-#########################################
-Sleep doesn't pierce armour in air [Eon] 
-#########################################
-HOOK @ $8085CDD0
-{
-    stw r4, 0xC(r1)
-    lwz r3, 0xD8(r4)
-}
-HOOK @ $8085CDF0 
-{
-    lwz r3, 0xC(r1)
-    lwz r3, 0xD8(r3)
-    lwz r3, 0x14(r3)
-    lwz r12, 0(r3)
-    lwz r12, 0x14(r12)
-    mtctr r12 
-    bctrl 
-    cmpwi r3, 2 #if situation = in air, noReaction = true
-    beq true
-false:
-    li r3, 0
-    b %end%
-true:
-    li r3, 1
-}
+##################################
+Team Colour Shade Modifier [ds22]
+##################################
+* 06F9FF64 0000000C	# Note: This is in Fighter.pac
+* 00000080 80808080
+* FFFFFF80 00000000
+

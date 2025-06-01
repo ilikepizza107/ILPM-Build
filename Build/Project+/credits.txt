@@ -20,21 +20,18 @@ SKINS
 ################
 
 MARIO
-07 - LoyaL Mario by ilikepizza107
 
 DONKEY KONG
 
 LINK
-10 - Zushi Link by GKO
 27 - Maofever Link by SOULLY
+28 - SgtPingwen Link by ilikepizza107
 
 SAMUS
 40 - GooSluj Samus by ilikepizza107
 45 - Brawl Fake Samus by SJS [https://gamebanana.com/mods/247126]
 
 YOSHI
-40 - Shiny Zubat Yoshi by SJS
-45 - Whoratio Yoshi by Z-Stick, with credit to ilikepizza107
 
 KIRBY
 25 - influenza Kirby by influenza
@@ -44,8 +41,8 @@ KIRBY
 
 FOX
 10 - Silver Fox by Baka
-11 - Star's Blue Fox by ilikepizza107
-12 - Star's Green Fox by ilikepizza107
+11 - Star Blue Fox by ilikepizza107
+12 - Star Green Fox by ilikepizza107
 40 - Drip Fox by DHS7, ilikepizza107
 
 PIKACHU
@@ -54,26 +51,26 @@ LUIGI
 
 CAPTAIN FALCON
 07 - influenza Falcon by influenza
+25 - shad Falcon by influenza, ilikepizza107
 35 - ORLY Falcon by Wyld
-36 - Stude Falcon by Motobug
-37 - SoulOfficer Falcon by influenza
-45 - shad Falcon by influenza, ilikepizza107
+36 - SoulOfficer Falcon by influenza
 
 NESS
 30 - Not Chris Ness by ilikepizza107
 
 BOWSER
-25 - S0UTHV13W Bowser by influenza
+25 - Sabrina Bowser by influenza
 
 PEACH
-09 - Cyphr Peach by ilikepizza107
 
 ZELDA
+09 - Sabrina Zelda by influenza
 30 - Tuck Zelda by Tuck, ilikepizza107, using Hulkalex's Skyward Sword Zelda model [http://www.mediafire.com/file/1b0t0ned2djzmg2/Zelda+Skyloft.zip/file]
 31 - Evil Lesbian Zelda by Evil Lesbian, ilikepizza107, using Hulkalex's Skyward Sword Zelda model [http://www.mediafire.com/file/1b0t0ned2djzmg2/Zelda+Skyloft.zip/file]
 32 - KWAM Zelda by ilikepizza107, using Hulkalex's Skyward Sword Zelda model [http://www.mediafire.com/file/1b0t0ned2djzmg2/Zelda+Skyloft.zip/file]
 
 SHEIK
+09 - Sabrina Sheik by influenza
 30 - RoSheik by jetfantastic [http://forums.kc-mm.com/Gallery/BrawlView.php?Number=213577]
 31 - Evil Lesbian Sheik by Evil Lesbian, ilikepizza107
 32 - KWAM Sheik by ilikepizza107
@@ -91,12 +88,10 @@ FALCO
 
 GANONDORF
 26 - Che Ganondorf by DHS7
-36 - Ford$ Ganondorf by FingerStripes
 40 - joey Ganondorf by DHS7
 
 META KNIGHT
 06 - NorCal MK by FingerStripes
-25 - Kulprit MK by ilikepizza107
 
 PIT
 40 - Star Red Pit by SJS, Star, ilikepizza107
@@ -108,19 +103,19 @@ ZERO SUIT SAMUS
 45 - RosiYY ZSS by ilikepizza107
 
 OLIMAR
-40 - CP9 Olimar by FingerStripes, with credit to ilikepizza107
-45 - joey Olimar by SJS and DHS7
+40 - joey Olimar by SJS and DHS7
+41 - sfy bees Olimar by Motobug, with credit to SJS and DHS7
 
 LUCAS
 40 - Star Red Lucas by Star, SJS
 41 - Star Blue Lucas by Star, SJS
 42 - Star Green Lucas by Star, SJS
-45 - Blue Pajama Lucas by Toti
-46 - Claus Pajama Lucas by Toti
 
 DIDDY KONG
-25 - SipMastah Diddy Kong by GKO
+25 - heck! Diddy Kong by ilikepizza107
+26 - SipMastah Diddy Kong by GKO
 30 - DLA Diddy Kong by Wyld
+35 - Sneez Diddy Kong by Theytah, with credit to Ryztiq
 
 MEWTWO
 
@@ -143,12 +138,13 @@ LUCARIO
 IKE
 24 - influenza Ike by influenza
 25 - Gunther Ike by ilikepizza107
-34 - Blitz Ike by erg
 
 R.O.B.
 07 - Comb ROB by Wyld
+36 - Sneez ROB by ???, with credit to ilikepizza107
 
 JIGGLYPUFF
+15 - SgtPingwen Jigglypuff by ilikepizza107
 
 WARIO
 
@@ -184,11 +180,12 @@ STAGES
 BATTLEFIELD
 Base - Daytime BF by ilikepizza107
 
-DREAM LAND
-Base - Mo8 DL by ilikepizza107
+FRIGATE HUSK
+R+Start - Pirate Husk by Legacy MP
+R+Start - Hyrule Meadows FH by Motobug, mawwwk, with credit to Dranakar, Scout, davidvkimball, DukeItOut, soopercool101, PMDT
 
 POKEMON STADIUM 2
-Base - Tussleopolis PS2 by ilikepizza107
+Base - Super TPS PS2 by ilikepizza107
 
 SMASHVILLE
 Base - Gardenville by Red98, with updates by ilikepizza107
@@ -199,4 +196,4 @@ MENUS
 
 New "Ready To Fight!" Model by Xenthos
 
-CSS + SSS by ilikepizza107
+CSS + SSS by ilikepizza107, with credit to Nezha

@@ -162,3 +162,41 @@ CODE @ $807A75C8
 {
     %checkVariable(0x798)
 }
+
+###################################################
+Set Momentum Command May Take Variables [DukeItOut]
+###################################################
+# 
+# Lets Command 0E080200 take variables instead of
+# only scalar "float" constants.
+###################################################
+.macro Function(<float>,<lwPointer>)
+{
+	lwz r5, 0(r3)	# Get argument type. 
+	lwz r4, 4(r3)	# Original operation. Gets argument
+	cmpwi r5, 5		# \ If it isn't a variable, assume it is a scalar!
+	bne+ %END%		# /
+	
+	mr r3, r31
+					# r4 contains desired variable
+	li r5, 0
+	lis r12, 0x8079
+	ori r12, r12, 0x6F14
+	mtctr r12	
+	bctrl			# access the float variable wanted!	
+	fmr <float>, f1
+	
+	lis r12, 0x8079
+	ori r12, r12, <lwPointer>
+	mtctr r12
+	bctr
+
+}
+HOOK @ $80793100
+{
+	%Function(f31,0x3130)
+}
+HOOK @ $80793178
+{
+	%Function(f0,0x31A8)
+}

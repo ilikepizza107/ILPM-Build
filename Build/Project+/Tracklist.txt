@@ -1,119 +1,84 @@
-################
+To access default P+ tracklists, simply press any DPAD button when selecting a stage or stage alt. (When DPAD Up is pressed on Dream Land, Gourmet Race will play)
+
 BATTLEFIELD
+	Blue Water Blue Sky (Guilty Gear X2)
+	Gogeta (SSJ4) Theme (Dragon Ball FighterZ)
+	Golden Spirit (JoJo's Bizzare Adventure All Star Battle)
+	Rebellion (BlazBlue Calamity Trigger)
+	Rushing Heart II (Under Night In-Birth II SysCeles)
 
-	The Battle of Concepts (Haikyuu)
-	Meaning of Birth (Tales of the Abyss)
-	Emperor's Time (Hunter x Hunter)
-	Try Your Luck (Hunter x Hunter)
-	Inner Light (Shocking Lemon)
-
-################
-BOWSERS CASTLE
-
-	Showdown (Magi)
-	Vs Mecha Bowser (Super Mario Sunshine)
-	Un vra orage (Magi)
-	Theme of Dormammu (Marvel vs Capcom 3)
-	Bowser Battle (Paper Mario The Thousand Year Door)
-	Macho Grubba Battle (Paper Mario The Thousand Year Door)
-
-################
 DEAD LINE
+	Luck & Pluck (JoJo's Bizzare Adventure All Star Battle)
+	Surpass My Older Brother (JoJo's Bizzare Adventure All Star Battle)
+	Theme of Megaman Volnutt (Tatsunoko Vs Capcom).brstm
 
-	Theme of Dr. Doom (Marvel vs Capcom 3)
-	Penny Battle (Pokemon Scarlet & Violet)
-	Fighting In The Street (Streets of Rage)
-	Rooftop Run Modern (Sonic Generations)
-
-################
 DREAM LAND
+	Hierophant Green (JoJo's Bizzare Adventure All Star Battle)
+	Precious Heart (Street Fighter EX3)
+	Strange Dreamer (Melty Blood Actress Again Current Code)
+	Zeppeli The Eccentric (JoJo's Bizzare Adventure All Star Battle)
 
-	The Offing (SEGA Marine Fishing)
-	Be in High Spriits (Ace of Diamond)
-	Glass Ocean (Neon White)
-	Neptune's Theme (Sailor Moon S Game)
-
-################
 FINAL DESTINATION
+	Calamity Is Coming (JoJo's Bizzare Adventure All Star Battle R)
+	Cell's Theme (Dragon Ball FighterZ)
+	Zappa Theme (Guilty Gear XX #Reload)
 
-	Theme of Vergil (Ultimate Marvel vs Capcom 3)
-	Rigged Game (Neon White)
-	Fire's Last Hope (Rivals of Aether)
+FOUNTAIN OF DREAMS
+	Theme of Chun-Li (Marvel Vs Capcom 3)
+	Theme of Magneto (Marvel Vs Capcom 3)
+	Theme of Spider-Man (Marvel Super Heroes Vs Street Fighter)
+	Theme of Zero (Marvel Vs Capcom 3)
 
-################
-FRIGATE HUSK/HYRULE MEADOWS
+FRIGATE ORPHEON (PHENDRANA)
+	Aensland Castle (Tatsunoko Vs Capcom Ultimate All-Stars)
+	Icefield White Knight II (Under Night In-Birth II SysCeles)
+	Purity and Strictly II (Under Night In-Birth II SysCeles)
+	Theme of Dr. Doom (Marvel Vs Capcom 3)
 
-	The Mad Bailaor (Hunter x Hunter)
-	Opal's Theme (Steven Universe)
-	Maria Fight (Castlevania Nocturne in the Moonlight)
-	Brodelvulken (N64Y2K Millenium Trax)
-	Beautiful Green Wild Beast (Naruto)
-	Monsters' Banquet (Haikyuu)
-
-################
 GREEN HILL ZONE
+	Death Egg's Hangar (Sonic the Fighters)
+	Fighting In The Street (Streets of Rage)
+	Stimulation (Capcom vs SNK 2)
+	Theme of Gambit (Marvel Vs Capcom)
 
-	Theme of Iron Man (Marvel vs Capcom 3)
-	I-no's Theme (Guilty Gear)
-	Riches in Me (Guilty Gear Isuka)
-	Theme of Nova (Ultimate Marvel vs Capcom 3)
-	Original Bet (Guilty Gear Xrd)
-
-################
 LUIGI'S MANSION
+	Haunted House (Pokken Tournament)
+	Theme of Dr. Strange (Ultimate Marvel Vs Capcom 3)
+	Theme of Ghost Rider (Ultimate Marvel Vs Capcom 3)
+	Theme of Juri (Super Street Fighter IV)
 
-	Almost There (Cave Story Remix)
-	Battle! Giratina (Pokemon Legends Arceus)
-	Boogie Woogie (Jujutsu Kaisen)
-	Danger Room (Marvel vs Capcom 3)
-	Prince Mush (Paper Mario The Thousand Year Door)
-	Rave in the Grave (Shantae and the Pirate's Curse)
-	Scattered and Lost (Celeste)
-
-################
 MENU
+	Clock Tower (Marvel Vs Capcom 2)
+	Character Select (Naruto Ultimate Ninja Storm 2)
+	Character Select Theme (Marvel Vs Capcom 3)
+	Get Into the Wave (Sonic the Fighters)
+	Redemption (Guilty Gear XX #Reload)
+	Swamp Stage (Marvel Vs Capcom 2)
 
-	Its Our Generation (King of Fighters XV)
-	Want To Be Close (Persona 3)
-	Main Menu (LEGO Racers)
-	Battle Tutorial Menu (Pokemon Battle Revolution)
-	Choose a Colosseum (Pokemon Battle Revolution)
-	Character Select (Mario Super Sluggers)
-	Make Your Move (Magi)
-	Spinel is So Much Better Now (Steven Universe)
-
-################
 POKEMON STADIUM 2
+	Baile de Batalla (Tekken Tag Tournament 2)
+	Gold Experience (JoJo's Bizzare Adventure All Star Battle)
+	Soy Sauce for Geese (Tekken 7) 
+	[PINCH TRACK: Soy Sauce for Geese Final Round (Tekken 7)]
+	Theme of Captain America (Marvel Vs Capcom 3)
+	Theme of Hulk (Marvel Vs Capcom 3)
+	Theme of K' Team (King of Fighters XIII)
 
-	Mission (Magi)
-	Battle! AI Sada AI Turo (Pokemon Scarlet & Violet)
-	Battle! Palkia & Dialga Origin Form (Pokemon Legends Arceus)
-	Absol's Hurdle Bounce (PokePark Pikachu's Adventure)
-	Direct Confrontation (Haikyuu)
-	Heavenly Sky (Sonic Frontiers)
-	Ash-Greninja Theme (Pokemon XYZ)
-
-################
 RESULTS
+	Results Screen (Street Fighter IV)
+	Results Theme (Street Fighter V)
+	The Fire's Respite (Capcom Fighting Collection 2)
 
-	Astral Observatory (The Legend of Zelda Majoras Mask)
-	S3 Outro (Amphibia)
-
-################
 SMASHVILLE
+	Actions in the Lower World (Melty Blood Type Lumina)
+	Jazzy NYC '99 (Street Fighter III Third Strike) 
+	[PINCH TRACK: Jazzy NYC '99 Mix 2 (Street Fighter III Third Strike)]
+	Rhythmical Bustle (Melty Blood Actress Again)
+	Theme of Vega (Super Street Fighter IV)
+	This is True Love Makin (Capcom vs SNK 2)
 
-	Delirious (Jujutsu Kaisen)
-	Entrusted (Jujutsu Kaisen)
-	Spiral Ahead (Ridge Racer Type 4)
-	Nobunaga's Theme (Hunter x Hunter)
-	Beats From Above (Klonoa Door To Phantomile)
-
-################
 TEMPLE OF TIME
-
-	L'Arabesque Danse Toujours (Magi)
-	Smash 'Em, Rip 'Em (FFVII Remake)
-	Joe Higashi Theme (Fatal Fury 2)
-	Middle Boss Battle [Re-Arranged] (The Legend of Zelda Ocarina of Time)
-	Temple A (Spelunky)
-	Battle Theme (Metaphor ReFantazio)
+	Eternal Struggle (Soulcalibur II)
+	Regi Ruins (Pokken Tournament)
+	Smoking Hot (SAMURAI SHODOWN)
+	Theme of Akuma (Capcom vs SNK 2)

@@ -24,12 +24,13 @@ Up+Down+Right+Left: Final_Destination_DPAD.param
 
 
 ################
-03.asl - 4 entries
+03.asl - 5 entries
 
 Base: Delfino_Secret.param
 R: Delfino_Secret_R.param
 L: Delfino_Secret_L.param
 Z: Delfino_Secret_Z.param
+0x4000: Delfino_Secret_MR_00.param
 
 
 ################
@@ -60,7 +61,7 @@ Base: Bowser_Castle.param
 R: Bowser_Castle_R.param
 L: Bowser_Castle_L.param
 Z: Bowser_Castle_Z.param
-Up+Down+Right+Left: Bowser_Castle_DPAD.param
+0x4000: Bowser_Castle_MR_00.param
 
 
 ################
@@ -85,7 +86,7 @@ Z: Rumble_Falls_Z.param
 
 
 ################
-09.asl - 7 entries
+09.asl - 8 entries
 
 Base: Temple_of_Time.param
 R: Temple_of_Time_R.param
@@ -94,6 +95,7 @@ Z: Temple_of_Time_Z.param
 0x8000: Temple_of_Time_ML_00.param
 0xC000: Event_31.param
 Up+Down+Right+Left: Temple_of_Time_DPAD.param
+R+Up+Down+Right+Left: Temple_of_Time_RDPAD.param
 
 
 ################
@@ -106,14 +108,17 @@ Z: Norfair_Z.param
 
 
 ################
-0C.asl - 6 entries
+0C.asl - 9 entries
 
 Base: Frigate_Husk.param
 R: Frigate_Husk_R.param
 L: Frigate_Husk_L.param
 Z: Frigate_Husk_Z.param
 0x8000: Frigate_Husk_ML_00.param
+0x4000: Frigate_Husk_MR_00.param
+0x4001: Frigate_Husk_MR_01.param
 Up+Down+Right+Left: Frigate_Husk_DPAD.param
+R+Up+Down+Right+Left: Frigate_Husk_RDPAD.param
 
 
 ################
@@ -234,12 +239,13 @@ Z: Skyworld_Z.param
 
 
 ################
-1F.asl - 4 entries
+1F.asl - 5 entries
 
 Base: Fountain_of_Dreams.param
 R: Fountain_of_Dreams_R.param
 L: Fountain_of_Dreams_L.param
 Z: Fountain_of_Dreams_Z.param
+Up+Down+Right+Left: Fountain_of_Dreams_DPAD.param
 
 
 ################
@@ -253,7 +259,7 @@ Z: Fourside_Z.param
 
 
 ################
-21.asl - 9 entries
+21.asl - 10 entries
 
 Base: Smashville.param
 Y: Smashville_Y.param
@@ -264,6 +270,7 @@ Y+L: Smashville_YL.param
 Z: Smashville_Z.param
 Y+Z: Smashville_YZ.param
 Up+Down+Right+Left: Smashville_DPAD.param
+R+Up+Down+Right+Left: Smashville_RDPAD.param
 
 
 ################
@@ -368,7 +375,7 @@ Up: Dream_Land_DPADUP.param
 
 
 ################
-2E.asl - 6 entries
+2E.asl - 7 entries
 
 Base: Pokemon_Stadium_2.param
 R: Pokemon_Stadium_2_R.param
@@ -376,6 +383,7 @@ L: Pokemon_Stadium_2_L.param
 Z: Pokemon_Stadium_2_Z.param
 0x8000: Pokemon_Stadium_2_ML_00.param
 Up+Down+Right+Left: Pokemon_Stadium_2_DPAD.param
+R+Up+Down+Right+Left: Pokemon_Stadium_2_RDPAD.param
 
 
 ################
@@ -627,12 +635,13 @@ Z: Rainbow_Cruise_Z.param
 
 
 ################
-50.asl - 4 entries
+50.asl - 5 entries
 
 Base: Poke_Floats.param
 R: Poke_Floats_R.param
 L: Poke_Floats_L.param
 Z: Poke_Floats_Z.param
+0x8000: Poke_Floats_ML_00.param
 
 
 ################

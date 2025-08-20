@@ -152,6 +152,7 @@ DEDEDE
 
 LUCARIO
 25 - influenza Lucario by influenza
+26 - Zarked! Lucario by Zarked!
 
 IKE
 24 - influenza Ike by influenza
@@ -172,6 +173,7 @@ TOON LINK
 40 - Shrug Toon Link by Shrug, ilikepizza107
 
 WOLF
+35 - Kakashi Wolf by Autumn
 
 SNAKE
 06 - Autumn Snake by Autumn

@@ -43,6 +43,9 @@ FOX
 10 - Silver Fox by Baka
 11 - Star Blue Fox by ilikepizza107
 12 - Star Green Fox by ilikepizza107
+30 - SOULLY Fox by SOULLY, ilikepizza107
+31 - SOULLY Blue Fox by SOULLY, ilikepizza107
+32 - SOULLY Green Fox by SOULLY, ilikepizza107
 40 - Drip Fox by DHS7, ilikepizza107
 
 PIKACHU

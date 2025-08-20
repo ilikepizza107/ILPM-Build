@@ -29,6 +29,7 @@ LINK
 
 SAMUS
 40 - GooSluj Samus by ilikepizza107
+41 - Autumn Samus by Autumn, ilikepizza107
 45 - Brawl Fake Samus by SJS [https://gamebanana.com/mods/247126]
 
 YOSHI
@@ -114,6 +115,7 @@ PIT
 
 ZERO SUIT SAMUS
 40 - GooSluj ZSS by ilikepizza107
+41 - Autumn ZSS by Autumn, ilikepizza107
 45 - RosiYY ZSS by ilikepizza107
 
 OLIMAR

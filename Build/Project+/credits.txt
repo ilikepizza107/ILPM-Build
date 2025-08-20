@@ -87,12 +87,22 @@ MARTH
 
 MR. GAME & WATCH
 17 - Rise GnW
+18 - Danphibia GnW
 
 FALCO
 
 GANONDORF
 26 - Che Ganondorf by DHS7
 40 - joey Ganondorf by DHS7
+50 - Sneakh Akumadorf by ilikepizza107
+51 - Sneakh Akumadorf Red by ilikepizza107
+52 - Sneakh Akumadorf Green by ilikepizza107
+53 - Sneakh Akumadorf Blue by ilikepizza107
+54 - Sneakh Akumadorf Black by ilikepizza107
+55 - Sneakh Akumadorf White by ilikepizza107
+56 - Sneakh Akumadorf Teal by ilikepizza107
+57 - Sneakh Akumadorf Yellow by ilikepizza107
+58 - Sneakh Akumadorf Light Blue by ilikepizza107
 
 META KNIGHT
 06 - NorCal MK by FingerStripes

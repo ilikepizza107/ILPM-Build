@@ -12,7 +12,7 @@ PSA edits for Crona Marth & Artemis Marth by SSK and KingJigglypuff, ilikepizza1
  - PSA Added: Subroutine 2x79B0, 2x79F0, 2x7A30
  - PSA Edited: Sub Actions 48, GFX; 49, GFX; 4E, GFX; 50, GFX; 54, GFX; 55, GFX; 58, GFX; 5D, GFX; 60, GFX; 62, GFX; 63, GFX; 64, GFX; 65, GFX; 66, GFX; B0, GFX; B9, GFX; D7, GFX; DC, GFX; E7, GFX; 1D0, GFX; 1D1, GFX; 1D6, GFX; 1D7, GFX; 1D8, GFX; 1D9, GFX; 1DA, GFX; 1DB, GFX; 1DC, GFX; 1DD, GFX; 1DE, GFX; 1E8, GFX; 1EB, GFX; 1EE, GFX; 1EF, GFX; 1F0, GFX; 1F1, GFX; 1F2, GFX; 1F3, GFX; 1F4, GFX
 
-PSA edits for GooSluj ZSS SFX by ilikepizza107
+PSA edits for GooSluj/Autumn ZSS SFX by ilikepizza107
  - PSA Edited (All SFX Tab): Sub Actions A, B, C, E, F, 10, 11, 12, 2A, 30, 31, 32, 33, 36, 43, 44, 45, 48, 4E, 53, 54, 55, 63, 64, 65, 66, 67, 68, 69, 6A, 6B, AF, B0, B1, B2, B8, B9, BA, BB, BE, BF, C0, C1, C3, D7, D8, D9, DC, DD, DE, E6, E7, E8, E9, FC, FD, 151, 152, 153, 154, 155, 156, 157, 158, 159, 15A, 15C, 1C2, 1C3, 1C6, 1E2, 1E5, 1E6
 
 ################
@@ -28,9 +28,9 @@ LINK
 28 - SgtPingwen Link by ilikepizza107
 
 SAMUS
-40 - GooSluj Samus by ilikepizza107
-41 - Autumn Samus by Autumn, ilikepizza107
-45 - Brawl Fake Samus by SJS [https://gamebanana.com/mods/247126]
+40 - Brawl Fake Samus by SJS [https://gamebanana.com/mods/247126]
+50 - GooSluj Samus by ilikepizza107
+51 - Autumn Samus by Autumn, ilikepizza107
 
 YOSHI
 
@@ -114,9 +114,9 @@ PIT
 42 - Star Green Pit by SJS, Star, ilikepizza107
 
 ZERO SUIT SAMUS
-40 - GooSluj ZSS by ilikepizza107
-41 - Autumn ZSS by Autumn, ilikepizza107
-45 - RosiYY ZSS by ilikepizza107
+40 - RosiYY ZSS by ilikepizza107
+50 - GooSluj ZSS by ilikepizza107
+51 - Autumn ZSS by Autumn, ilikepizza107
 
 OLIMAR
 40 - joey Olimar by SJS and DHS7
@@ -170,6 +170,7 @@ JIGGLYPUFF
 WARIO
 
 ROY
+09 - Autumn Roy by Autumn
 
 TOON LINK
 40 - Shrug Toon Link by Shrug, ilikepizza107
